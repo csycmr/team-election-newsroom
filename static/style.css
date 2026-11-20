@@ -19,7 +19,7 @@
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: radial-gradient(ellipse at 45% 0%, #1a355c, #071226 65%); min-height: 100vh; }
-header, main { width: min(calc(100% - 2 * clamp(14px, 4vw, 60px)), 1280px); margin-inline: auto; padding-block: 24px; }
+header, main { width: min(calc(100% - 2 * clamp(14px, 4vw, 60px)), 1600px); margin-inline: auto; padding-block: 24px; }
 header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-bottom: 0; }
 h1, h2, h3, .ticker b {
   font-family: Paperlogy, Pretendard, "맑은 고딕", sans-serif;
