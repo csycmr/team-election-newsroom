@@ -28,6 +28,11 @@ async function api(path, body, method = "GET") {
 
 function render(frame) {
   snapshot = frame;
+  const metrics = byId("metrics");
+  metrics.classList.remove("is-updating");
+  // Flush the class removal so the animation restarts for each displayed frame.
+  void metrics.offsetWidth;
+  metrics.classList.add("is-updating");
   const ranked = [...frame.candidates].sort((a, b) => b.votes - a.votes);
   const total = ranked.reduce((sum, candidate) => sum + candidate.votes, 0);
   const label = frame.record_type === "reported" ? "당시 보도 집계" : "시연용 재구성";
