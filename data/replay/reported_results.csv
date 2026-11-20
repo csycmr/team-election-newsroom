@@ -1,0 +1,11 @@
+﻿evidence_id,reported_at_kst,counted_rate,candidate_id,candidate_name,party,votes,published_vote_rate,source_url
+NEC-SEOUL-1,2026-06-04T17:46:00+09:00,99.54,seoul-1,오세훈,국민의힘,2560590,49.15,https://www.yna.co.kr/amp/view/AKR20260604181600004
+NEC-SEOUL-1,2026-06-04T17:46:00+09:00,99.54,seoul-2,정원오,더불어민주당,2507130,48.13,https://www.yna.co.kr/amp/view/AKR20260604181600004
+NEC-SEOUL-1,2026-06-04T17:46:00+09:00,99.54,seoul-3,권영국,정의당,54149,1.03,https://www.yna.co.kr/amp/view/AKR20260604181600004
+NEC-SEOUL-1,2026-06-04T17:46:00+09:00,99.54,seoul-4,유지혜,여성의당,43801,0.84,https://www.yna.co.kr/amp/view/AKR20260604181600004
+NEC-SEOUL-1,2026-06-04T17:46:00+09:00,99.54,seoul-5,김정철,개혁신당,43128,0.82,https://www.yna.co.kr/amp/view/AKR20260604181600004
+NEC-SEOUL-2,2026-06-05T15:30:00+09:00,100,seoul-1,오세훈,국민의힘,2575819,49.22,https://www.yna.co.kr/amp/view/AKR20260605106300004
+NEC-SEOUL-2,2026-06-05T15:30:00+09:00,100,seoul-2,정원오,더불어민주당,2515560,48.07,https://www.yna.co.kr/amp/view/AKR20260605106300004
+NEC-SEOUL-2,2026-06-05T15:30:00+09:00,100,seoul-3,권영국,정의당,54315,1.03,https://www.yna.co.kr/amp/view/AKR20260605106300004
+NEC-SEOUL-2,2026-06-05T15:30:00+09:00,100,seoul-4,유지혜,여성의당,43967,0.84,https://www.yna.co.kr/amp/view/AKR20260605106300004
+NEC-SEOUL-2,2026-06-05T15:30:00+09:00,100,seoul-5,김정철,개혁신당,43321,0.82,https://www.yna.co.kr/amp/view/AKR20260605106300004

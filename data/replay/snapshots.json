@@ -1,0 +1,602 @@
+[
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 1,
+    "counted_rate": 3,
+    "collected_at": "2026-06-03T20:00:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 73430,
+        "vote_rate": 47.01
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 78493,
+        "vote_rate": 50.25
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 1632,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 1320,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 1300,
+        "vote_rate": 0.83
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 2,
+    "counted_rate": 8,
+    "collected_at": "2026-06-03T20:20:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 196331,
+        "vote_rate": 47.12
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 208909,
+        "vote_rate": 50.14
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 4352,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 3520,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 3466,
+        "vote_rate": 0.83
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 3,
+    "counted_rate": 16,
+    "collected_at": "2026-06-03T20:40:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 394316,
+        "vote_rate": 47.3
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 416523,
+        "vote_rate": 49.97
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 8704,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 7041,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 6932,
+        "vote_rate": 0.83
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 4,
+    "counted_rate": 27,
+    "collected_at": "2026-06-03T21:00:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 669246,
+        "vote_rate": 47.55
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 699877,
+        "vote_rate": 49.72
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 14688,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 11881,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 11698,
+        "vote_rate": 0.83
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 5,
+    "counted_rate": 40,
+    "collected_at": "2026-06-03T21:20:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 998195,
+        "vote_rate": 47.84
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 1031592,
+        "vote_rate": 49.44
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 21760,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 17601,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 17331,
+        "vote_rate": 0.83
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 6,
+    "counted_rate": 54,
+    "collected_at": "2026-06-03T21:40:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 1357332,
+        "vote_rate": 48.15
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 1384997,
+        "vote_rate": 49.13
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 29376,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 23762,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 23397,
+        "vote_rate": 0.83
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 7,
+    "counted_rate": 68,
+    "collected_at": "2026-06-03T22:00:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 1721535,
+        "vote_rate": 48.46
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 1734435,
+        "vote_rate": 48.82
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 36991,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 29922,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 29463,
+        "vote_rate": 0.82
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 8,
+    "counted_rate": 81,
+    "collected_at": "2026-06-03T22:20:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 2064258,
+        "vote_rate": 48.74
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 2055360,
+        "vote_rate": 48.53
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 44063,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 35643,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 35095,
+        "vote_rate": 0.82
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 9,
+    "counted_rate": 91,
+    "collected_at": "2026-06-03T22:40:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 2330863,
+        "vote_rate": 48.97
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 2299897,
+        "vote_rate": 48.31
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 49503,
+        "vote_rate": 1.04
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 40043,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 39428,
+        "vote_rate": 0.82
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 10,
+    "counted_rate": 97,
+    "collected_at": "2026-06-03T23:00:00+09:00",
+    "source": "시연용 재구성 · 연합뉴스 99.54% 집계 기반",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "simulated",
+    "evidence_id": "REPLAY-SEOUL",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 2492067,
+        "vote_rate": 49.1
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 2445648,
+        "vote_rate": 48.18
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 52767,
+        "vote_rate": 1.03
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 42683,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 42027,
+        "vote_rate": 0.82
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 11,
+    "counted_rate": 99.54,
+    "collected_at": "2026-06-04T17:46:00+09:00",
+    "source": "연합뉴스 보도 집계",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260604181600004",
+    "mode": "replay",
+    "record_type": "reported",
+    "evidence_id": "NEC-SEOUL-1",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 2560590,
+        "vote_rate": 49.15
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 2507130,
+        "vote_rate": 48.13
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 54149,
+        "vote_rate": 1.03
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 43801,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 43128,
+        "vote_rate": 0.82
+      }
+    ]
+  },
+  {
+    "election_id": "20260603-seoul-mayor",
+    "election_name": "제9회 전국동시지방선거 서울시장 선거",
+    "region": "서울특별시",
+    "step_id": 12,
+    "counted_rate": 100,
+    "collected_at": "2026-06-05T15:30:00+09:00",
+    "source": "연합뉴스 보도 집계",
+    "source_url": "https://www.yna.co.kr/amp/view/AKR20260605106300004",
+    "mode": "replay",
+    "record_type": "reported",
+    "evidence_id": "NEC-SEOUL-2",
+    "candidates": [
+      {
+        "candidate_id": "seoul-1",
+        "candidate_name": "오세훈",
+        "party": "국민의힘",
+        "votes": 2575819,
+        "vote_rate": 49.22
+      },
+      {
+        "candidate_id": "seoul-2",
+        "candidate_name": "정원오",
+        "party": "더불어민주당",
+        "votes": 2515560,
+        "vote_rate": 48.07
+      },
+      {
+        "candidate_id": "seoul-3",
+        "candidate_name": "권영국",
+        "party": "정의당",
+        "votes": 54315,
+        "vote_rate": 1.03
+      },
+      {
+        "candidate_id": "seoul-4",
+        "candidate_name": "유지혜",
+        "party": "여성의당",
+        "votes": 43967,
+        "vote_rate": 0.84
+      },
+      {
+        "candidate_id": "seoul-5",
+        "candidate_name": "김정철",
+        "party": "개혁신당",
+        "votes": 43321,
+        "vote_rate": 0.82
+      }
+    ]
+  }
+]

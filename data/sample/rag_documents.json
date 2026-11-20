@@ -1,0 +1,8 @@
+[
+  {"evidence_id":"e1","title":"교육용 후보 김하늘 공약집","content":"김하늘 후보는 지역 교통 정보 공개와 청년 주거 데이터 플랫폼 구축을 공약했다.","source":"교육용 후보 공식 자료","source_url":"https://example.invalid/candidates/c1/manifesto","published_at":"2026-08-01","candidate_name":"김하늘"},
+  {"evidence_id":"e2","title":"교육용 후보 이바다 정책 발표","content":"이바다 후보는 돌봄 서비스 확대와 공공 데이터의 시민 접근성 강화를 제안했다.","source":"교육용 후보 공식 자료","source_url":"https://example.invalid/candidates/c2/policy","published_at":"2026-08-03","candidate_name":"이바다"},
+  {"evidence_id":"e3","title":"선거 개표 보도 검증 지침","content":"개표 보도에는 선거명, 지역, 개표 단계, 기준시각, 출처를 표시하고 최종 결과가 아님을 명시한다.","source":"교육용 뉴스룸 편집 지침","source_url":"data/sample/rag_documents.json","published_at":"2026-08-10"},
+  {"evidence_id":"e4","title":"득표율 검증 규칙","content":"득표율은 같은 집계 단계의 후보 득표수와 유효투표수를 기준으로 다시 계산하며 반올림 오차를 기록한다.","source":"교육용 팩트체크 지침","source_url":"data/sample/rag_documents.json","published_at":"2026-08-10"},
+  {"evidence_id":"e5","title":"AI 선거 기사 승인 원칙","content":"AI가 생성한 선거 기사는 규칙 기반 수치 검증과 사람 편집자의 검토를 통과하기 전 보도할 수 없다.","source":"교육용 AI 보도 윤리 지침","source_url":"data/sample/rag_documents.json","published_at":"2026-08-10"}
+]
+

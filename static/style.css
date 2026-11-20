@@ -1,0 +1,48 @@
+:root {
+  color-scheme: dark;
+  font-family: Pretendard, "맑은 고딕", sans-serif;
+  background: #071226;
+  color: #eef5ff;
+  --line: #30466b;
+  --muted: #aabddb;
+  --cyan: #72e3ff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(ellipse at 45% 0%, #1a355c, #071226 65%); min-height: 100vh; }
+header, main { max-width: 1440px; margin: auto; padding: 24px clamp(16px, 4vw, 56px); }
+header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-bottom: 0; }
+h1 { font-size: clamp(30px, 4.3vw, 61px); letter-spacing: -.055em; margin: 8px 0; }
+h2 { margin: 0 0 18px; font-size: 22px; }
+p { line-height: 1.65; }
+.brand, a, .ticker b { color: var(--cyan); }
+.brand { font-weight: 800; }
+.brand span { margin-left: 10px; color: var(--muted); font-size: 11px; letter-spacing: .16em; }
+#clock, .muted { color: var(--muted); }
+.header-actions, .actions, form { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.badge { color: #ffe4a4; border: 1px solid #896d3d; padding: 9px 12px; font-size: 13px; }
+button, input { font: inherit; padding: 8px 11px; border: 1px solid var(--line); border-radius: 4px; background: #132949; color: inherit; }
+button { cursor: pointer; font-weight: 650; }
+button:disabled { opacity: .45; cursor: default; }
+#start { color: #08162c; background: var(--cyan); }
+.ticker, .panel { border: 1px solid var(--line); background: #0c1c35eb; }
+.ticker { display: flex; align-items: center; gap: 16px; padding: 12px 17px; margin-bottom: 16px; }
+.ticker b { flex-shrink: 0; }
+.dashboard { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr); gap: 16px; }
+.panel { padding: clamp(14px, 2vw, 25px); min-width: 0; }
+.metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.metrics div { border: 1px solid var(--line); padding: 13px; background: #071427; color: var(--muted); }
+.metrics strong { color: var(--cyan); font: 700 clamp(20px, 3.2vw, 43px)/1.4 Pretendard, "맑은 고딕", sans-serif; display: block; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.bar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; margin-bottom: 12px; }
+.bar-row small { color: var(--muted); margin-left: 5px; }
+.bar-row strong { font-variant-numeric: tabular-nums; }
+.track { grid-column: span 2; background: #061124; height: 9px; }
+.fill { height: 100%; min-width: 0; transition: width .55s ease; }
+.editorial { margin-top: 16px; }
+.actions { margin-bottom: 12px; }
+#evidence article { margin-top: 12px; padding: 10px; border: 1px solid var(--line); }
+#evidence p { margin: 6px 0; }
+@media (max-width: 800px) {
+  header { display: block; }
+  .dashboard { grid-template-columns: 1fr; }
+  .metrics strong { font-size: clamp(21px, 6vw, 35px); }
+}
