@@ -52,8 +52,13 @@ function renderResults(data) {
   map.setAttribute("role", "group");
   map.setAttribute("aria-label", "서울 자치구별 1위 후보 지도");
 
+  const selectionOutline = document.createElementNS(svgNamespace, "path");
+  selectionOutline.setAttribute("class", "district-selection-outline");
+  selectionOutline.setAttribute("aria-hidden", "true");
+
   function showDistrict(district) {
     select.value = district.name;
+    selectionOutline.setAttribute("d", district.outline);
     for (const [name, button] of buttons) {
       button.setAttribute("aria-pressed", String(name === district.name));
       paths.get(name).setAttribute("aria-pressed", String(name === district.name));
@@ -126,6 +131,7 @@ function renderResults(data) {
     item.append(swatch, document.createTextNode(`${name} 1위`));
     legend.append(item);
   }
+  map.append(selectionOutline);
   find("district-map").append(map, legend);
 
   for (const pledge of data.pledges) {
