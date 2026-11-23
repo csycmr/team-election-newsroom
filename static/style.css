@@ -782,3 +782,18 @@ input::placeholder, textarea::placeholder {
   letter-spacing: -.035em;
   overflow-wrap: anywhere;
 }
+
+#count-history-detail .count-history-meta {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+#count-history-detail .count-history-rate {
+  margin-top: 10px;
+  color: var(--mint);
+  font-size: clamp(21px, 2.2vw, 30px);
+  font-weight: 800;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}

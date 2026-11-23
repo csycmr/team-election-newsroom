@@ -73,12 +73,19 @@ function renderTimeline(entries) {
     points.forEach((point, pointIndex) => point.setAttribute("aria-pressed", String(pointIndex === index)));
     const headline = document.createElement("p");
     const title = document.createElement("strong");
-    title.textContent = `${timestampLabel.format(entry.time)} · ${entry.event} · ${timeBasis[entry.time_basis]}`;
+    title.textContent = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     headline.append(title);
-    detail.replaceChildren(headline);
+    const basis = document.createElement("p");
+    basis.className = "count-history-meta";
+    basis.textContent = timeBasis[entry.time_basis];
+    detail.replaceChildren(headline, basis);
     if (entry.counted_rate_pct) {
+      const rate = document.createElement("p");
+      rate.className = "count-history-rate";
+      rate.textContent = `전체 개표율 ${entry.counted_rate_pct}%`;
+      detail.append(rate);
       const stats = document.createElement("p");
-      stats.textContent = `개표율 ${entry.counted_rate_pct}% · 오세훈 ${numberLabel.format(Number(entry.oh_se_hoon_votes))}표 (${entry.oh_se_hoon_vote_rate_pct}%) · 정원오 ${numberLabel.format(Number(entry.jung_won_oh_votes))}표 (${entry.jung_won_oh_vote_rate_pct}%)`;
+      stats.textContent = `오세훈 ${numberLabel.format(Number(entry.oh_se_hoon_votes))}표 (${entry.oh_se_hoon_vote_rate_pct}%) · 정원오 ${numberLabel.format(Number(entry.jung_won_oh_votes))}표 (${entry.jung_won_oh_vote_rate_pct}%)`;
       detail.append(stats);
     }
     if (entry.note) {
