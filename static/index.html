@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=election-headings">
+  <link rel="stylesheet" href="/static/style.css?v=map-centered">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -50,15 +50,17 @@
           <p id="final-results-status" role="status">최종 개표 자료를 불러오는 중이에요.</p>
           <div id="final-results-content" hidden>
             <div class="final-grid">
-              <section class="dark-panel">
+              <section class="dark-panel final-map-panel">
+                <h3>서울 25개 구 개표 지도</h3>
+                <label class="district-control">자치구 선택 <select id="final-district"></select></label>
+                <div id="district-map"></div>
+              </section>
+              <section class="dark-panel final-ranking-panel">
                 <h3>어디가 가장 접전이었나</h3>
                 <p class="dark-muted">1·2위 득표율 차가 작은 순 · 막대 단위 %p</p>
                 <ol id="district-ranking" class="district-ranking"></ol>
               </section>
-              <section class="dark-panel">
-                <h3>서울 25개 구 개표 지도</h3>
-                <label class="district-control">자치구 선택 <select id="final-district"></select></label>
-                <div id="district-map"></div>
+              <section class="dark-panel final-detail-panel">
                 <div id="district-detail" aria-live="polite"></div>
               </section>
             </div>

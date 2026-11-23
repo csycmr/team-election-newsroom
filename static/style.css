@@ -390,8 +390,30 @@ input::placeholder, textarea::placeholder {
 }
 
 .final-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.85fr) minmax(0, 1fr);
+  grid-template-areas: "ranking map detail";
+  align-items: stretch;
+}
+
+.final-map-panel {
+  grid-area: map;
+}
+
+.final-ranking-panel {
+  grid-area: ranking;
+}
+
+.final-detail-panel {
+  grid-area: detail;
+}
+
+.final-detail-panel #district-detail h4 {
+  margin-top: 0;
+  font-size: 21px;
+}
+
+.final-detail-panel .final-bar {
+  margin-top: 16px;
 }
 
 .final-subsection {
@@ -399,7 +421,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .district-ranking {
-  max-height: 620px;
+  max-height: 450px;
   overflow-y: auto;
   margin: 0;
   padding: 0 6px 0 25px;
@@ -457,8 +479,8 @@ input::placeholder, textarea::placeholder {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 320px;
-  margin-top: 8px;
+  max-height: 520px;
+  margin-top: 12px;
 }
 
 #district-map path {
@@ -541,7 +563,18 @@ input::placeholder, textarea::placeholder {
   margin-top: 12px;
 }
 
+@media (max-width: 1000px) {
+  .final-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: "map map" "ranking detail";
+  }
+}
+
 @media (max-width: 760px) {
+  .final-grid {
+    grid-template-areas: "map" "detail" "ranking";
+  }
+
   .final-grid, .method-grid, .pledge-grid {
     grid-template-columns: 1fr;
   }
