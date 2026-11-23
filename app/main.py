@@ -11,7 +11,7 @@ from app.models import ArticleCreate, ArticleUpdate, ReviewRequest
 from app.services.article_service import generate_article
 from app.services.election_service import fetch_snapshot
 from app.services.factcheck_service import check_article
-from app.services.rag_service import LocalRAG
+from app.services.rag_service import LocalRAG, answer_question
 from app.services.replay_service import FRAMES, REPLAY_DIR, replay_snapshot
 from app.services.storage_service import Storage
 from app.services.time_service import now_seoul
@@ -87,6 +87,15 @@ async def election_websocket(websocket: WebSocket):
 @app.get("/api/rag/search")
 def rag_search(q: str = Query(min_length=2), limit: int = Query(5, ge=1, le=10), replay: bool = False):
     return {"query": q, "results": (replay_rag if replay else rag).search(q, limit), "engine": "local-keyword"}
+
+
+@app.get("/api/rag/answer")
+async def rag_answer(q: str = Query(min_length=2), replay: bool = False):
+    return await answer_question(
+        q, replay_rag if replay else rag,
+        api_key=settings.openai_api_key,
+        model=settings.openai_chat_model,
+    )
 
 
 @app.post("/api/articles")
