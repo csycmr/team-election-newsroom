@@ -55,7 +55,16 @@ h2, h3, .analytics-card h4, .timeline-heading h4,
   line-height: 1.2;
 }
 
-.analytics-card h4, .timeline-heading h4,
+.workspace-card .analytics-heading h3,
+.workspace-card .final-heading h3 {
+  font-size: clamp(22px, 2.7vw, 32px);
+}
+
+.analytics-card h4, .timeline-heading h4 {
+  font-size: 21px;
+  line-height: 1.2;
+}
+
 #district-detail h4, .method-card h4, #pledge-results h4 {
   font-size: 17px;
   line-height: 1.2;
