@@ -16,16 +16,15 @@ let socket;
 let snapshot;
 let displayedFrame;
 let article;
-let paused = false;
-let pending;
+let resumeDelay = null;
 let busy = false;
 let replayFrames = [];
-let replayFrameAt = 0;
+let replayDeadline = 0;
 
 function publishReplayState(kind, frame) {
   const next = frame && replayFrames[frame.step_id];
   document.dispatchEvent(new CustomEvent("count-replay", {
-    detail: { kind, frame, next, deadline: replayFrameAt + 5000 },
+    detail: { kind, frame, next, deadline: replayDeadline },
   }));
 }
 
@@ -115,59 +114,66 @@ function updateActions() {
   byId("approve").disabled = busy || article?.status !== "human_reviewed";
 }
 
-function connect() {
-  socket?.close();
-  byId("ticker-alert-light").hidden = true;
-  publishReplayState("start");
-  paused = false;
-  pending = undefined;
-  displayedFrame = undefined;
-  byId("pause").textContent = "일시정지";
-  byId("pause").disabled = false;
+function disconnectReplay() {
+  const connection = socket;
+  socket = undefined;
+  connection?.close();
+}
+
+function connectReplay(startStep, delayMs) {
+  byId("start").textContent = "일시 정지";
   const protocol = location.protocol === "https:" ? "wss:" : "ws:";
-  const connection = new WebSocket(`${protocol}//${location.host}/ws/count-timeline`);
+  const query = new URLSearchParams({ start_step: startStep, delay_ms: delayMs });
+  const connection = new WebSocket(`${protocol}//${location.host}/ws/count-timeline?${query}`);
   socket = connection;
   connection.onmessage = (event) => {
     if (socket !== connection) return;
     const frame = JSON.parse(event.data);
-    replayFrameAt = performance.now();
-    if (paused) pending = frame;
-    else {
-      render(frame);
-      publishReplayState("frame", frame);
-    }
-
+    replayDeadline = performance.now() + 5000;
+    render(frame);
+    publishReplayState("frame", frame);
   };
   connection.onclose = () => {
     if (socket !== connection) return;
+    socket = undefined;
+    byId("start").textContent = "개표 재생";
     byId("ticker-alert-light").hidden = true;
-    if (!paused) {
-      byId("pause").disabled = true;
-      publishReplayState("stop");
-    }
-    if ((pending || displayedFrame)?.step_id !== replayFrames.length) {
+    publishReplayState("stop");
+    if (displayedFrame?.step_id !== replayFrames.length) {
       byId("ticker").textContent = "재생 연결이 종료됐어요. 개표 재생을 눌러 다시 시작해 주세요.";
     }
   };
 }
 
-byId("start").onclick = connect;
-byId("pause").onclick = () => {
-  paused = !paused;
-  byId("pause").textContent = paused ? "최신 집계로 돌아가기" : "일시정지";
-  if (!paused && pending) {
-    render(pending);
-    pending = undefined;
+function restartReplay() {
+  disconnectReplay();
+  resumeDelay = null;
+  replayDeadline = performance.now();
+  render(replayFrames[0]);
+  publishReplayState("start");
+  connectReplay(1, 0);
+}
+
+byId("start").onclick = () => {
+  if (socket) {
+    resumeDelay = Math.max(0, Math.min(5000, Math.ceil(replayDeadline - performance.now())));
+    disconnectReplay();
+    byId("start").textContent = "개표 재생";
+    publishReplayState("pause");
+    return;
   }
-  if (paused) publishReplayState("pause");
-  else {
-    publishReplayState("frame", displayedFrame);
-    if (socket.readyState === WebSocket.CLOSED) {
-      byId("pause").disabled = true;
-      publishReplayState("stop");
-    }
+  if (resumeDelay === null || displayedFrame.step_id >= replayFrames.length) {
+    restartReplay();
+    return;
   }
+  const delay = resumeDelay;
+  resumeDelay = null;
+  replayDeadline = performance.now() + delay;
+  connectReplay(displayedFrame.step_id + 1, delay);
+  publishReplayState("frame", displayedFrame);
 };
+
+byId("restart").onclick = restartReplay;
 
 const states = {
   draft: "초안",
@@ -423,6 +429,7 @@ const countTimelineData = api("/api/count-timeline").then(data => {
   replayFrames = data;
   renderCandidateBars(data.at(-1).candidates, true);
   byId("start").disabled = false;
+  byId("restart").disabled = false;
   return data;
 }).catch(error => {
   byId("ticker").textContent = "재생 데이터를 불러오지 못했어요. 페이지를 새로고침해 주세요.";

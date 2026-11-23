@@ -80,10 +80,16 @@ def count_timeline_data():
 
 
 @app.websocket("/ws/count-timeline")
-async def count_timeline_websocket(websocket: WebSocket):
+async def count_timeline_websocket(
+    websocket: WebSocket,
+    start_step: int = Query(1, ge=1, le=len(COUNT_TIMELINE)),
+    delay_ms: int = Query(0, ge=0, le=5000),
+):
     await websocket.accept()
     try:
-        for index, frame in enumerate(COUNT_TIMELINE):
+        if delay_ms:
+            await asyncio.sleep(delay_ms / 1000)
+        for index, frame in enumerate(COUNT_TIMELINE[start_step - 1:]):
             if index:
                 await asyncio.sleep(5)
             await websocket.send_json(frame)

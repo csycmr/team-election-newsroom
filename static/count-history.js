@@ -26,8 +26,6 @@ const timeBasis = {
 function renderTimeline(entries) {
   const axis = byId("count-history-axis");
   const detail = byId("count-history-detail");
-  const first = entries[0];
-  const last = entries.at(-1);
   let current = 0;
   let animation;
   let linked = false;
@@ -36,14 +34,14 @@ function renderTimeline(entries) {
   cursor.setAttribute("aria-hidden", "true");
   cursor.hidden = true;
   axis.append(cursor);
-  const toPercent = (time) => 100 * (time - first.time) / (last.time - first.time);
+  const toPercent = (index) => 100 * index / (entries.length - 1);
   const points = entries.map((entry, index) => {
     if (entry.time_basis === "simulated") return null;
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
     point.classList.toggle("is-incident", index > 0 && entry.counted_rate_pct === "");
-    point.style.left = `${100 * (entry.time - first.time) / (last.time - first.time)}%`;
+    point.style.left = `${toPercent(index)}%`;
     point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
     point.addEventListener("click", () => {
@@ -55,13 +53,13 @@ function renderTimeline(entries) {
     axis.append(point);
     return point;
   });
-  for (const entry of entries) {
+  for (const [index, entry] of entries.entries()) {
     if (entry.time_basis === "simulated") continue;
     const label = document.createElement("time");
     const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
     label.className = "count-history-tick";
     label.dateTime = entry.timestamp_kst;
-    label.style.left = `${toPercent(entry.time)}%`;
+    label.style.left = `${toPercent(index)}%`;
     const dayLabel = document.createElement("span");
     dayLabel.textContent = `${Number(month)}/${Number(day)}`;
     const clockLabel = document.createElement("span");
@@ -111,8 +109,8 @@ function renderTimeline(entries) {
     });
   }
 
-  function moveCursor(time) {
-    cursor.style.left = `${toPercent(time)}%`;
+  function moveCursor(index) {
+    cursor.style.left = `${toPercent(index)}%`;
   }
 
   syncReplay = ({ kind, frame, next: nextFrame, deadline }) => {
@@ -123,12 +121,12 @@ function renderTimeline(entries) {
     cursor.hidden = false;
     if (kind === "start") {
       show(0);
-      moveCursor(first.time);
+      moveCursor(0);
       return;
     }
     if (!frame) return;
-    const from = Date.parse(frame.timestamp_kst);
-    const to = nextFrame ? Date.parse(nextFrame.timestamp_kst) : from;
+    const from = frame.step_id - 1;
+    const to = nextFrame ? nextFrame.step_id - 1 : from;
     show(frame.step_id - 1);
     moveCursor(from);
     if (to <= from) return;
