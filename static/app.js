@@ -53,9 +53,7 @@ function render(frame) {
   const roster = replayFrames.at(-1).candidates;
   const rows = [...ranked, ...roster.filter((candidate) => !byCandidate.has(candidate.candidate_id))
     .map((candidate) => ({ ...candidate, votes: null, vote_rate: null }))];
-  const total = ranked.length === roster.length
-    ? ranked.reduce((sum, candidate) => sum + candidate.votes, 0)
-    : null;
+  const total = lastCount?.counted_valid_votes ?? null;
 
   const metrics = byId("metrics");
   metrics.classList.remove("is-updating");
@@ -69,11 +67,11 @@ function render(frame) {
   byId("leader").textContent = ranked[0]?.candidate_name ?? "—";
   byId("gap").textContent = ranked.length >= 2 ? number.format(ranked[0].votes - ranked[1].votes) : "—";
 
-  const coverage = ranked.length && total === null ? " · 주요 후보 2명 보도 수치" : "";
+  const coverage = ranked.length > 0 && ranked.length < roster.length ? " · 주요 후보 2명 보도 수치" : "";
   const retained = lastCount && lastCount !== frame
     ? ` · 직전 집계 ${clock.format(new Date(lastCount.timestamp_kst))} 기준`
     : "";
-  byId("meta").textContent = `${frame.step_id}/${replayFrames.length}개 시점${retained}${coverage}`;
+  byId("meta").textContent = `${frame.step_id}/${replayFrames.length}개 시점${retained}${coverage}${lastCount?.time_basis === "simulated" ? " · 시연용 재구성" : ""}`;
   byId("source").href = lastCount?.additional_source_url || lastCount?.source_url || frame.source_url;
   byId("source").textContent = lastCount?.additional_source_url ? "최종 집계표 ↗" : `${(lastCount || frame).source_name} ↗`;
   const breaking = breakingEvents.has(frame.event) && socket?.readyState === WebSocket.OPEN;
@@ -496,7 +494,7 @@ document.addEventListener("count-history-select", (event) => {
     update();
   };
   countTimelineData.then(data => {
-    frames = data.filter(entry => entry.counted_rate !== null);
+    frames = data.filter(entry => entry.counted_rate !== null && entry.time_basis !== "simulated");
     update();
   }).catch(error => {
     byId("rate-trend").textContent = "개표 추이 로드 실패: " + error.message;

@@ -16,6 +16,7 @@ const timestampLabel = new Intl.DateTimeFormat("ko-KR", {
 });
 const numberLabel = new Intl.NumberFormat("ko-KR");
 const timeBasis = {
+  simulated: "시연용 재구성",
   count_observation: "보도 집계",
   publication_time: "기사 송고 시각",
   approximate: "보도 기준 추정 시각",
@@ -37,6 +38,7 @@ function renderTimeline(entries) {
   axis.append(cursor);
   const toPercent = (time) => 100 * (time - first.time) / (last.time - first.time);
   const points = entries.map((entry, index) => {
+    if (entry.time_basis === "simulated") return null;
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
@@ -54,6 +56,7 @@ function renderTimeline(entries) {
     return point;
   });
   for (const entry of entries) {
+    if (entry.time_basis === "simulated") continue;
     const label = document.createElement("time");
     const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
     label.className = "count-history-tick";
@@ -70,7 +73,7 @@ function renderTimeline(entries) {
   function show(index) {
     current = index;
     const entry = entries[index];
-    points.forEach((point, pointIndex) => point.setAttribute("aria-pressed", String(pointIndex === index)));
+    points.forEach((point, pointIndex) => point?.setAttribute("aria-pressed", String(pointIndex === index)));
     const headline = document.createElement("p");
     const title = document.createElement("strong");
     title.textContent = `${timestampLabel.format(entry.time)} · ${entry.event}`;
@@ -84,6 +87,11 @@ function renderTimeline(entries) {
       rate.className = "count-history-rate";
       rate.textContent = `전체 개표율 ${entry.counted_rate_pct}%`;
       detail.append(rate);
+      const validVotes = document.createElement("p");
+      validVotes.textContent = entry.counted_valid_votes == null
+        ? "집계 유효표 수 미확인"
+        : `${entry.time_basis === "simulated" ? "시연용 유효표" : "집계 유효표"} ${numberLabel.format(entry.counted_valid_votes)}표`;
+      detail.append(validVotes);
       const stats = document.createElement("p");
       stats.textContent = `오세훈 ${numberLabel.format(Number(entry.oh_se_hoon_votes))}표 (${entry.oh_se_hoon_vote_rate_pct}%) · 정원오 ${numberLabel.format(Number(entry.jung_won_oh_votes))}표 (${entry.jung_won_oh_vote_rate_pct}%)`;
       detail.append(stats);
