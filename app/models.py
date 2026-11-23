@@ -41,6 +41,7 @@ class Evidence(BaseModel):
 class ArticleCreate(BaseModel):
     snapshot: ElectionSnapshot
     evidence: list[Evidence] = []
+    generation_mode: Literal["template", "ai"] = "template"
 
 
 class Article(BaseModel):

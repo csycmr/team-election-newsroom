@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from app.adapters.cms import publish
 from app.config import ROOT, get_settings
 from app.models import ArticleCreate, ArticleUpdate, ReviewRequest
-from app.services.article_service import generate_article
+from app.services.article_service import generate_article, generate_ai_article
 from app.services.election_service import fetch_snapshot
 from app.services.factcheck_service import check_article
 from app.services.rag_service import LocalRAG, answer_question
@@ -99,7 +99,7 @@ async def rag_answer(q: str = Query(min_length=2), replay: bool = False):
 
 
 @app.post("/api/articles")
-def create_article(request: ArticleCreate):
+async def create_article(request: ArticleCreate):
     if request.snapshot.mode == "replay":
         step = request.snapshot.step_id
         if not 1 <= step <= len(FRAMES) or request.snapshot != replay_snapshot(step):
@@ -108,9 +108,22 @@ def create_article(request: ArticleCreate):
             item for item in replay_rag.search("서울시장", 10)
             if item.evidence_id == request.snapshot.evidence_id
         ]
-    article = generate_article(request)
+    if request.generation_mode == "ai":
+        if not settings.openai_api_key:
+            raise HTTPException(503, "AI 초안 생성에는 OPENAI_API_KEY가 필요합니다. generation_mode=template을 사용하세요.")
+        try:
+            article = await generate_ai_article(request, settings.openai_api_key, settings.openai_chat_model)
+        except ValueError as exc:
+            raise HTTPException(502, str(exc)) from exc
+        except Exception as exc:
+            raise HTTPException(502, "AI 초안 생성 요청이 실패했습니다.") from exc
+    else:
+        article = generate_article(request)
     storage.save_article(article)
-    storage.log(article.article_id, "draft_created", "AI", {"evidence_ids": [item.evidence_id for item in article.evidence]})
+    storage.log(article.article_id, "draft_created", "AI" if request.generation_mode == "ai" else "template", {
+        "generation_mode": request.generation_mode,
+        "evidence_ids": [item.evidence_id for item in article.evidence],
+    })
     return article
 
 

@@ -32,3 +32,67 @@ def generate_article(request: ArticleCreate) -> Article:
                    body=body, status="draft", snapshot=snapshot, evidence=request.evidence,
                    created_at=now, updated_at=now)
 
+
+
+async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) -> Article:
+    """AI writes title and lead; deterministic snapshot facts remain intact."""
+    import json
+    from openai import AsyncOpenAI
+
+    if not api_key:
+        raise ValueError("AI 기사 생성을 요청했지만 OPENAI_API_KEY가 없습니다.")
+
+    # Ground factual figures in the existing deterministic article rather than
+    # trusting the language model to reproduce vote totals and percentages.
+    factual = generate_article(request)
+    snapshot = request.snapshot
+    evidence = [
+        {"evidence_id": item.evidence_id, "title": item.title,
+         "content": item.content, "source": item.source,
+         "source_url": item.source_url}
+        for item in request.evidence
+    ]
+    payload = {
+        "election": snapshot.election_name,
+        "region": snapshot.region,
+        "snapshot": snapshot.model_dump(mode="json"),
+        "verified_input_for_drafting": factual.body,
+        "evidence": evidence,
+    }
+    client = AsyncOpenAI(api_key=api_key, timeout=35, max_retries=0)
+    response = await client.chat.completions.create(
+        model=model,
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": (
+                "당신은 한국 선거 뉴스룸의 기사 작성 보조자다. "
+                "입력된 개표 집계와 근거 문서만 사용해 한국어 스트레이트 기사 제목과 "
+                "짧은 리드 1~2문장을 작성하라. 입력에 없는 발언, 정책, 원인, 전망, 숫자를 만들지 마라. "
+                "중간 집계를 확정 결과처럼 표현하지 마라. "
+                "record_type=simulated는 반드시 시연용 재구성임을 밝히고 "
+                "record_type=reported는 당시 보도 집계임을 구분하라. "
+                "외부 출처의 확인 수준을 과장하지 마라. "
+                "JSON 객체 {title: 문자열, lead: 문자열}만 반환하라."
+            )},
+            {"role": "user", "content": json.dumps(payload, ensure_ascii=False)},
+        ],
+        temperature=0,
+    )
+    try:
+        parsed = json.loads(response.choices[0].message.content or "{}")
+    except (ValueError, IndexError, AttributeError) as exc:
+        raise ValueError("AI 기사 응답을 해석할 수 없습니다.") from exc
+    if not isinstance(parsed, dict):
+        raise ValueError("AI 기사 응답 형식이 올바르지 않습니다.")
+    title, lead = parsed.get("title"), parsed.get("lead")
+    if not isinstance(title, str) or not isinstance(lead, str):
+        raise ValueError("AI가 제목과 리드를 반환하지 않았습니다.")
+    title, lead = title.strip(), lead.strip()
+    if not title or len(title) > 500 or "\n" in title or "\r" in title or not lead:
+        raise ValueError("AI 기사 제목 또는 리드가 유효하지 않습니다.")
+
+    # The authoritative facts and evidence IDs come from the validated snapshot,
+    # so fact-checking still has the exact candidate/value/source strings it expects.
+    factual.title = title
+    factual.body = lead + "\n\n" + factual.body
+    return factual
