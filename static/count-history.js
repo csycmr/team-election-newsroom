@@ -37,13 +37,20 @@ function renderTimeline(entries) {
   const startTime = entries[0].time;
   const duration = entries.at(-1).time - startTime;
   const toPercent = (time) => 100 * (time - startTime) / duration;
+  const visibleEntries = entries.filter(entry => entry.time_basis !== "simulated");
+  const visiblePositions = visibleEntries.map(entry => toPercent(entry.time));
   const points = entries.map((entry, index) => {
     if (entry.time_basis === "simulated") return null;
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
     point.classList.toggle("is-incident", index > 0 && entry.counted_rate_pct === "");
-    point.style.left = `${toPercent(entry.time)}%`;
+    const position = toPercent(entry.time);
+    const visibleIndex = visiblePositions.indexOf(position);
+    const nearNeighbor = [visiblePositions[visibleIndex - 1], visiblePositions[visibleIndex + 1]]
+      .some(neighbor => neighbor !== undefined && Math.abs(neighbor - position) < 2.4);
+    point.classList.toggle("is-dense", nearNeighbor);
+    point.style.left = `${position}%`;
     point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
     point.addEventListener("click", () => {
@@ -55,13 +62,18 @@ function renderTimeline(entries) {
     axis.append(point);
     return point;
   });
-  for (const entry of entries) {
-    if (entry.time_basis === "simulated") continue;
+  const labelLanes = [];
+  for (const entry of visibleEntries) {
+    const position = toPercent(entry.time);
+    const openLane = labelLanes.findIndex(last => position - last >= 4.8);
+    const lane = openLane === -1 ? labelLanes.length : openLane;
+    labelLanes[lane] = position;
     const label = document.createElement("time");
     const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
     label.className = "count-history-tick";
     label.dateTime = entry.timestamp_kst;
-    label.style.left = `${toPercent(entry.time)}%`;
+    label.style.left = `${position}%`;
+    label.style.setProperty("--label-lane", String(lane));
     const dayLabel = document.createElement("span");
     dayLabel.textContent = `${Number(month)}/${Number(day)}`;
     const clockLabel = document.createElement("span");
@@ -69,6 +81,8 @@ function renderTimeline(entries) {
     label.append(dayLabel, clockLabel);
     axis.append(label);
   }
+
+  axis.style.setProperty("--extra-label-height", `${(labelLanes.length - 1) * 31}px`);
 
   function show(index) {
     current = index;
