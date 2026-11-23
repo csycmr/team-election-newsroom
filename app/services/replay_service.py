@@ -29,7 +29,13 @@ def _count_timeline() -> list[dict]:
         if frame.record_type == "simulated"
     }
     roster = [candidate.model_dump() for candidate in FRAMES[-1].candidates]
-    prefixes = {"seoul-1": "oh_se_hoon", "seoul-2": "jung_won_oh"}
+    prefixes = {
+        "seoul-1": "oh_se_hoon",
+        "seoul-2": "jung_won_oh",
+        "seoul-3": "kwon_young_guk",
+        "seoul-4": "yoo_ji_hye",
+        "seoul-5": "kim_jeong_cheol",
+    }
     with (REPLAY_DIR / "count_timeline.csv").open(encoding="utf-8-sig", newline="") as file:
         rows = list(csv.DictReader(file))
 
