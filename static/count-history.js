@@ -74,21 +74,19 @@ function renderTimeline(entries) {
     axis.append(point);
     return point;
   });
-  // Keep point positions proportional to time while reserving room for each label.
-  const minimumGap = Math.min(8.5, 100 / entries.length);
-  const halfGap = minimumGap / 2;
-  let previousLabel = -halfGap;
-  entries.forEach((entry, index) => {
+  for (const entry of entries) {
     const label = document.createElement("time");
     const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
     label.className = "count-history-tick";
     label.dateTime = entry.timestamp_kst;
-    const latest = 100 - halfGap - (entries.length - 1 - index) * minimumGap;
-    previousLabel = Math.min(latest, Math.max(toPercent(entry.time), previousLabel + minimumGap));
-    label.style.left = `${previousLabel}%`;
-    label.textContent = `${Number(month)}/${Number(day)} ${hours}:${minutes}${entry.time_basis === "approximate" ? "쯤" : ""}`;
+    label.style.left = `${toPercent(entry.time)}%`;
+    const dayLabel = document.createElement("span");
+    dayLabel.textContent = `${Number(month)}/${Number(day)}`;
+    const clockLabel = document.createElement("span");
+    clockLabel.textContent = `${hours}:${minutes}${entry.time_basis === "approximate" ? "쯤" : ""}`;
+    label.append(dayLabel, clockLabel);
     axis.append(label);
-  });
+  }
 
   const incidents = byId("count-history-incidents");
   entries.forEach((entry, index) => {

@@ -647,13 +647,13 @@ input::placeholder, textarea::placeholder {
 
 .count-history-scroll {
   overflow-x: auto;
-  padding: 4px 14px 10px;
+  padding: 4px 28px 10px;
 }
 
 .count-history-axis {
   position: relative;
   min-width: 960px;
-  height: 52px;
+  height: 64px;
 }
 
 .count-history-axis::before {
@@ -697,6 +697,9 @@ input::placeholder, textarea::placeholder {
 .count-history-tick {
   position: absolute;
   top: 30px;
+  display: grid;
+  justify-items: center;
+  line-height: 1.25;
   transform: translateX(-50%);
   white-space: nowrap;
   font-size: 12px;
