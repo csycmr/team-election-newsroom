@@ -59,7 +59,8 @@ a, .eyebrow.mint {
 }
 
 .workspace-wrap {
-  max-width: 1528px;
+  /* Allow 1280px of content plus the wrapper and card insets. */
+  max-width: calc(1280px + 2 * (24px + 28px + 1px));
   padding: 20px 24px 100px;
 }
 
