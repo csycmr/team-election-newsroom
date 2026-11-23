@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=linked-timeline-only">
+  <link rel="stylesheet" href="/static/style.css?v=coral-incidents">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -34,7 +34,7 @@
         <section class="dark-panel count-history" aria-labelledby="count-history-title">
           <div class="count-history-header">
             <h4 id="count-history-title">개표 타임라인</h4>
-            <p class="chart-note count-history-note"><span class="count-history-legend-dot" aria-hidden="true"></span> 보도 기록. 가로 간격은 경과 시간에 비례해요. 상단 개표 재생과 함께 현재점이 움직여요.</p>
+            <p class="chart-note count-history-note"><span class="count-history-legend-dot" aria-hidden="true"></span> 보도 기록 · <span class="count-history-legend-dot is-incident" aria-hidden="true"></span> 잠실7동 사건. 가로 간격은 경과 시간에 비례해요. 상단 개표 재생과 함께 현재점이 움직여요.</p>
           </div>
           <p class="dark-muted">6월 3일~5일 · 약 45시간 · 한국 시각(KST)</p>
           <p id="count-history-status" role="status">타임라인 데이터를 불러오는 중이에요.</p>
@@ -42,7 +42,6 @@
             <div class="count-history-scroll" tabindex="0" aria-label="개표 타임라인 가로 스크롤">
               <div id="count-history-axis" class="count-history-axis" role="group" aria-label="시점 선택"></div>
             </div>
-            <ul id="count-history-incidents" class="count-history-incidents" aria-label="투표용지·투표함 사건"></ul>
             <div id="count-history-detail" aria-live="polite"></div>
             <a href="https://github.com/csycmr/team-election-newsroom/blob/main/data/replay/count_timeline.csv">GitHub 원본 CSV ↗</a>
           </div>
@@ -133,7 +132,7 @@
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
   <script src="/static/app.js?v=zero-vote-bars"></script>
-  <script type="module" src="/static/count-history.js?v=linked-timeline-only"></script>
+  <script type="module" src="/static/count-history.js?v=coral-incidents"></script>
   <script type="module" src="/static/final-results.js?v=district-outline"></script>
 </body>
 </html>

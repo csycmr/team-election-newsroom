@@ -58,6 +58,7 @@ function renderTimeline(entries) {
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
+    point.classList.toggle("is-incident", index > 0 && entry.counted_rate_pct === "");
     point.style.left = `${100 * (entry.time - first.time) / (last.time - first.time)}%`;
     point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
@@ -81,28 +82,6 @@ function renderTimeline(entries) {
     label.append(dayLabel, clockLabel);
     axis.append(label);
   }
-
-  const incidents = byId("count-history-incidents");
-  entries.forEach((entry, index) => {
-    if (index === 0 || entry.counted_rate_pct !== "") return;
-    const item = document.createElement("li");
-    const button = document.createElement("button");
-    button.type = "button";
-    const date = document.createElement("time");
-    date.dateTime = entry.timestamp_kst;
-    date.textContent = timestampLabel.format(entry.time) +
-      (entry.time_basis === "approximate" ? "쯤" : "");
-    const label = document.createElement("span");
-    label.textContent = entry.event;
-    button.append(date, label);
-    button.addEventListener("click", () => {
-      if (linked) return;
-      show(index);
-    });
-    item.append(button);
-    incidents.append(item);
-  });
-  incidents.hidden = incidents.children.length === 0;
 
   function show(index) {
     current = index;

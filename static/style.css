@@ -659,6 +659,16 @@ input::placeholder, textarea::placeholder {
   content: "";
 }
 
+.count-history-point.is-incident::before,
+.count-history-legend-dot.is-incident {
+  background: #ff7765;
+}
+
+.count-history-point.is-incident[aria-pressed="true"] {
+  border-color: #ff7765;
+  box-shadow: 0 0 0 1px #ff7765;
+}
+
 .count-history-point[aria-pressed="true"] {
   border-color: var(--mint);
   box-shadow: 0 0 0 1px var(--mint);
@@ -704,27 +714,6 @@ input::placeholder, textarea::placeholder {
   background: #fff;
   box-shadow: 0 0 9px var(--mint);
   pointer-events: none;
-}
-
-.count-history-incidents:not([hidden]) {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-  gap: 8px;
-  list-style: none;
-  margin: 12px 0;
-  padding: 0;
-}
-
-.count-history-incidents button {
-  display: grid;
-  gap: 4px;
-  width: 100%;
-  text-align: left;
-}
-
-.count-history-incidents time {
-  color: var(--mint);
-  font-variant-numeric: tabular-nums;
 }
 
 .count-history-header .count-history-note {
