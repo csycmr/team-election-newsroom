@@ -682,3 +682,16 @@ input::placeholder, textarea::placeholder {
 #count-history-detail a + a {
   margin-inline-start: 12px;
 }
+
+.count-history-cursor {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  width: 3px;
+  height: 26px;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 0 9px var(--mint);
+  pointer-events: none;
+}

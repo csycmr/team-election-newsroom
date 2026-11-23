@@ -1,5 +1,11 @@
 const csvUrl = "https://raw.githubusercontent.com/csycmr/team-election-newsroom/main/data/replay/count_timeline.csv";
 const byId = (id) => document.getElementById(id);
+let latestReplayEvent;
+let syncReplay;
+document.addEventListener("count-replay", (event) => {
+  latestReplayEvent = event.detail;
+  syncReplay?.(latestReplayEvent);
+});
 const timestampLabel = new Intl.DateTimeFormat("ko-KR", {
   timeZone: "Asia/Seoul",
   month: "numeric",
@@ -44,6 +50,14 @@ function renderTimeline(entries) {
   const last = entries.at(-1);
   let current = 0;
   let timer;
+  let animation;
+  let linked = false;
+  const cursor = document.createElement("span");
+  cursor.className = "count-history-cursor";
+  cursor.setAttribute("aria-hidden", "true");
+  cursor.hidden = true;
+  axis.append(cursor);
+  const toPercent = (time) => 100 * (time - first.time) / (last.time - first.time);
   const points = entries.map((entry, index) => {
     const point = document.createElement("button");
     point.type = "button";
@@ -55,6 +69,8 @@ function renderTimeline(entries) {
     point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
     point.addEventListener("click", () => {
+      if (linked) return;
+      cursor.hidden = true;
       stop();
       show(index);
     });
@@ -79,8 +95,8 @@ function renderTimeline(entries) {
     current = index;
     const entry = entries[index];
     points.forEach((point, pointIndex) => point.setAttribute("aria-pressed", String(pointIndex === index)));
-    prev.disabled = index === 0;
-    next.disabled = index === entries.length - 1;
+    prev.disabled = linked || index === 0;
+    next.disabled = linked || index === entries.length - 1;
     const headline = document.createElement("p");
     const title = document.createElement("strong");
     title.textContent = `${timestampLabel.format(entry.time)} · ${entry.event} · ${timeBasis[entry.time_basis]}`;
@@ -114,7 +130,53 @@ function renderTimeline(entries) {
     play.textContent = "타임라인 재생";
   }
 
+  function timeAtRate(rate) {
+    const upper = entries.findIndex((entry) => Number(entry.counted_rate_pct) >= rate);
+    if (upper <= 0) return upper === 0 ? first.time : last.time;
+    const before = entries[upper - 1];
+    const after = entries[upper];
+    const fraction = (rate - Number(before.counted_rate_pct)) /
+      (Number(after.counted_rate_pct) - Number(before.counted_rate_pct));
+    return before.time + fraction * (after.time - before.time);
+  }
+
+  function moveCursor(time) {
+    cursor.style.left = `${toPercent(time)}%`;
+    const index = entries.findLastIndex((entry) => entry.time <= time);
+    if (index >= 0 && index !== current) show(index);
+  }
+
+  syncReplay = ({ kind, frame, next: nextFrame, deadline }) => {
+    cancelAnimationFrame(animation);
+    if (kind === "stop") linked = false;
+    else if (kind === "start" || kind === "frame") linked = true;
+    play.disabled = linked;
+    prev.disabled = linked || current === 0;
+    next.disabled = linked || current === entries.length - 1;
+    if (kind === "pause" || kind === "stop") return;
+    stop();
+    cursor.hidden = false;
+    if (kind === "start") {
+      show(0);
+      moveCursor(first.time);
+      return;
+    }
+    if (!frame) return;
+    const from = timeAtRate(frame.counted_rate);
+    const to = nextFrame ? timeAtRate(nextFrame.counted_rate) : from;
+    moveCursor(from);
+    if (to <= from) return;
+    const started = deadline - 5000;
+    const tick = (now) => {
+      const fraction = Math.max(0, Math.min(1, (now - started) / 5000));
+      moveCursor(from + (to - from) * fraction);
+      if (fraction < 1) animation = requestAnimationFrame(tick);
+    };
+    animation = requestAnimationFrame(tick);
+  };
+
   play.addEventListener("click", () => {
+    cursor.hidden = true;
     if (timer !== undefined) {
       stop();
       return;
@@ -126,9 +188,10 @@ function renderTimeline(entries) {
       if (current === entries.length - 1) stop();
     }, 900);
   });
-  prev.addEventListener("click", () => { stop(); show(current - 1); });
-  next.addEventListener("click", () => { stop(); show(current + 1); });
+  prev.addEventListener("click", () => { cursor.hidden = true; stop(); show(current - 1); });
+  next.addEventListener("click", () => { cursor.hidden = true; stop(); show(current + 1); });
   show(0);
+  if (latestReplayEvent) syncReplay(latestReplayEvent);
 }
 
 try {

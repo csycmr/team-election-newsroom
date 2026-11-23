@@ -12,6 +12,15 @@ let article;
 let paused = false;
 let pending;
 let busy = false;
+let replayFrames = [];
+let replayFrameAt = 0;
+
+function publishReplayState(kind, frame) {
+  const next = frame && replayFrames[frame.step_id];
+  document.dispatchEvent(new CustomEvent("count-replay", {
+    detail: { kind, frame, next, deadline: replayFrameAt + 5000 },
+  }));
+}
 
 async function api(path, body, method = "GET") {
   const response = await fetch(path, {
@@ -79,6 +88,7 @@ function updateActions() {
 
 function connect() {
   socket?.close();
+  publishReplayState("start");
   paused = false;
   pending = undefined;
   byId("pause").textContent = "일시정지";
@@ -89,13 +99,20 @@ function connect() {
   connection.onmessage = (event) => {
     if (socket !== connection) return;
     const frame = JSON.parse(event.data);
+    replayFrameAt = performance.now();
     if (paused) pending = frame;
-    else render(frame);
+    else {
+      render(frame);
+      publishReplayState("frame", frame);
+    }
     if (frame.step_id === 1 && !article && !busy) createDraft(frame);
   };
   connection.onclose = () => {
     if (socket !== connection) return;
-    if (!paused) byId("pause").disabled = true;
+    if (!paused) {
+      byId("pause").disabled = true;
+      publishReplayState("stop");
+    }
     if ((pending || snapshot)?.step_id !== 12) {
       byId("ticker").textContent = "재생 연결이 종료됐어요. 개표 재생을 눌러 다시 시작해 주세요.";
     }
@@ -110,7 +127,14 @@ byId("pause").onclick = () => {
     render(pending);
     pending = undefined;
   }
-  if (!paused && socket.readyState === WebSocket.CLOSED) byId("pause").disabled = true;
+  if (paused) publishReplayState("pause");
+  else {
+    publishReplayState("frame", snapshot);
+    if (socket.readyState === WebSocket.CLOSED) {
+      byId("pause").disabled = true;
+      publishReplayState("stop");
+    }
+  }
 };
 
 const states = {
@@ -408,5 +432,6 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
   };
   const originalRender=render;
   render=function(frame){originalRender(frame);activeStep=frame.step_id;update();};
-  api("/api/replay").then(data=>{if(!Array.isArray(data)||data.length!==12)throw Error("12단계 데이터 형식이 다릅니다.");frames=data;update();}).catch(error=>{document.getElementById("rate-trend").textContent="개표 추이 로드 실패: "+error.message;document.getElementById("gap-trend").textContent="데이터를 불러올 수 없습니다.";});
+  api("/api/replay").then(data=>{if(!Array.isArray(data)||data.length!==12)throw Error("12단계 데이터 형식이 다릅니다.");frames=data;replayFrames=data;update();
+    if (snapshot && !paused && socket?.readyState === WebSocket.OPEN) publishReplayState("frame", snapshot);}).catch(error=>{document.getElementById("rate-trend").textContent="개표 추이 로드 실패: "+error.message;document.getElementById("gap-trend").textContent="데이터를 불러올 수 없습니다.";});
 })();
