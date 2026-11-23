@@ -12,7 +12,7 @@ from app.services.article_service import generate_article, generate_ai_article
 from app.services.election_service import fetch_snapshot
 from app.services.factcheck_service import check_article
 from app.services.rag_service import LocalRAG, answer_question
-from app.services.replay_service import FRAMES, REPLAY_DIR, replay_snapshot
+from app.services.replay_service import COUNT_TIMELINE, FRAMES, REPLAY_DIR, replay_snapshot
 from app.services.storage_service import Storage
 from app.services.time_service import now_seoul
 
@@ -68,6 +68,25 @@ async def replay_websocket(websocket: WebSocket):
             await websocket.send_json(frame.model_dump(mode="json"))
             if frame.step_id < len(FRAMES):
                 await asyncio.sleep(5)
+        await websocket.close()
+    except WebSocketDisconnect:
+        return
+
+
+
+@app.get("/api/count-timeline")
+def count_timeline_data():
+    return COUNT_TIMELINE
+
+
+@app.websocket("/ws/count-timeline")
+async def count_timeline_websocket(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        for index, frame in enumerate(COUNT_TIMELINE):
+            if index:
+                await asyncio.sleep(5)
+            await websocket.send_json(frame)
         await websocket.close()
     except WebSocketDisconnect:
         return

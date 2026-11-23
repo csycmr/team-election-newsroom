@@ -22,24 +22,6 @@ const timeBasis = {
   reported_event: "보도 사건 시각",
 };
 
-function readTimeline(csv) {
-  const lines = csv.trim().split(/\r?\n/);
-  const headers = lines.shift().split(",");
-  const entries = lines.map((line) => {
-    const fields = Array.from(line.matchAll(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g), ([, field]) =>
-      field.startsWith('"') ? field.slice(1, -1).replaceAll('""', '"') : field);
-    if (fields.length !== headers.length) throw new Error("Invalid CSV row");
-    const entry = Object.fromEntries(headers.map((header, index) => [header, fields[index]]));
-    return { ...entry, time: Date.parse(entry.timestamp_kst) };
-  });
-  const reported = entries.filter((entry) => Object.hasOwn(timeBasis, entry.time_basis));
-  if (reported.length < 2 || reported.some((entry, index) =>
-    !Number.isFinite(entry.time) || (index > 0 && entry.time <= reported[index - 1].time))) {
-    throw new Error("Invalid timeline");
-  }
-  return reported;
-}
-
 function renderTimeline(entries) {
   const axis = byId("count-history-axis");
   const detail = byId("count-history-detail");
@@ -64,7 +46,9 @@ function renderTimeline(entries) {
     point.setAttribute("aria-label", point.title);
     point.addEventListener("click", () => {
       if (linked) return;
+      cursor.hidden = true;
       show(index);
+      document.dispatchEvent(new CustomEvent("count-history-select", { detail: entry }));
     });
     axis.append(point);
     return point;
@@ -112,22 +96,8 @@ function renderTimeline(entries) {
     });
   }
 
-  const rateAnchors = [first, ...entries.slice(1).filter((entry) => entry.counted_rate_pct !== "")];
-
-  function timeAtRate(rate) {
-    const upper = rateAnchors.findIndex((entry) => Number(entry.counted_rate_pct) >= rate);
-    if (upper <= 0) return upper === 0 ? first.time : last.time;
-    const before = rateAnchors[upper - 1];
-    const after = rateAnchors[upper];
-    const fraction = (rate - Number(before.counted_rate_pct)) /
-      (Number(after.counted_rate_pct) - Number(before.counted_rate_pct));
-    return before.time + fraction * (after.time - before.time);
-  }
-
   function moveCursor(time) {
     cursor.style.left = `${toPercent(time)}%`;
-    const index = entries.findLastIndex((entry) => entry.time <= time);
-    if (index >= 0 && index !== current) show(index);
   }
 
   syncReplay = ({ kind, frame, next: nextFrame, deadline }) => {
@@ -142,8 +112,9 @@ function renderTimeline(entries) {
       return;
     }
     if (!frame) return;
-    const from = timeAtRate(frame.counted_rate);
-    const to = nextFrame ? timeAtRate(nextFrame.counted_rate) : from;
+    const from = Date.parse(frame.timestamp_kst);
+    const to = nextFrame ? Date.parse(nextFrame.timestamp_kst) : from;
+    show(frame.step_id - 1);
     moveCursor(from);
     if (to <= from) return;
     const started = deadline - 5000;
@@ -160,9 +131,8 @@ function renderTimeline(entries) {
 }
 
 try {
-  const response = await fetch(csvUrl, { cache: "no-cache" });
-  if (!response.ok) throw new Error(`CSV HTTP ${response.status}`);
-  renderTimeline(readTimeline(await response.text()));
+  const entries = await countTimelineData;
+  renderTimeline(entries.map(entry => ({ ...entry, time: Date.parse(entry.timestamp_kst) })));
   byId("count-history-status").hidden = true;
   byId("count-history-content").hidden = false;
 } catch (error) {
