@@ -583,3 +583,86 @@ input::placeholder, textarea::placeholder {
     max-height: 340px;
   }
 }
+
+.count-history {
+  margin-top: 20px;
+}
+
+.count-history-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.count-history-scroll {
+  overflow-x: auto;
+  padding: 4px 14px 10px;
+}
+
+.count-history-axis {
+  position: relative;
+  min-width: 920px;
+  height: 52px;
+}
+
+.count-history-axis::before {
+  position: absolute;
+  inset: 12px 0 auto;
+  height: 2px;
+  background: var(--line);
+  content: "";
+}
+
+.count-history-point {
+  position: absolute;
+  top: 2px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  color: #8cf0e8;
+  background: var(--ink);
+  line-height: 1;
+}
+
+.count-history-point.is-interpolated {
+  color: var(--muted);
+  border-style: dashed;
+}
+
+.count-history-point[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--mint);
+  border-color: var(--mint);
+}
+
+.count-history-axis time {
+  position: absolute;
+  top: 33px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.count-history-axis time:last-child {
+  right: 0;
+}
+
+#count-history-detail {
+  padding: 14px;
+  margin: 10px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--ink);
+}
+
+#count-history-detail p {
+  margin: 0 0 6px;
+}
+
+#count-history-detail a + a {
+  margin-inline-start: 12px;
+}
