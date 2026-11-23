@@ -597,11 +597,52 @@ input::placeholder, textarea::placeholder {
   line-height: 1.2;
 }
 
-.count-history-controls {
-  display: flex;
-  flex-wrap: wrap;
+.count-history-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+}
+
+.count-history-header h4 {
+  margin: 0;
+}
+
+.count-history-controls {
+  grid-column: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.count-history-controls button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.count-history-controls button[aria-pressed="true"] {
+  border-color: var(--mint);
+}
+
+@media (max-width: 480px) {
+  .count-history-header h4 {
+    font-size: 16px;
+  }
+
+  .count-history-controls {
+    gap: 5px;
+  }
+
+  .count-history-controls button {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .count-history-scroll {
@@ -612,7 +653,7 @@ input::placeholder, textarea::placeholder {
 .count-history-axis {
   position: relative;
   min-width: 960px;
-  height: 80px;
+  height: 52px;
 }
 
 .count-history-axis::before {
@@ -655,20 +696,12 @@ input::placeholder, textarea::placeholder {
 
 .count-history-tick {
   position: absolute;
-  top: calc(30px + var(--tick-lane) * 22px);
+  top: 30px;
   transform: translateX(-50%);
   white-space: nowrap;
   font-size: 12px;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
-}
-
-.count-history-tick.is-first {
-  transform: none;
-}
-
-.count-history-tick.is-last {
-  transform: translateX(-100%);
 }
 
 #count-history-detail {

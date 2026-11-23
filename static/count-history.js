@@ -74,15 +74,18 @@ function renderTimeline(entries) {
     axis.append(point);
     return point;
   });
+  // Keep point positions proportional to time while reserving room for each label.
+  const minimumGap = Math.min(8.5, 100 / entries.length);
+  const halfGap = minimumGap / 2;
+  let previousLabel = -halfGap;
   entries.forEach((entry, index) => {
     const label = document.createElement("time");
     const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
     label.className = "count-history-tick";
-    if (entry === first) label.classList.add("is-first");
-    if (entry === last) label.classList.add("is-last");
     label.dateTime = entry.timestamp_kst;
-    label.style.left = `${100 * (entry.time - first.time) / (last.time - first.time)}%`;
-    label.style.setProperty("--tick-lane", String(index % 2));
+    const latest = 100 - halfGap - (entries.length - 1 - index) * minimumGap;
+    previousLabel = Math.min(latest, Math.max(toPercent(entry.time), previousLabel + minimumGap));
+    label.style.left = `${previousLabel}%`;
     label.textContent = `${Number(month)}/${Number(day)} ${hours}:${minutes}${entry.time_basis === "approximate" ? "쯤" : ""}`;
     axis.append(label);
   });
@@ -145,7 +148,8 @@ function renderTimeline(entries) {
   function stop() {
     clearInterval(timer);
     timer = undefined;
-    play.textContent = "타임라인 재생";
+    play.setAttribute("aria-pressed", "false");
+    play.title = "타임라인 재생";
   }
 
   const rateAnchors = [first, ...entries.slice(1).filter((entry) => entry.counted_rate_pct !== "")];
@@ -202,7 +206,8 @@ function renderTimeline(entries) {
       return;
     }
     if (current === entries.length - 1) show(0);
-    play.textContent = "일시 정지";
+    play.setAttribute("aria-pressed", "true");
+    play.title = "타임라인 일시정지";
     timer = setInterval(() => {
       show(current + 1);
       if (current === entries.length - 1) stop();
@@ -211,6 +216,7 @@ function renderTimeline(entries) {
   prev.addEventListener("click", () => { cursor.hidden = true; stop(); show(current - 1); });
   next.addEventListener("click", () => { cursor.hidden = true; stop(); show(current + 1); });
   show(0);
+  play.disabled = false;
   if (latestReplayEvent) syncReplay(latestReplayEvent);
 }
 
