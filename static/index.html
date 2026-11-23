@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=map-centered">
+  <link rel="stylesheet" href="/static/style.css?v=valid-vote-source">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -25,22 +25,34 @@
     </nav>
     <main>
       <section class="workspace-card view is-active" id="view-election" aria-labelledby="election-heading">
-        <div class="page-title"><div><p class="eyebrow mint">LIVE REPLAY / ELECTION BOARD</p><h2 id="election-heading">2026 서울시장 개표 상황판</h2><p class="description" id="clock">2026년 6월 3일 · 제9회 전국동시지방선거</p></div><div class="header-actions"><button type="button" class="primary" id="start">개표 재생</button><button type="button" id="pause" disabled>일시정지</button></div></div>
-        <div class="replay-notice">본 화면은 과거 선거의 재생 시연입니다. 1~10단계는 시연용 재구성, 11~12단계는 당시 보도 집계입니다.</div>
-        <div class="ticker"><b>개표 속보</b><span id="ticker">개표 재생을 누르면 5초마다 집계가 갱신됩니다.</span></div>
+        <div class="page-title"><div><p class="eyebrow mint">LIVE REPLAY / ELECTION BOARD</p><h2 id="election-heading">2026 서울시장 개표 상황판</h2><p class="description" id="clock">2026년 6월 3일 · 제9회 전국동시지방선거</p></div><div class="header-actions"><button type="button" class="primary" id="start" disabled>개표 재생</button><button type="button" id="restart" disabled>처음부터</button></div></div>
+        <div class="ticker"><b>개표 속보</b><span id="ticker-alert-light" class="ticker-alert-light" aria-hidden="true" hidden></span><span id="ticker" role="status">개표 재생을 누르면 5초마다 개표 상황이 표시됩니다.</span><span id="ticker-meta" class="ticker-meta" hidden></span></div>
         <div class="dashboard">
-          <section class="dark-panel"><div class="panel-heading"><h3>개표 전광판</h3><span class="small-chip">서울 전체</span></div><div id="metrics" class="metrics"><div><span>개표 진행률</span><strong id="progress">—</strong></div><div><span>집계 유효표</span><strong id="total">—</strong></div><div><span>현재 1위</span><strong id="leader">—</strong></div><div><span>1·2위 득표 차</span><strong id="gap">—</strong></div></div><p id="meta" class="dark-muted">서울특별시 전체 · 12단계 재생</p><a id="source" href="https://www.data.go.kr/data/15162288/fileData.do" target="_blank" rel="noopener noreferrer">선거 데이터 출처 확인 ↗</a></section>
+          <section class="dark-panel"><div class="panel-heading"><h3>개표 전광판</h3><span class="small-chip">서울 전체</span></div><div id="metrics" class="metrics"><div><span>개표 진행률</span><strong id="progress">—</strong></div><div><span>집계 유효표</span><strong id="total">—</strong><span id="total-meta" class="metric-source" hidden></span></div><div><span>현재 1위</span><strong id="leader">—</strong></div><div><span>1·2위 득표 차</span><strong id="gap">—</strong></div></div><p id="meta" class="dark-muted">서울특별시 전체 · 보도 기록 재생</p><a id="source" href="https://www.data.go.kr/data/15162288/fileData.do" target="_blank" rel="noopener noreferrer">선거 데이터 출처 확인 ↗</a></section>
           <section class="dark-panel"><div class="panel-heading"><h3>후보별 득표 현황</h3><span class="small-chip">득표순</span></div><div id="bars"></div></section>
         </div>
+        <section class="dark-panel count-history" aria-labelledby="count-history-title">
+          <div class="count-history-header">
+            <h4 id="count-history-title">개표 타임라인</h4>
+            <p class="chart-note count-history-note"><span><span class="count-history-legend-dot" aria-hidden="true"></span> 보도 기록</span><span><span class="count-history-legend-dot is-incident" aria-hidden="true"></span> 잠실7동 사건</span></p>
+          </div>
+          <p class="dark-muted">6월 3일~5일 · 약 45시간 · 한국 시각(KST)</p>
+          <p id="count-history-status" role="status">타임라인 데이터를 불러오는 중이에요.</p>
+          <div id="count-history-content" hidden>
+            <div class="count-history-scroll" tabindex="0" aria-label="개표 타임라인 가로 스크롤">
+              <div id="count-history-axis" class="count-history-axis" role="group" aria-label="시점 선택"></div>
+            </div>
+            <div id="count-history-detail" aria-live="polite"></div>
+            <a href="https://github.com/csycmr/team-election-newsroom/blob/main/data/replay/count_timeline.csv">GitHub 원본 CSV ↗</a>
+          </div>
+        </section>
         <section class="election-analytics" aria-label="개표 추이 분석">
-          <div class="analytics-heading"><div><p class="eyebrow mint">12-STEP REPLAY / TREND</p><h3>개표 흐름 분석</h3></div><span class="analytics-caveat">1~10단계 재구성 · 11~12단계 보도 집계</span></div>
+          <div class="analytics-heading"><div><p class="eyebrow mint">COUNT TREND</p><h3>개표 흐름 분석</h3></div><span class="analytics-caveat">보도 집계 기준 · 한국 시각(KST)</span></div>
           <div class="analytics-grid">
-            <div class="analytics-card"><h4>주요 후보 득표율 추이</h4><div id="rate-trend" class="trend-chart" aria-live="off">재생 데이터 불러오는 중</div><p class="chart-note">각 단계별 전체 집계 기준 · 단위 %</p></div>
+            <div class="analytics-card"><h4>주요 후보 득표율 추이</h4><div id="rate-trend" class="trend-chart" aria-live="off">재생 데이터 불러오는 중</div><p class="chart-note">보도된 후보별 득표율 · 단위 %</p></div>
             <div class="analytics-card"><h4>1·2위 후보 간 격차</h4><div id="gap-trend" class="trend-chart" aria-live="off">재생 데이터 불러오는 중</div><p class="chart-note">오세훈 − 정원오 · 단위 표 (음수는 정원오 우세)</p></div>
           </div>
-          <div class="timeline-heading"><h4>개표 단계</h4><span id="timeline-caption">12단계 중 현재 위치</span></div>
-          <div id="replay-timeline" class="replay-timeline" aria-label="12단계 개표 진행상황"></div>
-          <p class="chart-note">이 그래프는 저장된 12개 스냅샷만 시각화하며 자치구별·실제 실시간 개표 추정치를 제공하지 않습니다.</p>
+          <p class="chart-note">두 후보 수치가 보도된 시점만 그래프에 표시해요.</p>
         </section>
         <section class="final-results" aria-labelledby="final-results-title">
           <div class="final-heading">
@@ -89,7 +101,7 @@
 
       <section class="workspace-card view" id="view-draft" aria-labelledby="draft-heading" hidden>
         <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 작성·편집</h2><p class="description">개표 집계에서 초안을 만들고 제목과 본문을 직접 수정할 수 있습니다.</p></div><span class="step-indicator">01 / 초안</span></div>
-        <div class="editor-grid"><section class="light-pane editor-controls"><h3>초안 생성</h3><p class="pane-description">재생 화면에서 선택한 현재 집계를 사용합니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field">작성 방식<select id="generation-mode"><option value="template">템플릿 (API 비용 없음)</option><option value="ai">AI 생성 (OpenAI API 사용)</option></select></label><div class="actions"><button type="button" class="primary" id="draft" disabled>현재 집계로 초안</button><button type="button" id="save" disabled>기사 수정 저장</button></div><label class="form-field">공약 기사 작성 (후보자·지역 입력)<input id="pledge-article-query" placeholder="예: 서울시장 정원오 공약"></label><div class="actions"><button type="button" id="pledge-draft" class="primary">공약으로 초안 생성</button></div><div class="status-box" id="status" role="status">개표 재생 대기</div><div class="workflow-hint"><strong>편집 순서</strong><p>초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div></section>
+        <div class="editor-grid"><section class="light-pane editor-controls"><h3>초안 생성</h3><p class="pane-description">후보 5명의 득표가 모두 확인된 집계 시점에 초안을 작성할 수 있습니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field">작성 방식<select id="generation-mode"><option value="template">템플릿 (API 비용 없음)</option><option value="ai">AI 생성 (OpenAI API 사용)</option></select></label><div class="actions"><button type="button" class="primary" id="draft" disabled>현재 집계로 초안</button><button type="button" id="save" disabled>기사 수정 저장</button></div><label class="form-field">공약 기사 작성 (후보자·지역 입력)<input id="pledge-article-query" placeholder="예: 서울시장 정원오 공약"></label><div class="actions"><button type="button" id="pledge-draft" class="primary">공약으로 초안 생성</button></div><div class="status-box" id="status" role="status">개표 재생 대기</div><div class="workflow-hint"><strong>편집 순서</strong><p>초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div></section>
         <section class="light-pane"><h3>기사 원고</h3><div class="article-fields"><label for="article-title-input">기사 제목</label><input id="article-title-input" placeholder="기사 제목" disabled><label for="article-body-input">기사 본문</label><textarea id="article-body-input" rows="17" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea></div><p id="article-evidence" class="evidence-note"></p></section></div>
         <div class="bottom-action light"><span>원고를 저장한 뒤 팩트체크로 진행합니다.</span><button type="button" class="primary" data-go="review">검토·승인 화면으로 이동</button></div>
       </section>
@@ -119,7 +131,8 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v=valid-vote-source"></script>
+  <script type="module" src="/static/count-history.js?v=valid-vote-source"></script>
   <script type="module" src="/static/final-results.js?v=district-outline"></script>
 </body>
 </html>

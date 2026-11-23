@@ -6,12 +6,27 @@ const clock = new Intl.DateTimeFormat("ko-KR", {
 });
 const colors = ["#ed737e", "#679bff", "#f3cd58", "#b896ff", "#f2a875"];
 
+const breakingEvents = new Set([
+  "투표용지 부족으로 잠실7동 제2투표소 투표 연장",
+  "오세훈 역전",
+  "잠실7동 제2투표소 투표함 2개 이송",
+]);
+
 let socket;
 let snapshot;
+let displayedFrame;
 let article;
-let paused = false;
-let pending;
+let resumeDelay = null;
 let busy = false;
+let replayFrames = [];
+let replayDeadline = 0;
+
+function publishReplayState(kind, frame) {
+  const next = frame && replayFrames[frame.step_id];
+  document.dispatchEvent(new CustomEvent("count-replay", {
+    detail: { kind, frame, next, deadline: replayDeadline },
+  }));
+}
 
 async function api(path, body, method = "GET") {
   const mutate = ["POST", "PUT", "PATCH", "DELETE"].includes(method);
@@ -40,26 +55,59 @@ async function api(path, body, method = "GET") {
 }
 
 function render(frame) {
-  snapshot = frame;
+  displayedFrame = frame;
+  snapshot = frame.article_snapshot;
+  const lastCount = frame.counted_rate === null
+    ? replayFrames.slice(0, frame.step_id - 1).findLast((entry) => entry.counted_rate !== null)
+    : frame;
+  const ranked = [...(lastCount?.candidates ?? [])].sort((a, b) => b.votes - a.votes);
+  const byCandidate = new Map(ranked.map((candidate) => [candidate.candidate_id, candidate]));
+  const roster = replayFrames.at(-1).candidates;
+  const rows = [...ranked, ...roster.filter((candidate) => !byCandidate.has(candidate.candidate_id))
+    .map((candidate) => ({ ...candidate, votes: null, vote_rate: null }))];
+  const total = lastCount?.counted_valid_votes ?? null;
+
   const metrics = byId("metrics");
   metrics.classList.remove("is-updating");
-  // Flush the class removal so the animation restarts for each displayed frame.
   void metrics.offsetWidth;
   metrics.classList.add("is-updating");
-  const ranked = [...frame.candidates].sort((a, b) => b.votes - a.votes);
-  const total = ranked.reduce((sum, candidate) => sum + candidate.votes, 0);
-  const label = frame.record_type === "reported" ? "당시 보도 집계" : "시연용 재구성";
-  byId("clock").textContent = `${clock.format(new Date(frame.collected_at))} KST · ${label}`;
-  byId("progress").textContent = frame.counted_rate + "%";
-  byId("total").textContent = number.format(total);
-  byId("leader").textContent = ranked[0].candidate_name;
-  byId("gap").textContent = number.format(ranked[0].votes - ranked[1].votes);
-  byId("meta").textContent = `${frame.region} · ${frame.step_id}/12단계 · ${label}`;
-  byId("source").href = frame.source_url;
-  byId("source").textContent = frame.source + " ↗";
-  byId("ticker").textContent = `${label} · ${frame.counted_rate === 100 ? "개표 완료" : "개표 진행 " + frame.counted_rate + "%"} · ${ranked[0].candidate_name} ${ranked[0].vote_rate.toFixed(2)}%`;
+  const timestamp = clock.format(new Date(frame.timestamp_kst));
+  const approximate = frame.time_basis === "approximate" ? "쯤" : "";
+  const isSimulation = frame.time_basis === "simulated";
+  const eventTitle = isSimulation ? "개표 진행" : frame.event;
+  byId("clock").textContent = `${timestamp}${approximate} KST · ${eventTitle}`;
+  byId("progress").textContent = lastCount ? lastCount.counted_rate_pct + "%" : "—";
+  byId("total").textContent = total === null ? "—" : number.format(total);
+  const totalMeta = byId("total-meta");
+  totalMeta.textContent = lastCount?.counted_valid_votes_basis === "simulation_interpolation"
+    ? "시연 데이터 기반 추정"
+    : lastCount?.counted_valid_votes_basis === "simulated" ? "시연 수치" : "";
+  totalMeta.hidden = !totalMeta.textContent;
+  byId("leader").textContent = ranked[0]?.candidate_name ?? "—";
+  byId("gap").textContent = ranked.length >= 2 ? number.format(ranked[0].votes - ranked[1].votes) : "—";
 
-  for (const [index, candidate] of ranked.entries()) {
+  const coverage = ranked.length > 0 && ranked.length < roster.length ? " · 주요 후보 2명 보도 수치" : "";
+  const retained = lastCount && lastCount !== frame
+    ? ` · 직전 집계 ${clock.format(new Date(lastCount.timestamp_kst))} 기준`
+    : "";
+  byId("meta").textContent = `${frame.step_id}/${replayFrames.length}개 시점${retained}${coverage}${lastCount?.time_basis === "simulated" ? " · 시연용 재구성" : ""}`;
+  byId("source").href = lastCount?.additional_source_url || lastCount?.source_url || frame.source_url;
+  byId("source").textContent = lastCount?.additional_source_url ? "최종 집계표 ↗" : `${(lastCount || frame).source_name} ↗`;
+  const breaking = breakingEvents.has(frame.event) && socket?.readyState === WebSocket.OPEN;
+  byId("ticker-alert-light").hidden = !breaking;
+  byId("ticker").textContent = breaking || frame.counted_rate === null
+    ? eventTitle
+    : `${eventTitle} · 개표율 ${frame.counted_rate_pct}%`;
+  const tickerMeta = byId("ticker-meta");
+  tickerMeta.textContent = isSimulation ? "시연용 재구성" : frame.counted_rate === null ? "보도 기록" : "보도 집계";
+  tickerMeta.hidden = false;
+
+  renderCandidateBars(rows, !lastCount);
+  updateActions();
+}
+
+function renderCandidateBars(candidates, waiting = false) {
+  for (const [index, candidate] of candidates.entries()) {
     let row = byId(candidate.candidate_id);
     if (!row) {
       row = document.createElement("div");
@@ -69,15 +117,16 @@ function render(frame) {
     }
     row.querySelector("b").textContent = candidate.candidate_name;
     row.querySelector("small").textContent = candidate.party;
-    row.querySelector("strong").textContent = `${number.format(candidate.votes)}표 · ${candidate.vote_rate.toFixed(2)}%`;
+    const value = row.querySelector("strong");
+    value.classList.toggle("is-missing", candidate.votes === null);
+    value.textContent = waiting ? "" : candidate.votes === null ? "보도 수치 없음" : `${number.format(candidate.votes)}표 · ${candidate.vote_rate.toFixed(2)}%`;
     const fill = row.querySelector(".fill");
     fill.style.background = colors[Number(candidate.candidate_id.split("-").pop()) - 1];
-    fill.style.width = candidate.vote_rate + "%";
+    fill.style.width = waiting || candidate.vote_rate === null ? "0%" : candidate.vote_rate + "%";
     if (byId("bars").children[index] !== row) {
       byId("bars").insertBefore(row, byId("bars").children[index] || null);
     }
   }
-  updateActions();
 }
 
 function updateActions() {
@@ -90,41 +139,67 @@ function updateActions() {
   byId("approve").disabled = busy || article?.status !== "human_reviewed";
 }
 
-function connect() {
-  socket?.close();
-  paused = false;
-  pending = undefined;
-  byId("pause").textContent = "일시정지";
-  byId("pause").disabled = false;
+function disconnectReplay() {
+  const connection = socket;
+  socket = undefined;
+  connection?.close();
+}
+
+function connectReplay(startStep, delayMs) {
+  byId("start").textContent = "일시 정지";
   const protocol = location.protocol === "https:" ? "wss:" : "ws:";
-  const connection = new WebSocket(`${protocol}//${location.host}/ws/replay`);
+  const query = new URLSearchParams({ start_step: startStep, delay_ms: delayMs });
+  const connection = new WebSocket(`${protocol}//${location.host}/ws/count-timeline?${query}`);
   socket = connection;
   connection.onmessage = (event) => {
     if (socket !== connection) return;
     const frame = JSON.parse(event.data);
-    if (paused) pending = frame;
-    else render(frame);
-    if (frame.step_id === 1 && !article && !busy) createDraft(frame);
+    replayDeadline = performance.now() + 5000;
+    render(frame);
+    publishReplayState("frame", frame);
   };
   connection.onclose = () => {
     if (socket !== connection) return;
-    if (!paused) byId("pause").disabled = true;
-    if ((pending || snapshot)?.step_id !== 12) {
+    socket = undefined;
+    byId("start").textContent = "개표 재생";
+    byId("ticker-alert-light").hidden = true;
+    publishReplayState("stop");
+    if (displayedFrame?.step_id !== replayFrames.length) {
+      byId("ticker-meta").hidden = true;
       byId("ticker").textContent = "재생 연결이 종료됐어요. 개표 재생을 눌러 다시 시작해 주세요.";
     }
   };
 }
 
-byId("start").onclick = connect;
-byId("pause").onclick = () => {
-  paused = !paused;
-  byId("pause").textContent = paused ? "최신 집계로 돌아가기" : "일시정지";
-  if (!paused && pending) {
-    render(pending);
-    pending = undefined;
+function restartReplay() {
+  disconnectReplay();
+  resumeDelay = null;
+  replayDeadline = performance.now();
+  render(replayFrames[0]);
+  publishReplayState("start");
+  connectReplay(1, 0);
+}
+
+byId("start").onclick = () => {
+  if (socket) {
+    resumeDelay = Math.max(0, Math.min(5000, Math.ceil(replayDeadline - performance.now())));
+    disconnectReplay();
+    byId("start").textContent = "개표 재생";
+    publishReplayState("pause");
+    return;
   }
-  if (!paused && socket.readyState === WebSocket.CLOSED) byId("pause").disabled = true;
+  if (resumeDelay === null || displayedFrame.step_id >= replayFrames.length) {
+    restartReplay();
+    return;
+  }
+  const delay = resumeDelay;
+  resumeDelay = null;
+  replayDeadline = performance.now() + delay;
+  connectReplay(displayedFrame.step_id + 1, delay);
+  publishReplayState("frame", displayedFrame);
 };
+
+byId("restart").onclick = restartReplay;
 
 const states = {
   draft: "초안",
@@ -380,7 +455,23 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
   });
 })();
 
-// From the existing 12 snapshots only: no invented district/turnout data.
+const countTimelineData = api("/api/count-timeline").then(data => {
+  if (!Array.isArray(data) || data.length < 2) throw new Error("개표 타임라인 데이터 형식이 다릅니다.");
+  replayFrames = data;
+  renderCandidateBars(data.at(-1).candidates, true);
+  byId("start").disabled = false;
+  byId("restart").disabled = false;
+  return data;
+}).catch(error => {
+  byId("ticker").textContent = "재생 데이터를 불러오지 못했어요. 페이지를 새로고침해 주세요.";
+  throw error;
+});
+
+document.addEventListener("count-history-select", (event) => {
+  render(event.detail);
+});
+
+// Plot only checkpoints that contain reported candidate results.
 (() => {
   const ns = "http://www.w3.org/2000/svg";
   let frames = [];
@@ -394,9 +485,12 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
   const plot = (target, series, min, max, labels, format, selected) => {
     const container=document.getElementById(target);container.replaceChildren();
     const width=520,height=205,L=54,R=13,T=18,B=31;
-    const x=i=>L+(width-L-R)*(i/Math.max(1,frames.length-1));
+    const start = Date.parse(replayFrames[0].timestamp_kst);
+    const duration = Date.parse(replayFrames.at(-1).timestamp_kst) - start;
+    const x = (index) => L + (width - L - R) *
+      ((Date.parse(frames[index].timestamp_kst) - start) / duration);
     const y=v=>T+(height-T-B)*(1-(v-min)/Math.max(1,max-min));
-    const svg=svgNode("svg",{viewBox:`0 0 ${width} ${height}`,role:"img","aria-label":labels.join(", ")+" 12단계 변화"});
+    const svg=svgNode("svg",{viewBox:`0 0 ${width} ${height}`,role:"img","aria-label":labels.join(", ")+" 보도 집계 추이"});
     for(let k=0;k<=4;k++){
       const v=min+(max-min)*k/4, yy=y(v);
       svg.appendChild(svgNode("line",{x1:L,y1:yy,x2:width-R,y2:yy,stroke:"#dae6e4","stroke-dasharray":"3 4"}));
@@ -406,7 +500,13 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
       svg.appendChild(svgNode("polyline",{points:points.map((v,i)=>`${x(i)},${y(v)}`).join(" "),stroke:["#176b5c","#3988b7"][idx],"stroke-width":2.7,fill:"none","stroke-linejoin":"round","stroke-linecap":"round"}));
       if(selected>=1 && selected<=points.length) svg.appendChild(svgNode("circle",{cx:x(selected-1),cy:y(points[selected-1]),r:4,fill:["#176b5c","#3988b7"][idx],stroke:"#fff","stroke-width":1.5}));
     });
-    [1,4,8,12].forEach(k=>svg.appendChild(svgNode("text",{x:x(k-1),y:height-8,"text-anchor":"middle",fill:"#71828e","font-size":11},`${k}단계`)));
+    [0, 0.5, 1].forEach(fraction => {
+      const label = clock.format(new Date(start + duration * fraction));
+      svg.appendChild(svgNode("text", {
+        x: L + (width - L - R) * fraction, y: height - 8, "text-anchor": "middle",
+        fill: "#71828e", "font-size": 11,
+      }, label));
+    });
     container.append(svg);
     const legend=document.createElement("div");legend.className="trend-legend";
     legend.style.cssText="font-size:11px;color:#526b6b;display:flex;gap:16px;justify-content:center;margin-top:5px";
@@ -415,7 +515,8 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
   };
   const update=() => {
     if(!frames.length)return;
-    const two=frames.map(f=>f.candidates.slice(0,2));
+    const two = frames.map(frame =>
+      ["seoul-1", "seoul-2"].map(id => frame.candidates.find(candidate => candidate.candidate_id === id)));
     const first=two.map(pair=>pair[0].vote_rate),second=two.map(pair=>pair[1].vote_rate);
     const low=Math.floor((Math.min(...first,...second)-1)/2)*2;
     const high=Math.ceil((Math.max(...first,...second)+1)/2)*2;
@@ -423,14 +524,18 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
     const gap=two.map(pair=>pair[0].votes-pair[1].votes);
     const abs=Math.ceil(Math.max(...gap.map(Math.abs),1000)/10000)*10000;
     plot("gap-trend",[gap],-abs,abs,[`${two[0][0].candidate_name} − ${two[0][1].candidate_name}`],v=>Math.round(v/10000)+"만",activeStep);
-    const timeline=document.getElementById("replay-timeline");timeline.replaceChildren();
-    frames.forEach(f=>{
-      const cell=document.createElement("div");cell.className="timeline-step"+(f.record_type==="reported"?" reported":"")+(f.step_id===activeStep?" active":"");
-      cell.textContent=f.step_id;cell.title=`${f.step_id}단계 · 개표 ${f.counted_rate}% · ${f.record_type==="reported"?"보도 집계":"시연용 재구성"}`;timeline.append(cell);
-    });
-    document.getElementById("timeline-caption").textContent=activeStep?`${activeStep}/12단계 · ${frames[activeStep-1]?.counted_rate ?? "—"}% 개표`:'재생을 시작하세요';
   };
-  const originalRender=render;
-  render=function(frame){originalRender(frame);activeStep=frame.step_id;update();};
-  api("/api/replay").then(data=>{if(!Array.isArray(data)||data.length!==12)throw Error("12단계 데이터 형식이 다릅니다.");frames=data;update();}).catch(error=>{document.getElementById("rate-trend").textContent="개표 추이 로드 실패: "+error.message;document.getElementById("gap-trend").textContent="데이터를 불러올 수 없습니다.";});
+  const originalRender = render;
+  render = function (frame) {
+    originalRender(frame);
+    activeStep = frames.findIndex(entry => entry.step_id === frame.step_id) + 1;
+    update();
+  };
+  countTimelineData.then(data => {
+    frames = data.filter(entry => entry.counted_rate !== null && entry.time_basis !== "simulated");
+    update();
+  }).catch(error => {
+    byId("rate-trend").textContent = "개표 추이 로드 실패: " + error.message;
+    byId("gap-trend").textContent = "데이터를 불러올 수 없습니다.";
+  });
 })();

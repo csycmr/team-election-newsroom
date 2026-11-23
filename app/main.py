@@ -15,7 +15,7 @@ from app.services.factcheck_service import check_article
 from app.services.pledge_article_service import generate_pledge_article, select_pledge_documents
 from app.services.pledge_factcheck_service import check_pledge_article
 from app.services.rag_service import LocalRAG, answer_question
-from app.services.replay_service import FRAMES, REPLAY_DIR, replay_snapshot
+from app.services.replay_service import COUNT_TIMELINE, FRAMES, REPLAY_DIR, replay_snapshot
 from app.services.storage_service import Storage
 from app.services.time_service import now_seoul
 
@@ -83,6 +83,31 @@ async def replay_websocket(websocket: WebSocket):
             await websocket.send_json(frame.model_dump(mode="json"))
             if frame.step_id < len(FRAMES):
                 await asyncio.sleep(5)
+        await websocket.close()
+    except WebSocketDisconnect:
+        return
+
+
+
+@app.get("/api/count-timeline")
+def count_timeline_data():
+    return COUNT_TIMELINE
+
+
+@app.websocket("/ws/count-timeline")
+async def count_timeline_websocket(
+    websocket: WebSocket,
+    start_step: int = Query(1, ge=1, le=len(COUNT_TIMELINE)),
+    delay_ms: int = Query(0, ge=0, le=5000),
+):
+    await websocket.accept()
+    try:
+        if delay_ms:
+            await asyncio.sleep(delay_ms / 1000)
+        for index, frame in enumerate(COUNT_TIMELINE[start_step - 1:]):
+            if index:
+                await asyncio.sleep(5)
+            await websocket.send_json(frame)
         await websocket.close()
     except WebSocketDisconnect:
         return
