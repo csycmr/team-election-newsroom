@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT / ".env", extra="ignore")
 
     app_mode: str = "demo"
+    newsroom_write_token: str = ""
     app_host: str = "127.0.0.1"
     app_port: int = 8000
     database_url: str = "sqlite:///data/processed/election_newsroom.db"

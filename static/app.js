@@ -14,14 +14,27 @@ let pending;
 let busy = false;
 
 async function api(path, body, method = "GET") {
-  const response = await fetch(path, {
-    method,
-    ...(body === undefined ? {} : {
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }),
-  });
-  const result = await response.json();
+  const mutate = ["POST", "PUT", "PATCH", "DELETE"].includes(method);
+  const requestOnce = async (token) => {
+    const headers = {};
+    if (body !== undefined) headers["Content-Type"] = "application/json";
+    if (mutate && token) headers["X-Newsroom-Token"] = token;
+    const response = await fetch(path, {
+      method, headers,
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    });
+    const result = await response.json();
+    return { response, result };
+  };
+  let token = sessionStorage.getItem("newsroom-team-token") || "";
+  let { response, result } = await requestOnce(token);
+  if (mutate && response.status === 401 && result.detail === "TEAM_AUTH_REQUIRED") {
+    token = window.prompt("기사 작성·승인용 팀원 암호를 입력하세요.") || "";
+    if (!token) throw new Error("팀원 인증이 취소되었습니다.");
+    ({ response, result } = await requestOnce(token));
+    if (response.ok) sessionStorage.setItem("newsroom-team-token", token);
+    else sessionStorage.removeItem("newsroom-team-token");
+  }
   if (!response.ok) throw new Error(result.detail || "요청을 처리할 수 없어요.");
   return result;
 }
@@ -146,6 +159,11 @@ function createDraft(frame, mode = "template") {
   return editorialAction(() => api("/api/articles", { snapshot: frame, generation_mode: mode }, "POST"));
 }
 
+byId("pledge-draft").onclick = () => {
+  const query = byId("pledge-article-query").value.trim();
+  if (query.length < 2) { byId("status").textContent = "후보자와 지역을 입력해 주세요."; return; }
+  editorialAction(() => api("/api/articles/from-pledges", {query}, "POST"));
+};
 byId("draft").onclick = () => createDraft(snapshot, byId("generation-mode").value);
 byId("save").onclick = () => editorialAction(() =>
   api(`/api/articles/${article.article_id}`, {
@@ -215,7 +233,7 @@ async function refreshArticleList() {
       const title = document.createElement("strong");
       title.textContent = item.title;
       const details = document.createElement("small");
-      details.textContent = `${states[item.status] || item.status} · ${item.snapshot.step_id}단계 · ${new Date(item.updated_at).toLocaleString("ko-KR")}`;
+      details.textContent = `${states[item.status] || item.status} · ${item.article_type === "pledge" ? "공약 기사" : `${item.snapshot?.step_id ?? "—"}단계`} · ${new Date(item.updated_at).toLocaleString("ko-KR")}`;
       button.append(title, details);
       button.onclick = async () => {
         if (busy) return;
@@ -253,7 +271,7 @@ byId("rag-answer").onclick = async () => {
   if (question.length < 2) { target.textContent = "두 글자 이상 질문해 주세요."; return; }
   target.textContent = "근거 자료를 확인하는 중입니다…";
   try {
-    const data = await api(`/api/rag/answer?replay=true&q=${encodeURIComponent(question)}`);
+    const data = await api(`/api/rag/answer?replay=false&q=${encodeURIComponent(question)}`);
     target.replaceChildren();
     const answer = document.createElement("div");
     answer.textContent = data.answer || "답변이 없습니다.";
@@ -292,7 +310,7 @@ document.querySelectorAll("[data-view], [data-go]").forEach((button) => {
   button.addEventListener("click", () => openWorkspaceView(button.dataset.view || button.dataset.go));
 });
 const syncWorkspaceCurrent = () => {
-  const name = article ? `${article.title}\n\n상태: ${states[article.status] || article.status}\n${article.snapshot.step_id}단계` : "선택된 기사가 없습니다.";
+  const name = article ? `${article.title}\n\n상태: ${states[article.status] || article.status}\n${article.article_type === "pledge" ? "공약 기사" : `${article.snapshot?.step_id ?? "—"}단계`}` : "선택된 기사가 없습니다.";
   byId("review-current-status").textContent = name;
   byId("library-preview").textContent = name;
 };
@@ -344,7 +362,7 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
     addBubble(question, "user");input.value="";send.disabled=true;
     const responseBubble = addBubble("근거를 확인하고 있습니다…", "assistant");
     try {
-      const data = await api(`/api/rag/answer?replay=true&q=${encodeURIComponent(question)}`);
+      const data = await api(`/api/rag/answer?replay=false&q=${encodeURIComponent(question)}`);
       responseBubble.textContent = data.answer || "답변을 확인할 수 없습니다.";
       const allowed = new Set(data.evidence_ids || []);
       const used = (data.evidence || []).filter(item => allowed.has(item.evidence_id));

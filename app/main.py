@@ -1,16 +1,19 @@
 import asyncio
+import secrets
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
-from fastapi.responses import FileResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.adapters.cms import publish
 from app.config import ROOT, get_settings
-from app.models import ArticleCreate, ArticleUpdate, ReviewRequest
+from app.models import ArticleCreate, ArticleUpdate, ReviewRequest, PledgeArticleCreate
 from app.services.article_service import generate_article, generate_ai_article
 from app.services.election_service import fetch_snapshot
 from app.services.factcheck_service import check_article
+from app.services.pledge_article_service import generate_pledge_article, select_pledge_documents
+from app.services.pledge_factcheck_service import check_pledge_article
 from app.services.rag_service import LocalRAG, answer_question
 from app.services.replay_service import FRAMES, REPLAY_DIR, replay_snapshot
 from app.services.storage_service import Storage
@@ -28,6 +31,18 @@ replay_rag = LocalRAG(REPLAY_DIR / "rag_documents.json")
 
 app = FastAPI(title="RAG Election Newsroom", version="1.0.0")
 app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
+
+@app.middleware("http")
+async def guard_article_writes(request, call_next):
+    """Require a team token for article mutations on the public deployment."""
+    if request.url.path.startswith("/api/articles") and request.method in {"POST", "PUT", "PATCH", "DELETE"}:
+        token = settings.newsroom_write_token
+        if settings.app_mode == "production" and not token:
+            return JSONResponse(status_code=503, content={"detail": "NEWSROOM_WRITE_TOKEN is missing"})
+        if token and not secrets.compare_digest(request.headers.get("X-Newsroom-Token", ""), token):
+            return JSONResponse(status_code=401, content={"detail": "TEAM_AUTH_REQUIRED"})
+    return await call_next(request)
+
 
 
 @app.get("/", include_in_schema=False)
@@ -100,6 +115,23 @@ async def rag_answer(q: str = Query(min_length=2), replay: bool = False):
         api_key=settings.openai_api_key,
         model=settings.openai_chat_model,
     )
+
+
+@app.post("/api/articles/from-pledges")
+def create_pledge_article(request: PledgeArticleCreate):
+    try:
+        docs = select_pledge_documents(request.query, rag)
+    except LookupError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    article = generate_pledge_article(docs)
+    storage.save_article(article)
+    storage.log(article.article_id, 'draft_created', 'pledge-template', {
+        'article_type': 'pledge',
+        'evidence_ids': [item.evidence_id for item in article.evidence],
+    })
+    return article
 
 
 @app.post("/api/articles")
@@ -180,7 +212,8 @@ def update_article(article_id: str, request: ArticleUpdate):
 @app.post("/api/articles/{article_id}/fact-check")
 async def fact_check(article_id: str):
     article = required_article(article_id)
-    result = await check_article(article, settings)
+    result = (check_pledge_article(article, rag) if article.article_type == "pledge"
+              else await check_article(article, settings))
     article.status = "fact_checked" if result.status == "pass" else "draft"
     article.updated_at = now_seoul()
     storage.save_article(article)
@@ -221,7 +254,7 @@ def audit(article_id: str):
 @app.post("/api/articles/{article_id}/publish")
 async def publish_article(article_id: str):
     article = required_article(article_id)
-    if article.snapshot.mode == "replay":
+    if article.snapshot is not None and article.snapshot.mode == "replay":
         raise HTTPException(409, "과거 선거 재생 시연 기사는 외부 전송할 수 없습니다.")
     try:
         result = await publish(article, settings)

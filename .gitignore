@@ -7,3 +7,5 @@ data/processed/*.db
 exports/*
 !exports/.gitkeep
 
+.venv-1/
+.pytest_tmp/

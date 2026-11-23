@@ -38,6 +38,10 @@ class Evidence(BaseModel):
     score: float = 0
 
 
+class PledgeArticleCreate(BaseModel):
+    query: str = Field(min_length=2, max_length=200)
+
+
 class ArticleCreate(BaseModel):
     snapshot: ElectionSnapshot
     evidence: list[Evidence] = []
@@ -45,11 +49,12 @@ class ArticleCreate(BaseModel):
 
 
 class Article(BaseModel):
+    article_type: Literal["election", "pledge"] = "election"
     article_id: str
     title: str
     body: str
     status: Literal["draft", "fact_checked", "human_reviewed", "approved", "rejected"]
-    snapshot: ElectionSnapshot
+    snapshot: ElectionSnapshot | None = None
     evidence: list[Evidence]
     created_at: datetime
     updated_at: datetime
