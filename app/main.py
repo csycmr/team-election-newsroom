@@ -18,7 +18,11 @@ from app.services.time_service import now_seoul
 
 settings = get_settings()
 storage = Storage(settings.db_path)
-rag = LocalRAG(ROOT / "data/sample/rag_documents.json")
+rag = LocalRAG(
+    ROOT / "data/sample/rag_documents.json",
+    pledge_path=ROOT / "data/processed/pledges/pledges_20260603_all_3-4-11.json",
+    candidate_csv=ROOT / "data/processed/candidates_20260603_all_3-4-11.csv",
+)
 
 replay_rag = LocalRAG(REPLAY_DIR / "rag_documents.json")
 

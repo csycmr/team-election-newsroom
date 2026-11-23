@@ -6,8 +6,21 @@ from app.models import Evidence
 
 
 class LocalRAG:
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, pledge_path: Path | None = None,
+                 candidate_csv: Path | None = None):
         self.documents = json.loads(path.read_text(encoding="utf-8"))
+        self.candidate_names = set()
+        if pledge_path is not None and candidate_csv is not None:
+            from app.services.pledge_documents import load_pledge_documents
+            pledge_docs, self.candidate_names = load_pledge_documents(
+                pledge_path, candidate_csv
+            )
+            self.documents.extend(pledge_docs)
+        # Precompute the search index once, not on every chat message.
+        self.index = []
+        for doc in self.documents:
+            haystack = f"{doc['title']} {doc['content']} {doc.get('candidate_name', '')}"
+            self.index.append((doc, self.tokens(haystack), self.bigrams(haystack)))
 
     @staticmethod
     def tokens(text: str) -> set[str]:
@@ -23,14 +36,26 @@ class LocalRAG:
         query_bigrams = self.bigrams(query)
         if not query_tokens and not query_bigrams:
             return []
+        # Pledge questions search real NEC promises, never the tutorial candidates.
+        pledge_query = bool(self.candidate_names) and any(
+            term in query for term in ("공약", "정책", "약속", "교육감", "시장", "군수", "구청장")
+        )
+        mentioned = {name for name in self.candidate_names if name in query}
+        from app.services.pledge_documents import query_provinces
+        provinces = query_provinces(query) if pledge_query else set()
         scored = []
-        for document in self.documents:
-            haystack = f"{document['title']} {document['content']} {document.get('candidate_name', '')}"
-            doc_tokens = self.tokens(haystack)
-            doc_bigrams = self.bigrams(haystack)
+        for document, doc_tokens, doc_bigrams in self.index:
+            if pledge_query and not document.get("pledge_candidate_id"):
+                continue
+            if mentioned and document.get("pledge_candidate_id") and document.get("candidate_name") not in mentioned:
+                continue
+            if provinces and document.get("pledge_candidate_id") and document.get("province") not in provinces:
+                continue
             token_score = len(query_tokens & doc_tokens) / len(query_tokens) if query_tokens else 0
             char_score = len(query_bigrams & doc_bigrams) / len(query_bigrams) if query_bigrams else 0
             score = 0.55 * token_score + 0.45 * char_score
+            if document.get("pledge_candidate_id") and document.get("candidate_name") in mentioned:
+                score += 0.45
             if score > 0:
                 scored.append((score, document))
         scored.sort(key=lambda item: item[0], reverse=True)
@@ -39,7 +64,7 @@ class LocalRAG:
 
 async def answer_question(question: str, searcher: LocalRAG, api_key: str = "", model: str = "gpt-4.1-mini") -> dict:
     """Answer only from returned evidence; expose citations, including in no-key demo mode."""
-    evidence = searcher.search(question, limit=3)
+    evidence = searcher.search(question, limit=5)
     base = {"question": question, "evidence": [row.model_dump() for row in evidence]}
     if not evidence:
         return {**base, "mode": "no_evidence", "answer": "검색된 근거가 없어 답변할 수 없습니다.", "evidence_ids": []}
@@ -75,6 +100,8 @@ async def answer_question(question: str, searcher: LocalRAG, api_key: str = "", 
     valid_ids = [item for item in ids if isinstance(item, str) and item in allowed] if isinstance(ids, list) else []
     answer = parsed.get("answer", "")
     if not isinstance(answer, str) or not answer.strip() or not valid_ids:
-        return {**base, "mode": "no_evidence", "answer": "제시된 근거로 답변을 확인하지 못했습니다.", "evidence_ids": []}
+        excerpts = [f"[{row.evidence_id}] {row.title}: {row.content}" for row in evidence]
+        return {**base, "mode": "extractive", "answer": "\n".join(excerpts),
+                "evidence_ids": [row.evidence_id for row in evidence]}
     return {**base, "mode": "openai", "answer": answer.strip(), "evidence_ids": valid_ids}
 
