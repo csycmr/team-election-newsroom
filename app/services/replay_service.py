@@ -23,12 +23,7 @@ def _count_timeline() -> list[dict]:
         for frame in FRAMES
         if frame.record_type == "reported"
     }
-    simulated_counts = {
-        frame.counted_rate: frame.model_dump(mode="json")
-        for frame in FRAMES
-        if frame.record_type == "simulated"
-    }
-    roster = [candidate.model_dump() for candidate in FRAMES[-1].candidates]
+    roster = [candidate.model_dump(exclude={"votes", "vote_rate"}) for candidate in FRAMES[-1].candidates]
     prefixes = {
         "seoul-1": "oh_se_hoon",
         "seoul-2": "jung_won_oh",
@@ -44,11 +39,7 @@ def _count_timeline() -> list[dict]:
         rate = float(row["counted_rate_pct"]) if row["counted_rate_pct"] else None
         full_count = full_counts.get(rate)
         candidates = []
-        if row["time_basis"] == "simulated":
-            candidates = simulated_counts[rate]["candidates"]
-        elif full_count:
-            candidates = full_count["candidates"]
-        elif rate is not None:
+        if rate is not None:
             for candidate in roster:
                 prefix = prefixes.get(candidate["candidate_id"])
                 if prefix and row[f"{prefix}_votes"] and row[f"{prefix}_vote_rate_pct"]:
