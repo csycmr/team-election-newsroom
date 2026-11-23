@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100154808</cnddtId>
+    <sggName>강서구</sggName>
+    <sidoName>서울특별시</sidoName>
+    <wiwName>강서구</wiwName>
+    <partyName>무소속</partyName>
+    <krName>백철</krName>
+    <cnName>白喆</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>나라 일을 공정하게 하겠습니다.</prmsTitle1>
+    <prmmCont1/>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2>나랏돈을 아껴쓰는 공직자가 되겠습니다.</prmsTitle2>
+    <prmmCont2/>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3>나라 일(구의일)을 할 적에 국민(구민)과 상의해서 함께 하겠습니다.</prmsTitle3>
+    <prmmCont3/>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>국민들게 거짓말을 않겠습니다.</prmsTitle4>
+    <prmmCont4/>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5>청렴한 공직자가 되어 대한민국의 모든 공직자들의 모범이 되어 나라의 부정부패가 사라지도록 최선을 다하겠습니다.</prmsTitle5>
+    <prmmCont5/>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>

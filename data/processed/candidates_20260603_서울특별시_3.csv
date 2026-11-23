@@ -1,0 +1,7 @@
+﻿election_id,election_type,candidate_id,candidate_name,party,province,district,municipality,ballot_number,registration_status,source_url
+20260603,3,100157144,정원오,더불어민주당,서울특별시,서울특별시,,1,등록,https://www.data.go.kr/data/15000908/openapi.do
+20260603,3,100162984,오세훈,국민의힘,서울특별시,서울특별시,,2,등록,https://www.data.go.kr/data/15000908/openapi.do
+20260603,3,100158541,김정철,개혁신당,서울특별시,서울특별시,,4,등록,https://www.data.go.kr/data/15000908/openapi.do
+20260603,3,100162632,유지혜,여성의당,서울특별시,서울특별시,,5,등록,https://www.data.go.kr/data/15000908/openapi.do
+20260603,3,100162642,이강산,자유통일당,서울특별시,서울특별시,,6,사퇴,https://www.data.go.kr/data/15000908/openapi.do
+20260603,3,100162720,권영국,정의당,서울특별시,서울특별시,,7,등록,https://www.data.go.kr/data/15000908/openapi.do

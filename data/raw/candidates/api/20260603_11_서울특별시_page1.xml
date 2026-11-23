@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100153800</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>김영배</name>
+    <hanjaName>金永培</hanjaName>
+    <gender>남</gender>
+    <birthday>19681205</birthday>
+    <age>57</age>
+    <addr>서울특별시 마포구 성미산로29길</addr>
+    <jobId>88</jobId>
+    <job>예원예술대학교 부총장</job>
+    <eduId>221</eduId>
+    <edu>동방문화대학원대학교 자연치유학과졸업(교육학박사)</edu>
+    <career1>(현)예원예술대학교 부총장</career1>
+    <career2>(전)상명대학교/성결대학교 교수 역임</career2>
+    <status>등록</status>
+  </item>
+  <item>
+    <num>2</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100155563</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>한만중</name>
+    <hanjaName>韓萬中</hanjaName>
+    <gender>남</gender>
+    <birthday>19631229</birthday>
+    <age>62</age>
+    <addr>서울특별시 마포구 대흥로8길</addr>
+    <jobId>225</jobId>
+    <job>전국교육자치혁신연대 상임대표</job>
+    <eduId>68</eduId>
+    <edu>서울대학교 사범대학 국어교육과 졸업</edu>
+    <career1>(전)노무현 대통령직인수위 자문위원(교육분야)</career1>
+    <career2>(전)조희연 서울시교육감 비서실장</career2>
+    <status>등록</status>
+  </item>
+  <item>
+    <num>3</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100163258</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>조전혁</name>
+    <hanjaName>趙全赫</hanjaName>
+    <gender>남</gender>
+    <birthday>19600714</birthday>
+    <age>65</age>
+    <addr>서울특별시 동작구 동작대로29길</addr>
+    <jobId>88</jobId>
+    <job>서울시 미래교육연구원 원장</job>
+    <eduId>221</eduId>
+    <edu>미국 위스콘신대학교 매디슨 캠퍼스 대학원 경제학 박사 (1989.12.~1991.12.)</edu>
+    <career1>(전)2024년 서울특별시교육감보궐선거 통합대책위원회 중도·보수후보</career1>
+    <career2>(전)국회의원 (교육과학기술위원회 위원)</career2>
+    <status>등록</status>
+  </item>
+  <item>
+    <num>4</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100162651</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>이학인</name>
+    <hanjaName>李學仁</hanjaName>
+    <gender>남</gender>
+    <birthday>19730127</birthday>
+    <age>53</age>
+    <addr>서울특별시 광진구 뚝섬로</addr>
+    <jobId>88</jobId>
+    <job>신한대학교 부교수</job>
+    <eduId>221</eduId>
+    <edu>뉴욕시립대학교대학원 철학박사(경영학전공)(2006.8~2012.8)</edu>
+    <career1>(전)미국Hofstra대학교 회계학 조교수</career1>
+    <career2>(전)안진회계법인 공인회계사</career2>
+    <status>등록</status>
+  </item>
+  <item>
+    <num>5</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100153774</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>윤호상</name>
+    <hanjaName>尹昊相</hanjaName>
+    <gender>남</gender>
+    <birthday>19590427</birthday>
+    <age>67</age>
+    <addr>서울특별시 성동구 뚝섬로13길</addr>
+    <jobId>88</jobId>
+    <job>한양대학교 교육대학원 겸임교수</job>
+    <eduId>221</eduId>
+    <edu>숭실대학교 대학원 평생교육학과 졸업(교육학 박사)</edu>
+    <career1>(현)서울좋은교육감후보추대시민회의 보수단일후보(류수노,신평,윤호상,이건주 참여)</career1>
+    <career2>(전)서울시 중·고등학교 4개교 교장(강남중,도선고,서울미술고,신도림고)</career2>
+    <status>등록</status>
+  </item>
+  <item>
+    <num>6</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100161493</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>정근식</name>
+    <hanjaName>鄭根埴</hanjaName>
+    <gender>남</gender>
+    <birthday>19571115</birthday>
+    <age>68</age>
+    <addr>서울특별시 서초구 효령로</addr>
+    <jobId>226</jobId>
+    <job>서울특별시교육감</job>
+    <eduId>221</eduId>
+    <edu>서울대학교 대학원(박사과정) 사회학과 문학박사</edu>
+    <career1>(현)2026서울민주진보교육감단일화 추진위 추대후보</career1>
+    <career2>(전)노무현정부 친일반민족행위진상규명위원회 위원</career2>
+    <status>등록</status>
+  </item>
+  <item>
+    <num>7</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100153778</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>홍제남</name>
+    <hanjaName>洪弟男</hanjaName>
+    <gender>여</gender>
+    <birthday>19650426</birthday>
+    <age>61</age>
+    <addr>서울특별시 관악구 인헌16다길</addr>
+    <jobId>88</jobId>
+    <job>다같이배움연구소장</job>
+    <eduId>221</eduId>
+    <edu>한국교원대학교 교육정책전문대학원 졸업 (교육학박사)</edu>
+    <career1>(전)서울특별시남부교육지원청 교육지원국장</career1>
+    <career2>(전)오류중학교장</career2>
+    <status>등록</status>
+  </item>
+  <item>
+    <num>8</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>11</sgTypecode>
+    <huboid>100153786</huboid>
+    <sggName>서울특별시</sggName>
+    <sdName>서울특별시</sdName>
+    <wiwName/>
+    <giho/>
+    <gihoSangse/>
+    <jdName/>
+    <name>류수노</name>
+    <hanjaName>柳守魯</hanjaName>
+    <gender>남</gender>
+    <birthday>19560902</birthday>
+    <age>69</age>
+    <addr>서울특별시 종로구 종로</addr>
+    <jobId>88</jobId>
+    <job>교수</job>
+    <eduId>221</eduId>
+    <edu>충남대학교 대학원 졸업(농학박사)</edu>
+    <career1>(전)한국방송통신대학교 총장</career1>
+    <career2>(현)한성대학교 석좌교수</career2>
+    <status>등록</status>
+  </item>
+</items>
+<numOfRows>100</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>8</totalCount>
+</body>
+</response>

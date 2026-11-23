@@ -1,0 +1,3953 @@
+{
+  "election_id": "20260603",
+  "election_types": [
+    "3",
+    "4",
+    "11"
+  ],
+  "province_filter": "서울특별시",
+  "candidate_source": "https://www.data.go.kr/data/15000908/openapi.do",
+  "pledge_source": "https://www.data.go.kr/data/15040587/openapi.do",
+  "retrieved_at": "2026-11-23T03:37:41.461187+00:00",
+  "notes": "공약 API의 데이터 없음은 공약 부재를 뜻하지 않음. 낙선 후보 선거공보 별도 수집 필요.",
+  "candidates_queried": [
+    {
+      "election_type": "3",
+      "candidate_id": "100157144",
+      "candidate_name": "정원오",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "3",
+      "candidate_id": "100162984",
+      "candidate_name": "오세훈",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "3",
+      "candidate_id": "100158541",
+      "candidate_name": "김정철",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "3",
+      "candidate_id": "100162632",
+      "candidate_name": "유지혜",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "3",
+      "candidate_id": "100162642",
+      "candidate_name": "이강산",
+      "pledge_status": "no_data",
+      "pledge_records": 0
+    },
+    {
+      "election_type": "3",
+      "candidate_id": "100162720",
+      "candidate_name": "권영국",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154016",
+      "candidate_name": "유찬종",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163635",
+      "candidate_name": "정문헌",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154189",
+      "candidate_name": "이동현",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163124",
+      "candidate_name": "김길성",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100157792",
+      "candidate_name": "길기영",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100155683",
+      "candidate_name": "강태웅",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154458",
+      "candidate_name": "김경대",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100156780",
+      "candidate_name": "김윤재",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154364",
+      "candidate_name": "유보화",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100158996",
+      "candidate_name": "고재현",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100165564",
+      "candidate_name": "정찬옥",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100155529",
+      "candidate_name": "문종철",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162595",
+      "candidate_name": "김경호",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154237",
+      "candidate_name": "최동민",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162700",
+      "candidate_name": "이필형",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163845",
+      "candidate_name": "류경기",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100157783",
+      "candidate_name": "황종석",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100161486",
+      "candidate_name": "이승로",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100161480",
+      "candidate_name": "민병웅",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100158480",
+      "candidate_name": "홍희진",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100165736",
+      "candidate_name": "정창수",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100156415",
+      "candidate_name": "장지호",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100157120",
+      "candidate_name": "윤정현",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100157755",
+      "candidate_name": "한덕희",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154007",
+      "candidate_name": "김동욱",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162870",
+      "candidate_name": "오언석",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100155624",
+      "candidate_name": "서준오",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163127",
+      "candidate_name": "김광수",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163092",
+      "candidate_name": "김미경",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100156220",
+      "candidate_name": "남기정",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154445",
+      "candidate_name": "박운기",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163662",
+      "candidate_name": "이성헌",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154576",
+      "candidate_name": "유동균",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162253",
+      "candidate_name": "박강수",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100158135",
+      "candidate_name": "우형찬",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162646",
+      "candidate_name": "이기재",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162985",
+      "candidate_name": "진교훈",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100157541",
+      "candidate_name": "김진선",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154493",
+      "candidate_name": "이미선",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154808",
+      "candidate_name": "백철",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163864",
+      "candidate_name": "장인홍",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162222",
+      "candidate_name": "홍덕희",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100160192",
+      "candidate_name": "최기찬",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100161473",
+      "candidate_name": "이희권",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100155777",
+      "candidate_name": "조유진",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100156463",
+      "candidate_name": "최웅식",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100155877",
+      "candidate_name": "류삼영",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100156792",
+      "candidate_name": "김정태",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163677",
+      "candidate_name": "박일하",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162126",
+      "candidate_name": "조성범",
+      "pledge_status": "no_data",
+      "pledge_records": 0
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100161558",
+      "candidate_name": "박준희",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100160057",
+      "candidate_name": "이남형",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162020",
+      "candidate_name": "이혜숙",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100161489",
+      "candidate_name": "황인식",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100162496",
+      "candidate_name": "전성수",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100157718",
+      "candidate_name": "김형곤",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100158841",
+      "candidate_name": "김현기",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100155375",
+      "candidate_name": "조재희",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100160360",
+      "candidate_name": "서강석",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100154374",
+      "candidate_name": "김종무",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100163194",
+      "candidate_name": "이수희",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "4",
+      "candidate_id": "100157173",
+      "candidate_name": "이용우",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100153800",
+      "candidate_name": "김영배",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100155563",
+      "candidate_name": "한만중",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100163258",
+      "candidate_name": "조전혁",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100162651",
+      "candidate_name": "이학인",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100153774",
+      "candidate_name": "윤호상",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100161493",
+      "candidate_name": "정근식",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100153778",
+      "candidate_name": "홍제남",
+      "pledge_status": "found",
+      "pledge_records": 1
+    },
+    {
+      "election_type": "11",
+      "candidate_id": "100153786",
+      "candidate_name": "류수노",
+      "pledge_status": "found",
+      "pledge_records": 1
+    }
+  ],
+  "pledge_records": [
+    {
+      "election_id": "20260603",
+      "election_type": "3",
+      "candidate_id": "100157144",
+      "candidate_name": "정원오",
+      "party": "더불어민주당",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "30분 통근도시 실현으로 '시민에게 쉼표를'",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "서울 공간 대전환 - 5도심·6광역중심 체계로의 전환",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "도전과 실패가 경력이 되고 자산이 되는 청년창업수도 서울!",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "24시간 공백 없는 아이돌봄 지원체계 구축",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "4050+센터와 시니어라이프캠퍼스로 서울시민 활력회복!",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:31.357645+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "3",
+      "candidate_id": "100162984",
+      "candidate_name": "오세훈",
+      "party": "국민의힘",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "주택1",
+          "title": "멈췄던 공급에 속도를! 압도적 주택공급",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "주택2",
+          "title": "무너진 주거이동 안전망을 복원하겠습니다",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "교통",
+          "title": "이동의 답답함을 풀어내는 서울 교통 대전환",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "복지",
+          "title": "더 따뜻한 서울, 약자와의 동행 시즌 2",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "산업일자리",
+          "title": "매년 100만 기회, 내일이 더 기대되는 서울",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:31.489892+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "3",
+      "candidate_id": "100158541",
+      "candidate_name": "김정철",
+      "party": "개혁신당",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "AI행정혁신을 통한 찾아오는 서울",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "규제 혁신을 통한 막힘없는 서울",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "시민·관변단체 구조 개혁을 통한 효율적인 서울",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "복지의 재설계를 통한 받쳐주는 서울",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "1인 가구 중심 도시로 재설계되는 서울",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:31.642011+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "3",
+      "candidate_id": "100162632",
+      "candidate_name": "유지혜",
+      "party": "여성의당",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "여성폭력·성착취 없는 서울",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "여아부터 노년까지 모여살기 좋은 서울",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "미래의 여성 인재를 키우고, 여성 인재의 미래를 만드는 서울",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "여성이 안심하고 일할 수 있는 서울",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "여성의료 사각지대 해소, 여성건강 유해요인은 사전 차단",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:31.757476+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "3",
+      "candidate_id": "100162720",
+      "candidate_name": "권영국",
+      "party": "정의당",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "모든 시민이 노동권의 주체가 되는 서울",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "주거·교통·의료·먹거리 기본서비스를 공공이 책임지는 서울",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "돌봄의 무게를 덜고, 돌봄이 활력이 되는 공공돌봄도시 서울",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "에너지자립과 자원순환으로 기후위기에 대응하고, 지역과 상생하는 서울",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "당신이 누구이든 상관없이 평등과 안전으로 혐오와 차별 없는 서울",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:31.944116+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154016",
+      "candidate_name": "유찬종",
+      "party": "더불어민주당",
+      "election_district": "종로구",
+      "province": "서울특별시",
+      "municipality": "종로구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "생활경제·일자리 회복 프로젝트, 다시 살아나는 종로경제",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "아이부터 어르신까지 누구나 안심하는 종로",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "미래를 배우고 세계가 찾는 문화도시 종로",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "더 살기 좋은 종로, 삶이 편안한 생활환경",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "교통 불편은 줄이고, 주민과 더 가까운 종로",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:32.783566+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163635",
+      "candidate_name": "정문헌",
+      "party": "국민의힘",
+      "election_district": "종로구",
+      "province": "서울특별시",
+      "municipality": "종로구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "살수록 좋아지는 종로, 재개발에 속도를 주거에 품격을",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "지갑이 두꺼워지는 종로, 골목에서 글로벌까지 경제 체력 강화",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "오늘이 편한 종로, 길도 안전도 새로고침",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "곁에 있는 종로, 돌봄·복지·건강 사각지대 제로",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "아이 키우고 싶은 종로, 미래형 맞춤 교육",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:32.888656+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154189",
+      "candidate_name": "이동현",
+      "party": "더불어민주당",
+      "election_district": "중구",
+      "province": "서울특별시",
+      "municipality": "중구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "외국인 관광세 도입 및 관광·주민 선순환 체계 구축",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "힘있는 여당 구청장의 '속도전'으로 완성하는 하이엔드 중구",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "생애주기 통합 돌봄·교육·복지 ― 빈틈없는 '모두 돌봄' 중구",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "365일 깨어있는 도시안전망 : 일상이 안전하고 편리한 행복도시 중구",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "일자리·소상공인·지역경제 통합 패키지 : 골목부터 도심까지 활력 넘치는 상생 중구",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.017688+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163124",
+      "candidate_name": "김길성",
+      "party": "국민의힘",
+      "election_district": "중구",
+      "province": "서울특별시",
+      "municipality": "중구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "미래를 그리는 중구",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "청년이 꿈꾸는 중구",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "교육이 든든한 중구",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "노후가 편안한 중구",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "품격이 가득한 중구",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.135913+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100157792",
+      "candidate_name": "길기영",
+      "party": "개혁신당",
+      "election_district": "중구",
+      "province": "서울특별시",
+      "municipality": "중구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "현장에서 답을 찾는 열린 구청장",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "명동 7,900억을 골목까지 - 머무는 시장, 버티는 소상공인 만들기",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "어르신 AI 기반 (돌봄) 허브센터 구축",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "중구가 책임지는 생애주기 통합교육,중구 자기주도학습센터 운영",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "이순신의 중구, 을지로의 미래 - 역사 자산과 첨단 산업을 하나로 잇는다.",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.217283+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100155683",
+      "candidate_name": "강태웅",
+      "party": "더불어민주당",
+      "election_district": "용산구",
+      "province": "서울특별시",
+      "municipality": "용산구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "속도감 있는 도시정비 사업 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "생활체육시설 획기적 확충",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "예방 최우선, 안전사각지대 최소화",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "용산 청년 자립 및 주거안정 지원",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "어르신 복지 획기적 개선",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.333367+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154458",
+      "candidate_name": "김경대",
+      "party": "국민의힘",
+      "election_district": "용산구",
+      "province": "서울특별시",
+      "municipality": "용산구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "거침없는 용산개발, 재개발·재건축·재정비 사업 신속 추진 지원",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "용산국제업무지구 개발",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "용산공원을 대한민국의 센트럴파크로",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "일등 교육도시, 용산",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "용산 - 서울의 글로벌 게이트웨이로 (문화·관광 클러스터 완성)",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.458491+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100156780",
+      "candidate_name": "김윤재",
+      "party": "개혁신당",
+      "election_district": "용산구",
+      "province": "서울특별시",
+      "municipality": "용산구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "용산공원 지하공간 사통팔달 교통망",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "청년 가구 교통비 무료",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "미성년자 심야 시간 유흥가 통행금지",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "100% 주민출자 용산전자상가 전담 청년주식회사 설립",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "구청장실 원효로 1가 구청사 이전",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.572044+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154364",
+      "candidate_name": "유보화",
+      "party": "더불어민주당",
+      "election_district": "성동구",
+      "province": "서울특별시",
+      "municipality": "성동구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "(경제) 동북권 글로벌 비즈니스 허브",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "신속하고 투명한 정비사업 추진",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "(교통) 구민의 시간을 아끼는 성동 교통",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "(교육) 이제 교육도 성동입니다.",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "(문화·체육) 도보 10분안에 체육·문화 향유공간 조성",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.685280+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100158996",
+      "candidate_name": "고재현",
+      "party": "국민의힘",
+      "election_district": "성동구",
+      "province": "서울특별시",
+      "municipality": "성동구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "자산 방어 5대 약속 - 재개발 1년 단축, 토지거래허가 15일 처리",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "초연결 성동 - 성수·왕십리·마장 광역경제 벨트 조성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "AI 교통·주차 혁명 - 출퇴근 시간 15분 단축",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "모든 초·중·고 수영장·잔디운동장 건립",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "AI 복지비서 - 신청 안 해도 받는 5분 매칭 복지",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.790239+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100165564",
+      "candidate_name": "정찬옥",
+      "party": "개혁신당",
+      "election_district": "성동구",
+      "province": "서울특별시",
+      "municipality": "성동구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "‘글로벌 비즈니스 & 일자리’ 혁신",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "어르신이 행복한 ‘고령진화도시 성동’ 조성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "아이 키우기 좋은 ‘성동형 공공산후조리원’ 설립",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "용답동 ‘랜드마크 종합체육센터’ 건립",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "청소년·청년 ‘문화체험 및 창업 지원 센터’ 건립",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.892143+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100155529",
+      "candidate_name": "문종철",
+      "party": "더불어민주당",
+      "election_district": "광진구",
+      "province": "서울특별시",
+      "municipality": "광진구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "살기 좋은 고품격 주거 도시, 광진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "글로벌 수준 문화·관광 도시, 광진",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "취업·창업 원활한 경제 도시, 광진",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "소외 없는 따뜻한 복지 도시, 광진",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "구민에게 활짝 열린 참여 도시, 광진",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:33.990943+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162595",
+      "candidate_name": "김경호",
+      "party": "국민의힘",
+      "election_district": "광진구",
+      "province": "서울특별시",
+      "municipality": "광진구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "재개발사업을 속도감있게 완성하겠습니다",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "동서울터미널 재건축을 지원하고, 교통 혁신을 이루겠습니다",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "아이 키우기 가장 좋은 도시를 만들겠습니다",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "어르신을 가장 잘 모시는 광진입니다",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "청년과 경제가 살아나는 광진을 만들겠습니다",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.090077+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154237",
+      "candidate_name": "최동민",
+      "party": "더불어민주당",
+      "election_district": "동대문구",
+      "province": "서울특별시",
+      "municipality": "동대문구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "전농-청량리 고밀도 업무지구 조성 및 사통팔달 광역교통망 완성",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "내 집 앞 10분 거리에 조성되는 생활 인프라",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "구민이 직접 결정하는 풀뿌리 자치, ‘주민중심 동대문’ 구현",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "모든 세대가 안심하는 보건복지 동대문",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "구민의 일상을 책임지는 밀착 행정, ‘곁에 있는 동대문’",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.192936+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162700",
+      "candidate_name": "이필형",
+      "party": "국민의힘",
+      "election_district": "동대문구",
+      "province": "서울특별시",
+      "municipality": "동대문구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "누리고 즐기며 성장하는 문화 도시",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "아이키우기 좋은 교육 도시",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "걷기 좋은 도시",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "청량리역 중심 동북권 교통 허브 구축으로 성장하는 도시",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "모두 함께 돌보는 복지 도시",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.327270+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163845",
+      "candidate_name": "류경기",
+      "party": "더불어민주당",
+      "election_district": "중랑구",
+      "province": "서울특별시",
+      "municipality": "중랑구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "희망찬 미래, 교육도시 중랑",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "성장동력을 키우는 경제 및 도시개발",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "서울 동북권 교통거점도시 중랑",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "더불어 따뜻한 복지중랑",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "모두가 함께 즐기는 문화중랑",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.415237+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100157783",
+      "candidate_name": "황종석",
+      "party": "국민의힘",
+      "election_district": "중랑구",
+      "province": "서울특별시",
+      "municipality": "중랑구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "일자리·청년 특화",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "도시·교통 특화",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "교육·복지 특화",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "친환경·웰니스 특화",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "문화·예술·관광 특화",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.508305+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100161486",
+      "candidate_name": "이승로",
+      "party": "더불어민주당",
+      "election_district": "성북구",
+      "province": "서울특별시",
+      "municipality": "성북구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "일상의 생활권에서 누리는 돌봄과 건강",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "생활권 인프라 확충으로 지역발전 격차 해소",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "편리하고 안전한 생활여건 조성",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "풍요로운 경제, 지속가능한 일자리",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "내 집 앞에서 만나는 동네문화·일상예술",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.637921+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100161480",
+      "candidate_name": "민병웅",
+      "party": "국민의힘",
+      "election_district": "성북구",
+      "province": "서울특별시",
+      "municipality": "성북구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "내부순환로, 북부간선도로 지하화",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "적극적인 정비사업 지원",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "강북횡단선 재추진 및 동북선 신속추진",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "안암 AI·게임문화거리 조성",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "성북형 청년 창업 정착 생태계 구축",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.728012+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100158480",
+      "candidate_name": "홍희진",
+      "party": "진보당",
+      "election_district": "성북구",
+      "province": "서울특별시",
+      "municipality": "성북구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "모두의 안심주거도시 성북",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "모든 노동자가 존중받는 성북",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "차별 없이 모두가 함께하는 성북",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "문화권리가 꽃피는 성북",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "돌봄과 인권이 살아있는 성북",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.832262+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100165736",
+      "candidate_name": "정창수",
+      "party": "더불어민주당",
+      "election_district": "강북구",
+      "province": "서울특별시",
+      "municipality": "강북구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "신강북선을 강남 직결 (가칭)동부선으로 업그레이드 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "강북형 정비사업 신속 추진 지원단 신설",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "오현적환장 공원화 및 북서울 체육문화센터 복합개발",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "북서울 꿈의숲 재조성(리모델링)",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "시립 강북어린이병원 중단없는 추진",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:34.953209+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100156415",
+      "candidate_name": "장지호",
+      "party": "국민의힘",
+      "election_district": "강북구",
+      "province": "서울특별시",
+      "municipality": "강북구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "24시간 어린이 안심의료센터 구축",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "북한산 고도지구 규제 완화 및 신속 재개발·재건축 추진",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "신강북선·동북선 조기 개통 및 ICT 주차공유 시스템 도입",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "경로당 비대면 건강상담실 + 「손주 대신」 디지털 케어",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "강북 소상공인 살리기 + 북한산 관광형 특화시장 조성",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.073886+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100157120",
+      "candidate_name": "윤정현",
+      "party": "노동당",
+      "election_district": "강북구",
+      "province": "서울특별시",
+      "municipality": "강북구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "민주구민위원회 설치로 주민직접정치 실현",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "건강주치의제 도입·동별 공공통합돌봄센터 설치",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "강북구에서 일하는 모든 노동자의 노동권보장과 구청의 책임 강화",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "마을버스 공영화 - 공공순환버스도입으로 편리한 이동권 보장",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "평등 강북을 위한 성평등 정책 패키지",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.194890+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100157755",
+      "candidate_name": "한덕희",
+      "party": "무소속",
+      "election_district": "강북구",
+      "province": "서울특별시",
+      "municipality": "강북구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "강북특별사치구 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "재개발 재건축 신속 추진",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "구립 학원 건립",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "대형 공영주차장 건립",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "서울 꼴찌 강북, 호화 신청사 반대",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.323833+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154007",
+      "candidate_name": "김동욱",
+      "party": "더불어민주당",
+      "election_district": "도봉구",
+      "province": "서울특별시",
+      "municipality": "도봉구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "창동 경제 엔진 프로젝트",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "도봉 공공부지 개발 정상화",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "도봉 미래 교통과 주거 혁신 프로젝트",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "도봉 스마트 동행 프로젝트",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "결정권을 주민에게 - 도봉 주민주권 프로젝트",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.440696+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162870",
+      "candidate_name": "오언석",
+      "party": "국민의힘",
+      "election_district": "도봉구",
+      "province": "서울특별시",
+      "municipality": "도봉구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "서울아레나와 함께 성장하는 <문화도봉> 지역경제가 활력 넘치는 <경제도봉>",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "아이가 자라고 청년이 꿈꾸는 <교육도봉>",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "안전하고 차별 없이 행복한 <안전·복지 도봉>",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "편리하고, 살기좋은 <교통·환경 도봉>",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "도봉구민 모두가 건강하고 행복한 <체육특별구>",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.571713+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100155624",
+      "candidate_name": "서준오",
+      "party": "더불어민주당",
+      "election_district": "노원구",
+      "province": "서울특별시",
+      "municipality": "노원구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "창동차량기지 일대 '서울디지털바이오시티(S-DBC)' 조성",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "광운대역세권 개발을 통한 동북권 거점 신중심 완성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "노후 주거지 신속 재건축·재개발 원스톱 지원체계 마련",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "GTX-C 노선 조기준공 및 SRT 의정부 연장 추진",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "당현천 상류구간 복원 및 4호선 지상구간 방음터널 설치 추진",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.671279+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163127",
+      "candidate_name": "김광수",
+      "party": "국민의힘",
+      "election_district": "노원구",
+      "province": "서울특별시",
+      "municipality": "노원구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "창동차량기지·면허시험장 부지, 서울시 제2청사 유치",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "노원 재개발 · 재건축 지원센터 설립",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "노원 청렴·비리감사센터 설립",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "노원 주택지원센터 설립",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "노원 소상공인 활성화센터 설립",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.798402+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163092",
+      "candidate_name": "김미경",
+      "party": "더불어민주당",
+      "election_district": "은평구",
+      "province": "서울특별시",
+      "municipality": "은평구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "미래를 여는 은평",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "활력이 도는 은평",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "배움이 깊은 은평",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "쉼이 있는 은평",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "온기가 있는 은평",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:35.912953+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100156220",
+      "candidate_name": "남기정",
+      "party": "국민의힘",
+      "election_district": "은평구",
+      "province": "서울특별시",
+      "municipality": "은평구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "GTX-A 중심 교통혁신 은평",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "불광천 수변감성도시 조성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "문화·관광도시 은평 구현",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "재개발·노후주택 정비 가속화",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "북한산 웰니스 건강도시 조성",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.020638+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154445",
+      "candidate_name": "박운기",
+      "party": "더불어민주당",
+      "election_district": "서대문구",
+      "province": "서울특별시",
+      "municipality": "서대문구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "서북권 중심도시 서대문",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "청년과 더불어 성장하는 서대문",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "기후위기에 대응하는 서대문",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "아이와 어르신이 함께 웃는 서대문",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "무너진 지방자치·얼룩진 청렴, 정상화되는 서대문",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.125220+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163662",
+      "candidate_name": "이성헌",
+      "party": "국민의힘",
+      "election_district": "서대문구",
+      "province": "서울특별시",
+      "municipality": "서대문구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "도시개발·주거혁신",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "경제·청년·창업혁신",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "교통혁신",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "복지·돌봄혁신",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "문화·체육·관광혁신",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.228300+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154576",
+      "candidate_name": "유동균",
+      "party": "더불어민주당",
+      "election_district": "마포구",
+      "province": "서울특별시",
+      "municipality": "마포구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "AI로 똑똑한 행정, 안전은 미리미리 - 행정시스템·안전·도시관리 혁신",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "사는 동네가 달라집니다. 주거환경·생활인프라 개선",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "돌봄은 제도가 아니라 일상! 생애주기형 복지 실현",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "공부도, 시작도 마포에서, 교육·청년 지원 강화",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "사람이 모이고 다시 찾는 마포, 환경·관광도시 브랜드 구축",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.342256+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162253",
+      "candidate_name": "박강수",
+      "party": "국민의힘",
+      "election_district": "마포구",
+      "province": "서울특별시",
+      "municipality": "마포구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "어르신 행복 「효도 6종 세트」 지속 확대 운영",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "마포 재개발·재건축·역세권 ‘막힘없는 신속추진 시스템’ 구축",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "마포유수지 「365 문화체육 복합개발」 추진",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "공공산후조리원 조성 및 베이비시터하우스·어린이집 돌봄 확대",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "청년 주거 안심 119(월세지원+사기예방+계약동행)",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.435870+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100158135",
+      "candidate_name": "우형찬",
+      "party": "더불어민주당",
+      "election_district": "양천구",
+      "province": "서울특별시",
+      "municipality": "양천구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "재건축·재개발의 속도감 있는 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "양천지하철시대 개막 및 촘촘한 대중교통망 확충",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "항공기 소음피해 실질적 보상 및 재산권 보장",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "양천구민 AI 기본 시대 및 전 생애 맞춤형 돌봄",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "교육환경 혁신 및 생활SOC 확충",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.562548+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162646",
+      "candidate_name": "이기재",
+      "party": "국민의힘",
+      "election_district": "양천구",
+      "province": "서울특별시",
+      "municipality": "양천구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "양천의 지하철 부족 최우선으로 해결하겠습니다",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "재건축·재개발 완성, 시작한 이기재가 책임지고 매듭짓겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "기업인프라 구축으로 지역경제 성장엔진 가동시키겠습니다",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "공항소음피해 양천구가 앞장서 해결하겠습니다",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "아이키우기 좋은 환경·함께 성장하는 교육도시 완성",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.673250+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162985",
+      "candidate_name": "진교훈",
+      "party": "더불어민주당",
+      "election_district": "강서구",
+      "province": "서울특별시",
+      "municipality": "강서구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "모두가 살기좋고 상생하는 균형성장을 이루어내겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "일자리가 넘쳐나는 글로벌 혁신경제도시를 만들겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "사통팔달 교통망을 확충하고 안전한 일상생활을 지키겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "출산에서 노년까지 든든한 생애복지를 실현하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "품격있고 지속가능한 교육문화도시를 만들겠습니다.",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.793216+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100157541",
+      "candidate_name": "김진선",
+      "party": "국민의힘",
+      "election_district": "강서구",
+      "province": "서울특별시",
+      "municipality": "강서구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "“임대주택 분산이 최고의 주거복지”",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "“공항 도시에서 공항 도심으로”",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "“마곡과 화곡·방화동의 균형발전”",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "“방화차량기지 이전 및 5호선 연장”",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "“가장 접근성 좋은 K-컬처 허브”",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.876523+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154493",
+      "candidate_name": "이미선",
+      "party": "진보당",
+      "election_district": "강서구",
+      "province": "서울특별시",
+      "municipality": "강서구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "주거 및 민생 경제의 안전망",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "돌봄의 공공성 강화망",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "이동권 및 노동권 보장",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "맞춤형 권리 보장 (여성·청년·장애인)",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "미래를 대비하는 기후와 민주주의",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:36.982114+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154808",
+      "candidate_name": "백철",
+      "party": "무소속",
+      "election_district": "강서구",
+      "province": "서울특별시",
+      "municipality": "강서구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "나라 일을 공정하게 하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "나랏돈을 아껴쓰는 공직자가 되겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "나라 일(구의일)을 할 적에 국민(구민)과 상의해서 함께 하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "국민들게 거짓말을 않겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "청렴한 공직자가 되어 대한민국의 모든 공직자들의 모범이 되어 나라의 부정부패가 사라지도록 최선을 다하겠습니다.",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.093087+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163864",
+      "candidate_name": "장인홍",
+      "party": "더불어민주당",
+      "election_district": "구로구",
+      "province": "서울특별시",
+      "municipality": "구로구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "도약하는 구로",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "기본이 튼튼한 사회",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "활력이 넘치는 지역경제",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "지속가능한 발전",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "AI·자치 혁신행정",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.209974+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162222",
+      "candidate_name": "홍덕희",
+      "party": "국민의힘",
+      "election_district": "구로구",
+      "province": "서울특별시",
+      "municipality": "구로구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "멈춰버린 재개발·재건축, '현장 법률 주치의'로 진격의 속도전",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "20년 희망고문 종료! 구로차량기지 입체복합화",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "교육격차 해소를 위한 '구로형 공공 교육 사다리' 복원",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "G밸리 사이버보안 특화 및 동부제강 스마트 물류단지 육성",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "20년 체증과 단절을 끝내는 '구로 교통 대개혁'",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.343654+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100160192",
+      "candidate_name": "최기찬",
+      "party": "더불어민주당",
+      "election_district": "금천구",
+      "province": "서울특별시",
+      "municipality": "금천구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "금천구-서울 착착 연결, ‘30분 통근 도시’ 프로젝트 참여",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "달빛 어린이 의료체계 구축도시 금천",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "교육, 기회의 평등 과정의 혁신",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "생활의 혁신, 생활 중심 공약",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "날로 변하는 스카이라인, 금천 도시개발 프로젝트",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.484990+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100161473",
+      "candidate_name": "이희권",
+      "party": "국민의힘",
+      "election_district": "금천구",
+      "province": "서울특별시",
+      "municipality": "금천구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "부영부지에 금천메디· 비즈 복합허브 미니코엑스 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "공군부대부지 초고층 스카이타워, 스포츠과학, AI 특성화 대학산학연 캠퍼스추진",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "신안산선 역세권과 연계하여 금천경제 재도약 추구",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "금천형 상권, 생활경제 활성화",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "재개발, 재건축 지연건 강력추진",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.609608+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100155777",
+      "candidate_name": "조유진",
+      "party": "더불어민주당",
+      "election_district": "영등포구",
+      "province": "서울특별시",
+      "municipality": "영등포구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "천하제일 민주주의",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "천하제일 명품도시",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "천하제일 경제활력 창업특구",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "천하제일 문화중심 국제도시",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "천하제일 혁신적인 교육 및 복지행정",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.722759+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100156463",
+      "candidate_name": "최웅식",
+      "party": "국민의힘",
+      "election_district": "영등포구",
+      "province": "서울특별시",
+      "municipality": "영등포구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "어린이 종합병원 건립",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "준공영 교육혁신타운 조성 및 미래교육도시 구축",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "여의도 AI 미래산업·국제교육도시 조성",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "경부선·경인선 지하화 및 광역교통 혁신 추진",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "대림동 뉴타운 1만 세대 추진",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.833014+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100155877",
+      "candidate_name": "류삼영",
+      "party": "더불어민주당",
+      "election_district": "동작구",
+      "province": "서울특별시",
+      "municipality": "동작구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "최고의 속도로 주민이 원하는 도시정비 사업 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "한강변 랜드마크 및 수변공원 조성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "동작타워 건립 및 동작8경 명소화 추진",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "어르신이 행복한 동작! 권역별 시니어 문화센터 조성",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "역세권 용도지역 상향 및 상업기능지역 확대",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:37.950678+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100156792",
+      "candidate_name": "김정태",
+      "party": "국민의힘",
+      "election_district": "동작구",
+      "province": "서울특별시",
+      "municipality": "동작구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "누구보다 빠른, 남들과는 다른 동작 재개발·재건축!",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "글로벌 명품학군 동작! 0세부터 대학까지 동작이 함께 키우는 우리 아이",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "막힘없는 동작! 오세훈 교통혁신, 김정태가 가속도로 더 빠르게!",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "동작 비즈니스 코어, 베드타운에서 자족도시로!",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "누구나 오고 싶은 동작, 한강·현충원·보라매 중심 문화 선도구",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.054761+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163677",
+      "candidate_name": "박일하",
+      "party": "개혁신당",
+      "election_district": "동작구",
+      "province": "서울특별시",
+      "municipality": "동작구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "세계최초 냉난방비 ZERO 아파트단지 구현",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "동작구 주요 간선도로망 확장",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "랜드마크 복합쇼핑몰 유치",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "노량진 옛 구청사 복합개발로 유니콘·유망기업 유치",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "영국 빅토리아 앨버트 박물관 한국분관 유치",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.170350+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100161558",
+      "candidate_name": "박준희",
+      "party": "더불어민주당",
+      "election_district": "관악구",
+      "province": "서울특별시",
+      "municipality": "관악구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "관악S밸리 3.0 성공적 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "공영주차장 확충 및 공유 활성화",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "1인 가구 행복 도시",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "관악 365 통합돌봄",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "관악산 하늘숲길 프로젝트",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.414857+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100160057",
+      "candidate_name": "이남형",
+      "party": "국민의힘",
+      "election_district": "관악구",
+      "province": "서울특별시",
+      "municipality": "관악구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "[재정자립]스마트 자원순환 복합센터 건립 및 세수 증대",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "[교통 개선]난곡선 조기착공 및 신림선연계 교통망 완성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "[지역경제] 역세권 용적률 1,000% 상향을 통한 '관악 테크노폴리스' 조성",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "[관악구 가치 상승] 봉천천 생태하천 복원 및 도로 입체화",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "[교육/복지] 관악 교육·복지 대전환: '서울대 연계 명문학교' 및 '관악 행복콜택시'",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.514728+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162020",
+      "candidate_name": "이혜숙",
+      "party": "개혁신당",
+      "election_district": "관악구",
+      "province": "서울특별시",
+      "municipality": "관악구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "미래도시 1번지 - 관악밸리088로 일자리와 골목상권이 함께 성장하는 컬처노믹스 도시",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "청년행복 1번지 - 혼자서도 당당하게 살 수 있는 관악",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "주거·교통 1번지 - 살 곳은 든든하게, 갈 길은 빠르게",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "돌봄·교육 1번지 - 아이 돌봄 공백 해소와 교육격차 완화",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "복지·의료 1번지 - 어르신·장애인·중증질환자 등 복지 사각지대 해소",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.634437+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100161489",
+      "candidate_name": "황인식",
+      "party": "더불어민주당",
+      "election_district": "서초구",
+      "province": "서울특별시",
+      "municipality": "서초구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "재건축·재개발·종상향  신속 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "경부간선도로 지하화 및 토지 효율적 개발로 미래서초 경제 주도",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "생활불편 해소를 위한 교통체계 혁신",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "교육·문화예술·AI 융합도시 육성",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "생애주기별 맞춤형 복지체계 구축",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.770013+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100162496",
+      "candidate_name": "전성수",
+      "party": "국민의힘",
+      "election_district": "서초구",
+      "province": "서울특별시",
+      "municipality": "서초구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "경부간선도로 및 반포대로 지하화 추진 하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "약자와 동행, 서초형 촘촘한 복지 구현하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "녹지 보행 네트워크(서초행복길)를 구축하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "양재 AICT 허브 및 도시 첨단 물류단지 조성하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "서초 전 세대 미래 일자리 창출하겠습니다.",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.881178+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100157718",
+      "candidate_name": "김형곤",
+      "party": "더불어민주당",
+      "election_district": "강남구",
+      "province": "서울특별시",
+      "municipality": "강남구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "초고속 재건축. 재개발 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "세계의 중심, 글로벌 강남 완성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "강남구청 신청사 건립 추진",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "수서GTX-SRT 미래도시 개발",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "강남구민 세금부담 완화추진",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:38.966452+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100158841",
+      "candidate_name": "김현기",
+      "party": "국민의힘",
+      "election_district": "강남구",
+      "province": "서울특별시",
+      "municipality": "강남구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "강남 재건축 재개발을 임기 내 속도전으로 완성하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "수서역 환승센터 및 역세권개발과 영동대로 지하화로 강남 미래 성장축을 완성하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "강남 역차별을 종식하고 구민이 낸 세금을 구민에게 돌려드리겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "강남 경제의 부흥을 이끌어 상권을 살리고 일자리를 만들겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "강남이 책임지는 평생 복지 구축과 경쟁력 있는 인재를 양성하겠습니다.",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:39.046158+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100155375",
+      "candidate_name": "조재희",
+      "party": "더불어민주당",
+      "election_district": "송파구",
+      "province": "서울특별시",
+      "municipality": "송파구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "송파-위례 AI·R&D 혁신축 구축 : 디지털·교육특구 통합 추진",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "종합운동장 옆 백제고분로 지하화 및 잠실 MICE 글로벌 미디어로드 조성",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "잠실주공5단지·올림픽3대장·장미·거여마천 등 재건축·재개발·리모델링 신속 추진",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "위례신사선 조기 착공 및 위례과천선 송파 연장노선 신설 추진",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "삶의 질 향상을 위한 '생애주기별 돌봄재단' 설립 추진",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:39.159126+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100160360",
+      "candidate_name": "서강석",
+      "party": "국민의힘",
+      "election_district": "송파구",
+      "province": "서울특별시",
+      "municipality": "송파구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "신속한 재개발·재건축 추진으로 주거 명품도시를 만들겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "미래산업을 육성하여 한 차원 높은 도시 를 만들겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "정원도시 송파를 조성하겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "구민 모두 함께 누리는 문화예술·교육 도시를 만들겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "청년들이 원하는 양질의 일자리를 청년과 함께 만드는 청년도시를 만들겠습니다.",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:39.240425+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100154374",
+      "candidate_name": "김종무",
+      "party": "더불어민주당",
+      "election_district": "강동구",
+      "province": "서울특별시",
+      "municipality": "강동구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "구청장 직속「주택정비사업 신속 지원단」운영",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "GTX-D노선 조기 착공",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "365 긴급 아이돌봄 센터 권역별 설치",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "강동종합실내체육관 건립",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "둘레길 테마숲길 조성",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:39.359193+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100163194",
+      "candidate_name": "이수희",
+      "party": "국민의힘",
+      "election_district": "강동구",
+      "province": "서울특별시",
+      "municipality": "강동구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "서울시 최초 IB교육 국제화특구 지정",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "가속도 붙은 재개발·재건축 속도",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "더 빠르게 여는 GTX-D 강동 시대",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "강동 한강 그린웨이 사업으로, 강동 한강변을 주민에게",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "영유아부터 어르신까지 3대가 행복한 복지 강동",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:39.483739+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "4",
+      "candidate_id": "100157173",
+      "candidate_name": "이용우",
+      "party": "개혁신당",
+      "election_district": "강동구",
+      "province": "서울특별시",
+      "municipality": "강동구",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "전국 최초 ‘강동형 도시재난 안심보험’ 도입",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "‘에듀-테크 진로·학점 설계 컨설팅 센터’ 구축",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "고덕~강일 ‘수변공원 재구조화·랜드마크화’",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "천호 ‘강동의 성수동’ 프로젝트",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "‘청결 강동’ 도심 동물 관리 시스템 구축",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:39.569323+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100153800",
+      "candidate_name": "김영배",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "교육과정·교원·학교 자율 혁신 공약",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "학교·교육 선택권 확대 공약",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "교육데이터 개방·투명 거버넌스 공약",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "사립학교·대학입시 자율·공정 시스템 공약",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "평생·미래역량·복지 통합 공약(학생·청년·중장년·어르신 + 브랜드 정책)",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:40.463418+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100155563",
+      "candidate_name": "한만중",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "교육불평등 해소 ― 사교육 카르텔 없는 공정한 출발선",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "세계 표준 서울형 AI 교육 기본사회 구축",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "서울 청소년 미래자산 펀드 ― 부모의 자산 대신 서울이 함께 책임",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "교권 보호와 교원 성장 지원 ― 교사가 아이의 눈을 볼 수 있는 학교",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "초등 교과전담교사 전면 확대 ― 수업 과부하 해소·공교육 질 혁신",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:40.556930+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100163258",
+      "candidate_name": "조전혁",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "[교육] 튼튼한 몸과 따뜻한 인성 위에 삶의 지혜를 갖추는 서울교육 체인지(體仁智)",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "[학력] AI로 학업 부담은 낮추고, 학력은 높이고!",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "[교육비] 학원 뺑뺑이 STOP! 사교육비 걱정 해방",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "[학군] 내 집 앞은 안심, 서울 전역은 기회인 '중학교 선택제'!",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "[안전] 교권은 바로 세우고, 학교는 안전하게!",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:40.646815+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100162651",
+      "candidate_name": "이학인",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "서울을 하나로, 선택은 무제한",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "사교육비 절감, 사교육 형평성 강화와 부담 경감",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "서울형 자기주도학습체계 (S-GPS) 구축",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "교권 보호와 교육청 책무성 강화",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "교육행정 효율화 및 투명성 제고",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:41.048859+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100153774",
+      "candidate_name": "윤호상",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "학교안전을 확실히 해결하겠습니다.(학교안전 혁명)",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "자녀 돌봄 부담을 파격적으로 줄이겠습니다.(돌봄 혁명)",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "사교육 환경을 개선하여 학부모의 부담을 확 줄이겠습니다.(사교육 혁명)",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "서울교육의 패러다임을 완전히 바꾸겠습니다.",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "교권보호와 교원 위상 강화에 힘쓰겠습니다.",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:41.143892+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100161493",
+      "candidate_name": "정근식",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "헌법이 보장하는 무상교육의 완성",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "마음 건강 회복 및 존중과 평화의 안전한 학교",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "학습 안전망 구축으로 기초학력 책임 보장",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "생각하는 힘을 키우는 AI·디지털 미래 교육",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "방과후 활동 및 돌봄의 안정적 정착과 질 제고",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:41.228462+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100153778",
+      "candidate_name": "홍제남",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "학교를 살리는 교육행정 - 통제에서 지원으로",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "교육과정·평가 혁신 - 암기교육을 넘어 미래 역량 교육으로",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "AI를 이기는 인간교육 - 기술을 넘어 인간을 키우는 교육",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "서울형 아동·청소년 무상교통 추진 - 배움의 이동권 보장",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "대학입시제도 개선 TF 운영 - 수업과 성장이 중심이 되는 서울교육",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:41.356870+00:00"
+    },
+    {
+      "election_id": "20260603",
+      "election_type": "11",
+      "candidate_id": "100153786",
+      "candidate_name": "류수노",
+      "party": "",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "0 ~ 12세 책임교육 국가보장제(교육·복지통합)",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "서울형 중·고교 체계 전면 개편",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "교육격차 제로 프로젝트(약자와의 동행 교육)",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "AI 미래교육·미래형 교육혁신 2.0",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "서울시민 평생학습 기본권 보장",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:37:41.460177+00:00"
+    }
+  ]
+}

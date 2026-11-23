@@ -1,0 +1,68 @@
+{
+  "election_id": "20260603",
+  "election_types": [
+    "3"
+  ],
+  "province_filter": "서울특별시",
+  "candidate_source": "https://www.data.go.kr/data/15000908/openapi.do",
+  "pledge_source": "https://www.data.go.kr/data/15040587/openapi.do",
+  "retrieved_at": "2026-11-23T03:36:39.760285+00:00",
+  "notes": "공약 API의 데이터 없음은 공약 부재를 뜻하지 않음. 낙선 후보 선거공보 별도 수집 필요.",
+  "candidates_queried": [
+    {
+      "election_type": "3",
+      "candidate_id": "100157144",
+      "candidate_name": "정원오",
+      "pledge_status": "found",
+      "pledge_records": 1
+    }
+  ],
+  "pledge_records": [
+    {
+      "election_id": "20260603",
+      "election_type": "3",
+      "candidate_id": "100157144",
+      "candidate_name": "정원오",
+      "party": "더불어민주당",
+      "election_district": "서울특별시",
+      "province": "서울특별시",
+      "municipality": "",
+      "declared_promise_count": "5",
+      "promises": [
+        {
+          "number": "1",
+          "category": "",
+          "title": "30분 통근도시 실현으로 '시민에게 쉼표를'",
+          "content": ""
+        },
+        {
+          "number": "2",
+          "category": "",
+          "title": "서울 공간 대전환 - 5도심·6광역중심 체계로의 전환",
+          "content": ""
+        },
+        {
+          "number": "3",
+          "category": "",
+          "title": "도전과 실패가 경력이 되고 자산이 되는 청년창업수도 서울!",
+          "content": ""
+        },
+        {
+          "number": "4",
+          "category": "",
+          "title": "24시간 공백 없는 아이돌봄 지원체계 구축",
+          "content": ""
+        },
+        {
+          "number": "5",
+          "category": "",
+          "title": "4050+센터와 시니어라이프캠퍼스로 서울시민 활력회복!",
+          "content": ""
+        }
+      ],
+      "source": "중앙선거관리위원회 선거공약정보 OpenAPI",
+      "source_url": "https://www.data.go.kr/data/15040587/openapi.do",
+      "retrieved_at": "2026-11-23T03:36:39.759353+00:00"
+    }
+  ]
+}
