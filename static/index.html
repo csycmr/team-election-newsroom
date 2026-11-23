@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=count-history">
+  <link rel="stylesheet" href="/static/style.css?v=count-time-axis">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -38,27 +38,25 @@
             <div class="analytics-card"><h4>주요 후보 득표율 추이</h4><div id="rate-trend" class="trend-chart" aria-live="off">재생 데이터 불러오는 중</div><p class="chart-note">각 단계별 전체 집계 기준 · 단위 %</p></div>
             <div class="analytics-card"><h4>1·2위 후보 간 격차</h4><div id="gap-trend" class="trend-chart" aria-live="off">재생 데이터 불러오는 중</div><p class="chart-note">오세훈 − 정원오 · 단위 표 (음수는 정원오 우세)</p></div>
           </div>
-          <div class="timeline-heading"><h4>개표 단계</h4><span id="timeline-caption">12단계 중 현재 위치</span></div>
-          <div id="replay-timeline" class="replay-timeline" aria-label="12단계 개표 진행상황"></div>
-          <p class="chart-note">이 그래프는 저장된 12개 스냅샷만 시각화하며 자치구별·실제 실시간 개표 추정치를 제공하지 않습니다.</p>
-        </section>
-        <section class="dark-panel count-history" aria-labelledby="count-history-title">
-          <h3 id="count-history-title">서울시장 개표, 약 45시간의 기록</h3>
-          <p class="dark-muted">한국 시각 기준 · 보도 기록 7개와 시연용 보간 13개</p>
-          <p id="count-history-status" role="status">타임라인 데이터를 불러오는 중이에요.</p>
-          <div id="count-history-content" hidden>
-            <div class="count-history-controls">
-              <button type="button" id="count-history-play">타임라인 재생</button>
-              <button type="button" id="count-history-prev">이전 시점</button>
-              <button type="button" id="count-history-next">다음 시점</button>
+          <p class="chart-note">위 그래프는 개표 재생 시뮬레이션 12개 스냅샷을 표시해요.</p>
+          <section class="count-history" aria-labelledby="count-history-title">
+            <h4 id="count-history-title">개표 타임라인</h4>
+            <p class="dark-muted">6월 3일~5일 · 약 45시간 · 한국 시각(KST)</p>
+            <p id="count-history-status" role="status">타임라인 데이터를 불러오는 중이에요.</p>
+            <div id="count-history-content" hidden>
+              <div class="count-history-controls">
+                <button type="button" id="count-history-play">타임라인 재생</button>
+                <button type="button" id="count-history-prev">이전 시점</button>
+                <button type="button" id="count-history-next">다음 시점</button>
+              </div>
+              <div class="count-history-scroll" tabindex="0" aria-label="개표 타임라인 가로 스크롤">
+                <div id="count-history-axis" class="count-history-axis" role="group" aria-label="시점 선택"></div>
+              </div>
+              <p class="chart-note">● 보도 기록 · ◇ 시연용 보간. 가로 간격은 경과 시간에 비례하며, 재생은 시점을 차례로 보여줘요.</p>
+              <div id="count-history-detail" aria-live="polite"></div>
+              <a href="https://github.com/csycmr/team-election-newsroom/blob/main/data/replay/count_timeline.csv">GitHub 원본 CSV ↗</a>
             </div>
-            <div class="count-history-scroll" tabindex="0" aria-label="개표 타임라인 가로 스크롤">
-              <div id="count-history-axis" class="count-history-axis" role="group" aria-label="시점 선택"></div>
-            </div>
-            <p class="chart-note">● 보도 기록 · ◇ 시연용 보간. 가로 간격은 경과 시간에 비례하며, 재생은 시점을 차례로 보여줘요.</p>
-            <div id="count-history-detail" aria-live="polite"></div>
-            <a href="https://github.com/csycmr/team-election-newsroom/blob/main/data/replay/count_timeline.csv">GitHub 원본 CSV ↗</a>
-          </div>
+          </section>
         </section>
         <section class="final-results" aria-labelledby="final-results-title">
           <div class="final-heading">
@@ -137,8 +135,8 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js"></script>
-  <script type="module" src="/static/count-history.js"></script>
+  <script src="/static/app.js?v=count-time-axis"></script>
+  <script type="module" src="/static/count-history.js?v=count-time-axis"></script>
   <script type="module" src="/static/final-results.js?v=district-outline"></script>
 </body>
 </html>

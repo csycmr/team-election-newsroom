@@ -61,12 +61,19 @@ function renderTimeline(entries) {
     axis.append(point);
     return point;
   });
-  for (const entry of [first, last]) {
+  const reported = entries.filter((entry) => entry.time_basis !== "interpolated");
+  reported.forEach((entry, index) => {
     const label = document.createElement("time");
+    const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+    label.className = "count-history-tick";
+    if (entry === first) label.classList.add("is-first");
+    if (entry === last) label.classList.add("is-last");
     label.dateTime = entry.timestamp_kst;
-    label.textContent = `${timestampLabel.format(entry.time)}쯤`;
+    label.style.left = `${100 * (entry.time - first.time) / (last.time - first.time)}%`;
+    label.style.setProperty("--tick-lane", String(index % 2));
+    label.textContent = `${Number(month)}/${Number(day)} ${hours}:${minutes}${entry.time_basis === "approximate" ? "쯤" : ""}`;
     axis.append(label);
-  }
+  });
 
   function show(index) {
     current = index;

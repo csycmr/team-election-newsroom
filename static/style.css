@@ -585,7 +585,16 @@ input::placeholder, textarea::placeholder {
 }
 
 .count-history {
-  margin-top: 20px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.count-history h4 {
+  margin: 0 0 8px;
+  font-family: Paperlogy, "Pretendard Variable", Pretendard, sans-serif;
+  font-size: 21px;
+  line-height: 1.2;
 }
 
 .count-history-controls {
@@ -602,8 +611,8 @@ input::placeholder, textarea::placeholder {
 
 .count-history-axis {
   position: relative;
-  min-width: 920px;
-  height: 52px;
+  min-width: 960px;
+  height: 80px;
 }
 
 .count-history-axis::before {
@@ -640,15 +649,22 @@ input::placeholder, textarea::placeholder {
   border-color: var(--mint);
 }
 
-.count-history-axis time {
+.count-history-tick {
   position: absolute;
-  top: 33px;
+  top: calc(30px + var(--tick-lane) * 22px);
+  transform: translateX(-50%);
+  white-space: nowrap;
   font-size: 12px;
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
-.count-history-axis time:last-child {
-  right: 0;
+.count-history-tick.is-first {
+  transform: none;
+}
+
+.count-history-tick.is-last {
+  transform: translateX(-100%);
 }
 
 #count-history-detail {

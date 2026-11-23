@@ -405,12 +405,6 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
     const gap=two.map(pair=>pair[0].votes-pair[1].votes);
     const abs=Math.ceil(Math.max(...gap.map(Math.abs),1000)/10000)*10000;
     plot("gap-trend",[gap],-abs,abs,[`${two[0][0].candidate_name} − ${two[0][1].candidate_name}`],v=>Math.round(v/10000)+"만",activeStep);
-    const timeline=document.getElementById("replay-timeline");timeline.replaceChildren();
-    frames.forEach(f=>{
-      const cell=document.createElement("div");cell.className="timeline-step"+(f.record_type==="reported"?" reported":"")+(f.step_id===activeStep?" active":"");
-      cell.textContent=f.step_id;cell.title=`${f.step_id}단계 · 개표 ${f.counted_rate}% · ${f.record_type==="reported"?"보도 집계":"시연용 재구성"}`;timeline.append(cell);
-    });
-    document.getElementById("timeline-caption").textContent=activeStep?`${activeStep}/12단계 · ${frames[activeStep-1]?.counted_rate ?? "—"}% 개표`:'재생을 시작하세요';
   };
   const originalRender=render;
   render=function(frame){originalRender(frame);activeStep=frame.step_id;update();};
