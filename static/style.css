@@ -21,7 +21,7 @@
 .floating-rag-header,#floating-rag-form{display:flex;gap:8px;align-items:center;padding:12px}.floating-rag-header{justify-content:space-between;border-bottom:1px solid #344966}.floating-rag-header button{border:0;background:transparent;color:inherit;font-size:18px;padding:2px 6px}
 #floating-rag-messages{flex:1;min-height:0;overflow-y:auto;padding:14px;font-size:13px;line-height:1.65}#floating-rag-messages .rag-empty{color:#b6c6d9}#floating-rag-messages .chat-bubble{padding:10px 12px;margin:0 0 12px;border-radius:9px;background:#243752;white-space:pre-wrap;overflow-wrap:anywhere}#floating-rag-messages .chat-bubble.user{background:#355880}#floating-rag-messages .chat-sources{margin:6px 0 14px;font-size:12px}#floating-rag-messages .chat-sources a{display:block;color:#9de9d0;margin:5px 0;overflow-wrap:anywhere}
 #floating-rag-form{border-top:1px solid #344966}#floating-rag-input{min-width:0;flex:1;padding:10px;border:1px solid #58749b;border-radius:6px;background:#172b47;color:#fff}#floating-rag-form button{padding:10px 12px;border-radius:6px;border:1px solid #70edc8;background:#70edc8;color:#071b21}
-.election-analytics{margin-top:20px;padding:20px;border:1px solid #dce5e4;border-radius:12px;background:#fff}.analytics-heading,.timeline-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.analytics-heading h3{margin:5px 0 16px;font-size:18px}.analytics-caveat,.chart-note,.timeline-heading span{color:#687785;font-size:11px}.analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.analytics-card{min-width:0;padding:16px;border:1px solid #e1e8e8;border-radius:9px;background:#f8fbfa}.analytics-card h4,.timeline-heading h4{margin:0 0 12px;font-size:13px;color:#263c49}.trend-chart{min-height:150px;display:flex;align-items:center;justify-content:center;color:#647887;font-size:12px}.trend-chart svg{width:100%;height:auto;max-height:200px;overflow:visible}.chart-note{margin:8px 0 0}.timeline-heading{margin-top:18px}.replay-timeline{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px}.replay-timeline .timeline-step{display:grid;place-items:center;min-height:31px;border:1px solid #d5e0e0;border-radius:5px;color:#526b6b;background:#eef4f2;font-size:11px;font-variant-numeric:tabular-nums}.replay-timeline .timeline-step.reported{border-style:dashed}.replay-timeline .timeline-step.active{color:#fff;background:#176b5c;border-color:#176b5c;font-weight:700}
+.election-analytics{margin-top:20px;padding:20px;border:1px solid #dce5e4;border-radius:12px;background:#fff}.analytics-heading,.timeline-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.analytics-heading h3{margin:5px 0 16px}.analytics-caveat,.chart-note,.timeline-heading span{color:#687785;font-size:11px}.analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.analytics-card{min-width:0;padding:16px;border:1px solid #e1e8e8;border-radius:9px;background:#f8fbfa}.analytics-card h4,.timeline-heading h4{margin:0 0 12px;color:#263c49}.trend-chart{min-height:150px;display:flex;align-items:center;justify-content:center;color:#647887;font-size:12px}.trend-chart svg{width:100%;height:auto;max-height:200px;overflow:visible}.chart-note{margin:8px 0 0}.timeline-heading{margin-top:18px}.replay-timeline{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px}.replay-timeline .timeline-step{display:grid;place-items:center;min-height:31px;border:1px solid #d5e0e0;border-radius:5px;color:#526b6b;background:#eef4f2;font-size:11px;font-variant-numeric:tabular-nums}.replay-timeline .timeline-step.reported{border-style:dashed}.replay-timeline .timeline-step.active{color:#fff;background:#176b5c;border-color:#176b5c;font-weight:700}
 @media(max-width:760px){.floating-entry{right:16px;bottom:16px}.floating-button{width:52px;height:52px}.floating-chat{width:42px;height:42px}.floating-label{display:none}#floating-rag-panel{right:16px;bottom:132px;height:min(520px,calc(100dvh - 150px))}.analytics-grid{grid-template-columns:1fr}.replay-timeline{gap:3px}.replay-timeline .timeline-step{font-size:10px;min-height:25px}.analytics-heading{align-items:flex-start;flex-direction:column}}
 
 :root {
@@ -45,8 +45,25 @@ h1 {
   font-family: inherit;
 }
 
-h2, h3, .analytics-card h4, .timeline-heading h4 {
+h2, h3, .analytics-card h4, .timeline-heading h4,
+#district-detail h4, .method-card h4, #pledge-results h4 {
   font-family: Paperlogy, "Pretendard Variable", Pretendard, sans-serif;
+}
+
+.workspace-card h3 {
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.analytics-card h4, .timeline-heading h4,
+#district-detail h4, .method-card h4, #pledge-results h4 {
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+#bars .bar-row b {
+  font-size: clamp(16px, 1.4vw, 20px);
+  line-height: 1.25;
 }
 
 a, .eyebrow.mint {
