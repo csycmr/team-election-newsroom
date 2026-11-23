@@ -1,4 +1,5 @@
 import math
+import re
 import httpx
 from openai import AsyncOpenAI
 
@@ -40,21 +41,53 @@ async def contextual_review(article: Article, settings: Settings) -> dict:
 async def check_article(article: Article, settings: Settings) -> FactCheckResult:
     checks = []
     snapshot = article.snapshot
+    text = article.title + "\n" + article.body
     total_rate = sum(candidate.vote_rate for candidate in snapshot.candidates)
     checks.append({"field": "득표율 합계", "expected": "약 100%", "actual": total_rate,
                    "passed": math.isclose(total_rate, 100, abs_tol=0.2)})
+
     for candidate in snapshot.candidates:
+        name = candidate.candidate_name
+        escaped = re.escape(name)
+        # Compare each candidate's figures with the figures *adjacent to that name*.
+        # Checking mere number presence would wrongly pass swapped candidates.
+        votes = re.findall(
+            rf"(?<![가-힣A-Za-z]){escaped}\s*(?:후보(?:는|가|의)?\s*)?"
+            rf"(?:득표수\s*)?(\d[\d,]*)\s*표", text,
+        )
+        rates = re.findall(
+            rf"(?<![가-힣A-Za-z]){escaped}\s*(?:후보(?:는|가|의)?\s*)?"
+            rf"(?:득표율\s*)?(\d+(?:\.\d+)?)\s*%", text,
+        )
+        pairs = re.findall(
+            rf"(?<![가-힣A-Za-z]){escaped}\s*(?:후보(?:는|가|의)?\s*)?"
+            rf"(\d[\d,]*)\s*표\s*\(\s*(\d+(?:\.\d+)?)\s*%\s*\)", text,
+        )
+        expected_votes = candidate.votes
+        expected_rate = candidate.vote_rate
+        # The canonical snapshot paragraph carries this exact pair. Detect
+        # additional conflicting candidate-specific claims elsewhere as well.
+        pair_ok = any(int(v.replace(",", "")) == expected_votes and
+                      math.isclose(float(r), expected_rate, abs_tol=0.005)
+                      for v, r in pairs)
+        vote_ok = pair_ok and all(int(v.replace(",", "")) == expected_votes for v in votes)
+        rate_ok = pair_ok and all(math.isclose(float(r), expected_rate, abs_tol=0.005) for r in rates)
         checks.extend([
-            {"field": f"후보명:{candidate.candidate_name}", "expected": candidate.candidate_name,
-             "passed": candidate.candidate_name in article.body},
-            {"field": f"득표수:{candidate.candidate_name}", "expected": candidate.votes,
-             "passed": f"{candidate.votes:,}" in article.body},
-            {"field": f"득표율:{candidate.candidate_name}", "expected": candidate.vote_rate,
-             "passed": f"{candidate.vote_rate:.2f}" in article.body},
+            {"field": f"후보명:{name}", "expected": name, "passed": name in text},
+            {"field": f"득표수:{name}", "expected": expected_votes, "passed": vote_ok},
+            {"field": f"득표율:{name}", "expected": expected_rate, "passed": rate_ok},
         ])
+
+    expected_time = snapshot.collected_at.isoformat()
+    # Time strings are stored and drafted in ISO 8601 form. A different ISO
+    # time in a lead must not be silently accepted just because the original
+    # factual paragraph still contains the correct time.
+    times = re.findall(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?", text)
     checks.extend([
         {"field": "지역", "expected": snapshot.region, "passed": snapshot.region in article.body},
         {"field": "단계", "expected": snapshot.step_id, "passed": f"{snapshot.step_id}단계" in article.body},
+        {"field": "기준시각", "expected": expected_time,
+         "passed": expected_time in article.body and bool(times) and all(t == expected_time for t in times)},
         {"field": "출처", "expected": snapshot.source, "passed": snapshot.source in article.body},
     ])
     failed = [check for check in checks if not check["passed"]]
@@ -62,5 +95,5 @@ async def check_article(article: Article, settings: Settings) -> FactCheckResult
     llm_review = await contextual_review(article, settings)
     status = "fail" if failed else ("review_required" if llm_review.get("issues") else "pass")
     return FactCheckResult(status=status,
-                           reason="수치·후보·지역·단계·출처가 원 데이터와 일치합니다." if not failed else "원 데이터 불일치가 발견됐습니다.",
+                           reason="수치·후보·지역·단계·기준시각·출처가 원 데이터와 일치합니다." if not failed else "원 데이터 불일치가 발견됐습니다.",
                            checks=checks, external_claims=claims, llm_review=llm_review)

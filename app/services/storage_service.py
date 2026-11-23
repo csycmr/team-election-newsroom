@@ -44,6 +44,19 @@ class Storage:
             row = db.execute("SELECT payload FROM articles WHERE article_id=?", (article_id,)).fetchone()
         return Article.model_validate_json(row["payload"]) if row else None
 
+    def list_articles(self, status: str | None = None, limit: int = 100) -> list[Article]:
+        """Return newest articles, optionally restricted to a workflow status."""
+        query = "SELECT payload FROM articles"
+        params: list[str | int] = []
+        if status is not None:
+            query += " WHERE status = ?"
+            params.append(status)
+        query += " ORDER BY updated_at DESC, article_id DESC LIMIT ?"
+        params.append(limit)
+        with self.connect() as db:
+            rows = db.execute(query, params).fetchall()
+        return [Article.model_validate_json(row["payload"]) for row in rows]
+
     def log(self, article_id: str, action: str, actor: str, detail: dict | str):
         detail_text = detail if isinstance(detail, str) else json.dumps(detail, ensure_ascii=False)
         with self.connect() as db:

@@ -134,6 +134,15 @@ def required_article(article_id: str):
     return article
 
 
+@app.get("/api/articles")
+def list_articles(
+    status: str | None = Query(default=None, pattern="^(draft|fact_checked|human_reviewed|approved|rejected)$"),
+    limit: int = Query(default=100, ge=1, le=100),
+):
+    articles = storage.list_articles(status=status, limit=limit)
+    return {"articles": articles, "count": len(articles)}
+
+
 @app.get("/api/articles/{article_id}")
 def get_article(article_id: str):
     return required_article(article_id)
