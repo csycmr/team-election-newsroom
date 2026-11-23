@@ -599,7 +599,7 @@ input::placeholder, textarea::placeholder {
 
 .count-history-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
@@ -609,39 +609,9 @@ input::placeholder, textarea::placeholder {
   margin: 0;
 }
 
-.count-history-controls {
-  grid-column: 2;
-  display: flex;
-  gap: 8px;
-}
-
-.count-history-controls button {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border-radius: 50%;
-  font-size: 14px;
-  line-height: 1;
-}
-
-.count-history-controls button[aria-pressed="true"] {
-  border-color: var(--mint);
-}
-
 @media (max-width: 480px) {
   .count-history-header h4 {
     font-size: 16px;
-  }
-
-  .count-history-controls {
-    gap: 5px;
-  }
-
-  .count-history-controls button {
-    width: 30px;
-    height: 30px;
   }
 }
 
@@ -758,7 +728,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .count-history-header .count-history-note {
-  grid-column: 3;
+  grid-column: 2;
   justify-self: end;
   margin: 0;
   text-align: right;

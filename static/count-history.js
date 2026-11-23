@@ -43,13 +43,9 @@ function readTimeline(csv) {
 function renderTimeline(entries) {
   const axis = byId("count-history-axis");
   const detail = byId("count-history-detail");
-  const play = byId("count-history-play");
-  const prev = byId("count-history-prev");
-  const next = byId("count-history-next");
   const first = entries[0];
   const last = entries.at(-1);
   let current = 0;
-  let timer;
   let animation;
   let linked = false;
   const cursor = document.createElement("span");
@@ -67,8 +63,6 @@ function renderTimeline(entries) {
     point.setAttribute("aria-label", point.title);
     point.addEventListener("click", () => {
       if (linked) return;
-      cursor.hidden = true;
-      stop();
       show(index);
     });
     axis.append(point);
@@ -103,8 +97,6 @@ function renderTimeline(entries) {
     button.append(date, label);
     button.addEventListener("click", () => {
       if (linked) return;
-      stop();
-      cursor.hidden = true;
       show(index);
     });
     item.append(button);
@@ -116,8 +108,6 @@ function renderTimeline(entries) {
     current = index;
     const entry = entries[index];
     points.forEach((point, pointIndex) => point.setAttribute("aria-pressed", String(pointIndex === index)));
-    prev.disabled = linked || index === 0;
-    next.disabled = linked || index === entries.length - 1;
     const headline = document.createElement("p");
     const title = document.createElement("strong");
     title.textContent = `${timestampLabel.format(entry.time)} · ${entry.event} · ${timeBasis[entry.time_basis]}`;
@@ -143,13 +133,6 @@ function renderTimeline(entries) {
     });
   }
 
-  function stop() {
-    clearInterval(timer);
-    timer = undefined;
-    play.setAttribute("aria-pressed", "false");
-    play.title = "타임라인 재생";
-  }
-
   const rateAnchors = [first, ...entries.slice(1).filter((entry) => entry.counted_rate_pct !== "")];
 
   function timeAtRate(rate) {
@@ -172,11 +155,7 @@ function renderTimeline(entries) {
     cancelAnimationFrame(animation);
     if (kind === "stop") linked = false;
     else if (kind === "start" || kind === "frame") linked = true;
-    play.disabled = linked;
-    prev.disabled = linked || current === 0;
-    next.disabled = linked || current === entries.length - 1;
     if (kind === "pause" || kind === "stop") return;
-    stop();
     cursor.hidden = false;
     if (kind === "start") {
       show(0);
@@ -197,24 +176,7 @@ function renderTimeline(entries) {
     animation = requestAnimationFrame(tick);
   };
 
-  play.addEventListener("click", () => {
-    cursor.hidden = true;
-    if (timer !== undefined) {
-      stop();
-      return;
-    }
-    if (current === entries.length - 1) show(0);
-    play.setAttribute("aria-pressed", "true");
-    play.title = "타임라인 일시정지";
-    timer = setInterval(() => {
-      show(current + 1);
-      if (current === entries.length - 1) stop();
-    }, 900);
-  });
-  prev.addEventListener("click", () => { cursor.hidden = true; stop(); show(current - 1); });
-  next.addEventListener("click", () => { cursor.hidden = true; stop(); show(current + 1); });
   show(0);
-  play.disabled = false;
   if (latestReplayEvent) syncReplay(latestReplayEvent);
 }
 
