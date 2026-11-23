@@ -34,14 +34,16 @@ function renderTimeline(entries) {
   cursor.setAttribute("aria-hidden", "true");
   cursor.hidden = true;
   axis.append(cursor);
-  const toPercent = (index) => 100 * index / (entries.length - 1);
+  const startTime = entries[0].time;
+  const duration = entries.at(-1).time - startTime;
+  const toPercent = (time) => 100 * (time - startTime) / duration;
   const points = entries.map((entry, index) => {
     if (entry.time_basis === "simulated") return null;
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
     point.classList.toggle("is-incident", index > 0 && entry.counted_rate_pct === "");
-    point.style.left = `${toPercent(index)}%`;
+    point.style.left = `${toPercent(entry.time)}%`;
     point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
     point.addEventListener("click", () => {
@@ -53,13 +55,13 @@ function renderTimeline(entries) {
     axis.append(point);
     return point;
   });
-  for (const [index, entry] of entries.entries()) {
+  for (const entry of entries) {
     if (entry.time_basis === "simulated") continue;
     const label = document.createElement("time");
     const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
     label.className = "count-history-tick";
     label.dateTime = entry.timestamp_kst;
-    label.style.left = `${toPercent(index)}%`;
+    label.style.left = `${toPercent(entry.time)}%`;
     const dayLabel = document.createElement("span");
     dayLabel.textContent = `${Number(month)}/${Number(day)}`;
     const clockLabel = document.createElement("span");
@@ -109,8 +111,8 @@ function renderTimeline(entries) {
     });
   }
 
-  function moveCursor(index) {
-    cursor.style.left = `${toPercent(index)}%`;
+  function moveCursor(time) {
+    cursor.style.left = `${toPercent(time)}%`;
   }
 
   syncReplay = ({ kind, frame, next: nextFrame, deadline }) => {
@@ -121,12 +123,12 @@ function renderTimeline(entries) {
     cursor.hidden = false;
     if (kind === "start") {
       show(0);
-      moveCursor(0);
+      moveCursor(startTime);
       return;
     }
     if (!frame) return;
-    const from = frame.step_id - 1;
-    const to = nextFrame ? nextFrame.step_id - 1 : from;
+    const from = Date.parse(frame.timestamp_kst);
+    const to = nextFrame ? Date.parse(nextFrame.timestamp_kst) : from;
     show(frame.step_id - 1);
     moveCursor(from);
     if (to <= from) return;
