@@ -728,3 +728,36 @@ input::placeholder, textarea::placeholder {
     grid-column: 1 / -1;
   }
 }
+
+.count-history-header .count-history-note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  column-gap: 18px;
+  row-gap: 4px;
+}
+
+.count-history-note > span {
+  white-space: nowrap;
+}
+
+.ticker-alert-light:not([hidden]) {
+  display: block;
+  flex: 0 0 10px;
+  height: 10px;
+  align-self: center;
+  border-radius: 50%;
+  background: #ff4747;
+  box-shadow: 0 0 10px #ff4747;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ticker-alert-light:not([hidden]) {
+    animation: ticker-alert-pulse 1s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes ticker-alert-pulse {
+  from { opacity: .55; }
+  to { opacity: 1; }
+}

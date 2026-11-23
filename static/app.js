@@ -6,6 +6,12 @@ const clock = new Intl.DateTimeFormat("ko-KR", {
 });
 const colors = ["#ed737e", "#679bff", "#f3cd58", "#b896ff", "#f2a875"];
 
+const breakingEvents = new Set([
+  "투표용지 부족으로 잠실7동 제2투표소 투표 연장",
+  "오세훈 역전",
+  "잠실7동 제2투표소 투표함 2개 이송",
+]);
+
 let socket;
 let snapshot;
 let displayedFrame;
@@ -70,7 +76,9 @@ function render(frame) {
   byId("meta").textContent = `${frame.step_id}/${replayFrames.length}개 시점${retained}${coverage}`;
   byId("source").href = lastCount?.additional_source_url || lastCount?.source_url || frame.source_url;
   byId("source").textContent = lastCount?.additional_source_url ? "최종 집계표 ↗" : `${(lastCount || frame).source_name} ↗`;
-  byId("ticker").textContent = frame.counted_rate === null
+  const breaking = breakingEvents.has(frame.event) && socket?.readyState === WebSocket.OPEN;
+  byId("ticker-alert-light").hidden = !breaking;
+  byId("ticker").textContent = breaking || frame.counted_rate === null
     ? frame.event
     : `${frame.event} · 개표율 ${frame.counted_rate_pct}%`;
 
@@ -111,6 +119,7 @@ function updateActions() {
 
 function connect() {
   socket?.close();
+  byId("ticker-alert-light").hidden = true;
   publishReplayState("start");
   paused = false;
   pending = undefined;
@@ -133,6 +142,7 @@ function connect() {
   };
   connection.onclose = () => {
     if (socket !== connection) return;
+    byId("ticker-alert-light").hidden = true;
     if (!paused) {
       byId("pause").disabled = true;
       publishReplayState("stop");
