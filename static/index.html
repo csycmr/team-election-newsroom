@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=1280">
+  <link rel="stylesheet" href="/static/style.css?v=final-results">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -41,6 +41,46 @@
           <div class="timeline-heading"><h4>개표 단계</h4><span id="timeline-caption">12단계 중 현재 위치</span></div>
           <div id="replay-timeline" class="replay-timeline" aria-label="12단계 개표 진행상황"></div>
           <p class="chart-note">이 그래프는 저장된 12개 스냅샷만 시각화하며 자치구별·실제 실시간 개표 추정치를 제공하지 않습니다.</p>
+        </section>
+        <section class="final-results" aria-labelledby="final-results-title">
+          <div class="final-heading">
+            <h3 id="final-results-title">서울 25개 자치구 최종 개표</h3>
+            <span class="small-chip">최종 개표 100%</span>
+          </div>
+          <p id="final-results-status" role="status">최종 개표 자료를 불러오는 중이에요.</p>
+          <div id="final-results-content" hidden>
+            <div class="final-grid">
+              <section class="dark-panel">
+                <h3>어디가 가장 접전이었나</h3>
+                <p class="dark-muted">1·2위 득표율 차가 작은 순 · 막대 단위 %p</p>
+                <ol id="district-ranking" class="district-ranking"></ol>
+              </section>
+              <section class="dark-panel">
+                <h3>서울 25개 구 개표 지도</h3>
+                <label class="district-control">자치구 선택 <select id="final-district"></select></label>
+                <div id="district-map"></div>
+                <div id="district-detail" aria-live="polite"></div>
+              </section>
+            </div>
+            <section class="dark-panel final-subsection">
+              <h3>사전투표와 선거일 투표 비교</h3>
+              <p class="dark-muted">지도에서 선택한 구 기준. 각 방식의 유효표에서 후보가 얻은 비율이에요. 거소투표와 별도 분류 투표지는 비교에서 제외했어요.</p>
+              <div id="method-results" class="method-grid"></div>
+            </section>
+            <section class="dark-panel final-subsection">
+              <h3>서울시장 후보 공약</h3>
+              <p class="dark-muted">현재 확보된 정원오 후보 공약 제목만 표시해요. 다른 후보의 공약은 자료 추가 확인이 필요해요.</p>
+              <div id="pledge-results"></div>
+              <a href="https://www.data.go.kr/data/15040587/openapi.do">중앙선거관리위원회 선거공약정보 ↗</a>
+            </section>
+            <p class="dark-muted final-sources">
+              <a href="https://www.data.go.kr/data/15162288/fileData.do">개표 자료 · 중앙선거관리위원회</a>
+              <a href="https://sgis.kostat.go.kr">경계 원자료 · 통계청 SGIS</a>
+              <a href="https://github.com/vuski/admdongkor">경계 가공 · vuski/admdongkor</a>
+              <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+              <span>교통안전 라이브 자치구 경계를 화면 좌표로 변환</span>
+            </p>
+          </div>
         </section>
         <div class="bottom-action"><span>현재 개표 집계로 기사 작성하기</span><button type="button" class="primary" data-go="draft">기사 작성 화면으로 이동</button></div>
       </section>
@@ -78,5 +118,6 @@
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
   <script src="/static/app.js"></script>
+  <script type="module" src="/static/final-results.js"></script>
 </body>
 </html>
