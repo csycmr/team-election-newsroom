@@ -648,13 +648,6 @@ input::placeholder, textarea::placeholder {
   content: "";
 }
 
-.count-history-point.is-interpolated::before,
-.count-history-legend-dot.is-interpolated {
-  width: 5px;
-  height: 5px;
-  background: #fff;
-}
-
 .count-history-point[aria-pressed="true"] {
   border-color: var(--mint);
   box-shadow: 0 0 0 1px var(--mint);

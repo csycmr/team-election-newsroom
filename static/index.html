@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=timeline-dots">
+  <link rel="stylesheet" href="/static/style.css?v=reported-timeline">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -45,7 +45,7 @@
             <div class="count-history-scroll" tabindex="0" aria-label="개표 타임라인 가로 스크롤">
               <div id="count-history-axis" class="count-history-axis" role="group" aria-label="시점 선택"></div>
             </div>
-            <p class="chart-note"><span class="count-history-legend-dot" aria-hidden="true"></span> 보도 기록 · <span class="count-history-legend-dot is-interpolated" aria-hidden="true"></span> 시연용 보간. 가로 간격은 경과 시간에 비례해요. 상단 개표 재생과 함께 현재점이 움직여요.</p>
+            <p class="chart-note"><span class="count-history-legend-dot" aria-hidden="true"></span> 보도 기록. 가로 간격은 경과 시간에 비례해요. 상단 개표 재생과 함께 현재점이 움직여요.</p>
             <div id="count-history-detail" aria-live="polite"></div>
             <a href="https://github.com/csycmr/team-election-newsroom/blob/main/data/replay/count_timeline.csv">GitHub 원본 CSV ↗</a>
           </div>
@@ -136,7 +136,7 @@
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
   <script src="/static/app.js?v=replay-sync"></script>
-  <script type="module" src="/static/count-history.js?v=timeline-dots"></script>
+  <script type="module" src="/static/count-history.js?v=reported-timeline"></script>
   <script type="module" src="/static/final-results.js?v=district-outline"></script>
 </body>
 </html>

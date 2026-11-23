@@ -16,7 +16,6 @@ const timestampLabel = new Intl.DateTimeFormat("ko-KR", {
 });
 const numberLabel = new Intl.NumberFormat("ko-KR");
 const timeBasis = {
-  interpolated: "시연용 보간",
   count_observation: "보도 집계",
   publication_time: "기사 송고 시각",
   approximate: "보도 기준 추정 시각",
@@ -32,12 +31,12 @@ function readTimeline(csv) {
     const entry = Object.fromEntries(headers.map((header, index) => [header, fields[index]]));
     return { ...entry, time: Date.parse(entry.timestamp_kst) };
   });
-  if (entries.length < 2 || entries.some((entry, index) =>
-    !Number.isFinite(entry.time) || !(entry.time_basis in timeBasis) ||
-    (index > 0 && entry.time <= entries[index - 1].time))) {
+  const reported = entries.filter((entry) => Object.hasOwn(timeBasis, entry.time_basis));
+  if (reported.length < 2 || reported.some((entry, index) =>
+    !Number.isFinite(entry.time) || (index > 0 && entry.time <= reported[index - 1].time))) {
     throw new Error("Invalid timeline");
   }
-  return entries;
+  return reported;
 }
 
 function renderTimeline(entries) {
@@ -62,8 +61,6 @@ function renderTimeline(entries) {
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
-    const simulated = entry.time_basis === "interpolated";
-    point.classList.toggle("is-interpolated", simulated);
     point.style.left = `${100 * (entry.time - first.time) / (last.time - first.time)}%`;
     point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
@@ -76,8 +73,7 @@ function renderTimeline(entries) {
     axis.append(point);
     return point;
   });
-  const reported = entries.filter((entry) => entry.time_basis !== "interpolated");
-  reported.forEach((entry, index) => {
+  entries.forEach((entry, index) => {
     const label = document.createElement("time");
     const [, month, day, hours, minutes] = entry.timestamp_kst.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
     label.className = "count-history-tick";
@@ -116,9 +112,7 @@ function renderTimeline(entries) {
       if (!url || !url.startsWith("https://")) return;
       const link = document.createElement("a");
       link.href = url;
-      link.textContent = entry.time_basis === "interpolated"
-        ? (linkIndex === 0 ? "이전 기준 기록 ↗" : "다음 기준 기록 ↗")
-        : (linkIndex === 0 ? `${entry.source_name} ↗` : "최종 집계표 ↗");
+      link.textContent = linkIndex === 0 ? `${entry.source_name} ↗` : "최종 집계표 ↗";
       detail.append(link);
     });
   }
