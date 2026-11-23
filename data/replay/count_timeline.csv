@@ -1,0 +1,8 @@
+timestamp_kst,time_basis,event,counted_rate_pct,oh_se_hoon_votes,oh_se_hoon_vote_rate_pct,jung_won_oh_votes,jung_won_oh_vote_rate_pct,source_name,source_url,additional_source_url,note
+2026-06-03T18:20:00+09:00,approximate,개표 시작,,,,,,에너지경제신문,https://m.ekn.kr/view.php?key=20260604029310472,,보도 기준 시작 시각 약 18:20
+2026-06-04T01:10:00+09:00,count_observation,정원오 선두,33.84,688498,38.82,1038881,58.57,아이뉴스24,https://www.inews24.com/view/mcmd/1973677,,
+2026-06-04T04:55:00+09:00,count_observation,격차 1.90%p,79.08,1973472,47.69,2052482,49.59,이데일리,https://www.edaily.co.kr/News/Read?mediaCodeNo=257&newsId=01653126645478440,,
+2026-06-04T07:16:00+09:00,count_observation,오세훈 역전,93.9,2391512,48.67,2388836,48.61,뉴시스,https://m.newsis.com/view/NISX20260604_0003655599,,뉴시스가 같은 시각 기준으로 제시한 개표율과 득표 수치 사용
+2026-06-04T09:30:00+09:00,count_observation,"오세훈 30,359표 앞섬",97.7,2501865,48.94,2471506,48.34,뉴시스,https://files.newsis.com/view/NISX20260604_0003655957,,
+2026-06-04T17:46:00+09:00,publication_time,개표율 99.54% 보도,99.54,2560590,49.15,2507130,48.13,연합뉴스,https://www.yna.co.kr/amp/view/AKR20260604181600004,,17:46은 기사 송고 시각이며 별도 집계 시각은 기사에 명시되지 않음
+2026-06-05T15:00:00+09:00,approximate,최종 개표 완료,100,2575819,49.22,2515560,48.07,TV조선,https://news.tvchosun.com/site/data/html_dir/2026/06/05/2026060590307.html,https://www.yna.co.kr/amp/view/AKR20260605106300004,완료 시각은 TV조선의 약 15:00 보도 기준이며 최종 득표수는 연합뉴스 표 기준
