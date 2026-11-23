@@ -55,7 +55,12 @@ function render(frame) {
   byId("source").textContent = frame.source + " ↗";
   byId("ticker").textContent = `${label} · ${frame.counted_rate === 100 ? "개표 완료" : "개표 진행 " + frame.counted_rate + "%"} · ${ranked[0].candidate_name} ${ranked[0].vote_rate.toFixed(2)}%`;
 
-  for (const [index, candidate] of ranked.entries()) {
+  renderCandidateBars(ranked);
+  updateActions();
+}
+
+function renderCandidateBars(candidates, waiting = false) {
+  for (const [index, candidate] of candidates.entries()) {
     let row = byId(candidate.candidate_id);
     if (!row) {
       row = document.createElement("div");
@@ -65,15 +70,14 @@ function render(frame) {
     }
     row.querySelector("b").textContent = candidate.candidate_name;
     row.querySelector("small").textContent = candidate.party;
-    row.querySelector("strong").textContent = `${number.format(candidate.votes)}표 · ${candidate.vote_rate.toFixed(2)}%`;
+    row.querySelector("strong").textContent = waiting ? "" : `${number.format(candidate.votes)}표 · ${candidate.vote_rate.toFixed(2)}%`;
     const fill = row.querySelector(".fill");
     fill.style.background = colors[Number(candidate.candidate_id.split("-").pop()) - 1];
-    fill.style.width = candidate.vote_rate + "%";
+    fill.style.width = waiting ? "0%" : candidate.vote_rate + "%";
     if (byId("bars").children[index] !== row) {
       byId("bars").insertBefore(row, byId("bars").children[index] || null);
     }
   }
-  updateActions();
 }
 
 function updateActions() {
@@ -432,6 +436,8 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
   };
   const originalRender=render;
   render=function(frame){originalRender(frame);activeStep=frame.step_id;update();};
-  api("/api/replay").then(data=>{if(!Array.isArray(data)||data.length!==12)throw Error("12단계 데이터 형식이 다릅니다.");frames=data;replayFrames=data;update();
+  api("/api/replay").then(data=>{if(!Array.isArray(data)||data.length!==12)throw Error("12단계 데이터 형식이 다릅니다.");frames=data;replayFrames=data;
+    if (!snapshot) renderCandidateBars(frames[0].candidates, true);
+    update();
     if (snapshot && !paused && socket?.readyState === WebSocket.OPEN) publishReplayState("frame", snapshot);}).catch(error=>{document.getElementById("rate-trend").textContent="개표 추이 로드 실패: "+error.message;document.getElementById("gap-trend").textContent="데이터를 불러올 수 없습니다.";});
 })();
