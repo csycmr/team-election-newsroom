@@ -76,7 +76,8 @@ function renderTimeline(entries) {
     points.forEach((point, pointIndex) => point?.setAttribute("aria-pressed", String(pointIndex === index)));
     const headline = document.createElement("p");
     const title = document.createElement("strong");
-    title.textContent = `${timestampLabel.format(entry.time)} · ${entry.event}`;
+    const eventTitle = entry.time_basis === "simulated" ? "개표 진행" : entry.event;
+    title.textContent = `${timestampLabel.format(entry.time)} · ${eventTitle}`;
     headline.append(title);
     const basis = document.createElement("p");
     basis.className = "count-history-meta";
@@ -90,7 +91,13 @@ function renderTimeline(entries) {
       const validVotes = document.createElement("p");
       validVotes.textContent = entry.counted_valid_votes == null
         ? "집계 유효표 수 미확인"
-        : `${entry.time_basis === "simulated" ? "시연용 유효표" : "집계 유효표"} ${numberLabel.format(entry.counted_valid_votes)}표`;
+        : `집계 유효표 ${numberLabel.format(entry.counted_valid_votes)}표`;
+      if (entry.counted_valid_votes_basis === "simulation_interpolation") {
+        const estimate = document.createElement("small");
+        estimate.className = "count-history-meta valid-votes-source";
+        estimate.textContent = "시연 데이터 기반 추정";
+        validVotes.append(estimate);
+      }
       detail.append(validVotes);
       const stats = document.createElement("p");
       stats.textContent = `오세훈 ${numberLabel.format(Number(entry.oh_se_hoon_votes))}표 (${entry.oh_se_hoon_vote_rate_pct}%) · 정원오 ${numberLabel.format(Number(entry.jung_won_oh_votes))}표 (${entry.jung_won_oh_vote_rate_pct}%)`;

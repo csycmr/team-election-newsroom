@@ -797,3 +797,51 @@ input::placeholder, textarea::placeholder {
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
 }
+
+.site-header-right .demo-badge,
+.ticker-meta,
+.metrics .metric-source,
+#bars .is-missing {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.site-header-right .demo-badge {
+  background: transparent;
+  border-color: transparent;
+}
+
+#ticker {
+  flex: 1 1 auto;
+}
+
+.ticker-meta {
+  margin-inline-start: auto;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.ticker-meta[hidden],
+.metrics .metric-source[hidden] {
+  display: none;
+}
+
+.metrics .metric-source {
+  margin-top: 4px;
+}
+
+.valid-votes-source {
+  margin-inline-start: 8px;
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .ticker {
+    flex-wrap: wrap;
+  }
+
+  .ticker-meta {
+    flex-basis: 100%;
+  }
+}

@@ -60,9 +60,16 @@ function render(frame) {
   metrics.classList.add("is-updating");
   const timestamp = clock.format(new Date(frame.timestamp_kst));
   const approximate = frame.time_basis === "approximate" ? "쯤" : "";
-  byId("clock").textContent = `${timestamp}${approximate} KST · ${frame.event}`;
+  const isSimulation = frame.time_basis === "simulated";
+  const eventTitle = isSimulation ? "개표 진행" : frame.event;
+  byId("clock").textContent = `${timestamp}${approximate} KST · ${eventTitle}`;
   byId("progress").textContent = lastCount ? lastCount.counted_rate_pct + "%" : "—";
   byId("total").textContent = total === null ? "—" : number.format(total);
+  const totalMeta = byId("total-meta");
+  totalMeta.textContent = lastCount?.counted_valid_votes_basis === "simulation_interpolation"
+    ? "시연 데이터 기반 추정"
+    : lastCount?.counted_valid_votes_basis === "simulated" ? "시연 수치" : "";
+  totalMeta.hidden = !totalMeta.textContent;
   byId("leader").textContent = ranked[0]?.candidate_name ?? "—";
   byId("gap").textContent = ranked.length >= 2 ? number.format(ranked[0].votes - ranked[1].votes) : "—";
 
@@ -76,8 +83,11 @@ function render(frame) {
   const breaking = breakingEvents.has(frame.event) && socket?.readyState === WebSocket.OPEN;
   byId("ticker-alert-light").hidden = !breaking;
   byId("ticker").textContent = breaking || frame.counted_rate === null
-    ? frame.event
-    : `${frame.event} · 개표율 ${frame.counted_rate_pct}%`;
+    ? eventTitle
+    : `${eventTitle} · 개표율 ${frame.counted_rate_pct}%`;
+  const tickerMeta = byId("ticker-meta");
+  tickerMeta.textContent = isSimulation ? "시연용 재구성" : frame.counted_rate === null ? "보도 기록" : "보도 집계";
+  tickerMeta.hidden = false;
 
   renderCandidateBars(rows, !lastCount);
   updateActions();
@@ -94,7 +104,9 @@ function renderCandidateBars(candidates, waiting = false) {
     }
     row.querySelector("b").textContent = candidate.candidate_name;
     row.querySelector("small").textContent = candidate.party;
-    row.querySelector("strong").textContent = waiting ? "" : candidate.votes === null ? "보도 수치 없음" : `${number.format(candidate.votes)}표 · ${candidate.vote_rate.toFixed(2)}%`;
+    const value = row.querySelector("strong");
+    value.classList.toggle("is-missing", candidate.votes === null);
+    value.textContent = waiting ? "" : candidate.votes === null ? "보도 수치 없음" : `${number.format(candidate.votes)}표 · ${candidate.vote_rate.toFixed(2)}%`;
     const fill = row.querySelector(".fill");
     fill.style.background = colors[Number(candidate.candidate_id.split("-").pop()) - 1];
     fill.style.width = waiting || candidate.vote_rate === null ? "0%" : candidate.vote_rate + "%";
@@ -140,6 +152,7 @@ function connectReplay(startStep, delayMs) {
     byId("ticker-alert-light").hidden = true;
     publishReplayState("stop");
     if (displayedFrame?.step_id !== replayFrames.length) {
+      byId("ticker-meta").hidden = true;
       byId("ticker").textContent = "재생 연결이 종료됐어요. 개표 재생을 눌러 다시 시작해 주세요.";
     }
   };
