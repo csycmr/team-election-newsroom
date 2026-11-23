@@ -638,15 +638,26 @@ input::placeholder, textarea::placeholder {
   line-height: 1;
 }
 
-.count-history-point.is-interpolated {
-  color: var(--muted);
-  border-style: dashed;
+.count-history-point::before,
+.count-history-legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8cf0e8;
+  content: "";
+}
+
+.count-history-point.is-interpolated::before,
+.count-history-legend-dot.is-interpolated {
+  width: 5px;
+  height: 5px;
+  background: #fff;
 }
 
 .count-history-point[aria-pressed="true"] {
-  color: var(--ink);
-  background: var(--mint);
   border-color: var(--mint);
+  box-shadow: 0 0 0 1px var(--mint);
 }
 
 .count-history-tick {

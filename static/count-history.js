@@ -64,7 +64,6 @@ function renderTimeline(entries) {
     point.className = "count-history-point";
     const simulated = entry.time_basis === "interpolated";
     point.classList.toggle("is-interpolated", simulated);
-    point.textContent = simulated ? "◇" : "●";
     point.style.left = `${100 * (entry.time - first.time) / (last.time - first.time)}%`;
     point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
