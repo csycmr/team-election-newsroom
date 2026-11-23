@@ -753,3 +753,16 @@ input::placeholder, textarea::placeholder {
   color: var(--mint);
   font-variant-numeric: tabular-nums;
 }
+
+.count-history-header .count-history-note {
+  grid-column: 3;
+  justify-self: end;
+  margin: 0;
+  text-align: right;
+}
+
+@media (max-width: 620px) {
+  .count-history-header .count-history-note {
+    grid-column: 1 / -1;
+  }
+}

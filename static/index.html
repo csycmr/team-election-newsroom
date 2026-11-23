@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=timeline-controls">
+  <link rel="stylesheet" href="/static/style.css?v=timeline-note">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -39,6 +39,7 @@
               <button type="button" id="count-history-play" aria-label="타임라인 재생 또는 일시정지" aria-pressed="false" title="타임라인 재생" disabled><span aria-hidden="true">||</span></button>
               <button type="button" id="count-history-next" aria-label="다음 시점" title="다음 시점" disabled><span aria-hidden="true">▶|</span></button>
             </div>
+            <p class="chart-note count-history-note"><span class="count-history-legend-dot" aria-hidden="true"></span> 보도 기록. 가로 간격은 경과 시간에 비례해요. 상단 개표 재생과 함께 현재점이 움직여요.</p>
           </div>
           <p class="dark-muted">6월 3일~5일 · 약 45시간 · 한국 시각(KST)</p>
           <p id="count-history-status" role="status">타임라인 데이터를 불러오는 중이에요.</p>
@@ -46,7 +47,6 @@
             <div class="count-history-scroll" tabindex="0" aria-label="개표 타임라인 가로 스크롤">
               <div id="count-history-axis" class="count-history-axis" role="group" aria-label="시점 선택"></div>
             </div>
-            <p class="chart-note"><span class="count-history-legend-dot" aria-hidden="true"></span> 보도 기록. 가로 간격은 경과 시간에 비례해요. 상단 개표 재생과 함께 현재점이 움직여요.</p>
             <ul id="count-history-incidents" class="count-history-incidents" aria-label="투표용지·투표함 사건"></ul>
             <div id="count-history-detail" aria-live="polite"></div>
             <a href="https://github.com/csycmr/team-election-newsroom/blob/main/data/replay/count_timeline.csv">GitHub 원본 CSV ↗</a>
