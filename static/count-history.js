@@ -1,4 +1,4 @@
-const csvUrl = "https://raw.githubusercontent.com/csycmr/team-election-newsroom/main/data/replay/count_timeline.csv";
+const csvUrl = "https://raw.githubusercontent.com/csycmr/team-election-newsroom/main/data/replay/count_timeline.csv?v=ballot-events";
 const byId = (id) => document.getElementById(id);
 let latestReplayEvent;
 let syncReplay;
@@ -86,6 +86,30 @@ function renderTimeline(entries) {
     label.textContent = `${Number(month)}/${Number(day)} ${hours}:${minutes}${entry.time_basis === "approximate" ? "쯤" : ""}`;
     axis.append(label);
   });
+
+  const incidents = byId("count-history-incidents");
+  entries.forEach((entry, index) => {
+    if (index === 0 || entry.counted_rate_pct !== "") return;
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    const date = document.createElement("time");
+    date.dateTime = entry.timestamp_kst;
+    date.textContent = timestampLabel.format(entry.time) +
+      (entry.time_basis === "approximate" ? "쯤" : "");
+    const label = document.createElement("span");
+    label.textContent = entry.event;
+    button.append(date, label);
+    button.addEventListener("click", () => {
+      if (linked) return;
+      stop();
+      cursor.hidden = true;
+      show(index);
+    });
+    item.append(button);
+    incidents.append(item);
+  });
+  incidents.hidden = incidents.children.length === 0;
 
   function show(index) {
     current = index;
