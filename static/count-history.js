@@ -19,6 +19,7 @@ const timeBasis = {
   count_observation: "보도 집계",
   publication_time: "기사 송고 시각",
   approximate: "보도 기준 추정 시각",
+  reported_event: "보도 사건 시각",
 };
 
 function readTimeline(csv) {
@@ -123,11 +124,13 @@ function renderTimeline(entries) {
     play.textContent = "타임라인 재생";
   }
 
+  const rateAnchors = [first, ...entries.slice(1).filter((entry) => entry.counted_rate_pct !== "")];
+
   function timeAtRate(rate) {
-    const upper = entries.findIndex((entry) => Number(entry.counted_rate_pct) >= rate);
+    const upper = rateAnchors.findIndex((entry) => Number(entry.counted_rate_pct) >= rate);
     if (upper <= 0) return upper === 0 ? first.time : last.time;
-    const before = entries[upper - 1];
-    const after = entries[upper];
+    const before = rateAnchors[upper - 1];
+    const after = rateAnchors[upper];
     const fraction = (rate - Number(before.counted_rate_pct)) /
       (Number(after.counted_rate_pct) - Number(before.counted_rate_pct));
     return before.time + fraction * (after.time - before.time);
