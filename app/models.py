@@ -54,6 +54,11 @@ class Article(BaseModel):
     updated_at: datetime
 
 
+class ArticleUpdate(BaseModel):
+    title: str = Field(min_length=1, max_length=500)
+    body: str = Field(min_length=1)
+
+
 class ReviewRequest(BaseModel):
     reviewer: str = Field(min_length=1)
     note: str = ""

@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.adapters.cms import publish
 from app.config import ROOT, get_settings
-from app.models import ArticleCreate, ReviewRequest
+from app.models import ArticleCreate, ArticleUpdate, ReviewRequest
 from app.services.article_service import generate_article
 from app.services.election_service import fetch_snapshot
 from app.services.factcheck_service import check_article
@@ -115,6 +115,31 @@ def required_article(article_id: str):
 @app.get("/api/articles/{article_id}")
 def get_article(article_id: str):
     return required_article(article_id)
+
+
+@app.put("/api/articles/{article_id}")
+def update_article(article_id: str, request: ArticleUpdate):
+    article = required_article(article_id)
+    if article.status not in {"draft", "fact_checked"}:
+        raise HTTPException(409, "초안 또는 팩트체크 통과 상태에서만 기사를 수정할 수 있습니다.")
+
+    title = request.title.strip()
+    body = request.body.strip()
+    if not title or not body or "\n" in title or "\r" in title:
+        raise HTTPException(422, "제목은 한 줄, 본문은 비어 있지 않아야 합니다.")
+
+    # 수정 전 팩트체크 결과로 사람 검토·승인하지 못하게 한다.
+    previous_status = article.status
+    article.title = title
+    article.body = body
+    article.status = "draft"
+    article.updated_at = now_seoul()
+    storage.save_article(article)
+    storage.log(article_id, "article_updated", "system", {
+        "previous_status": previous_status,
+        "new_status": "draft",
+    })
+    return article
 
 
 @app.post("/api/articles/{article_id}/fact-check")
