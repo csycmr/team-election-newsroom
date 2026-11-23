@@ -864,3 +864,11 @@ input::placeholder, textarea::placeholder {
   width: 6px;
   height: 6px;
 }
+
+#bars .candidate-estimate {
+  margin-inline-start: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+}

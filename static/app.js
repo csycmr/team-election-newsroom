@@ -73,7 +73,9 @@ function render(frame) {
   byId("leader").textContent = ranked[0]?.candidate_name ?? "—";
   byId("gap").textContent = ranked.length >= 2 ? number.format(ranked[0].votes - ranked[1].votes) : "—";
 
-  const coverage = ranked.length > 0 && ranked.length < roster.length ? " · 주요 후보 2명 보도 수치" : "";
+  const coverage = ranked.some(candidate => candidate.is_simulated)
+    ? " · 주요 후보 2명 보도 수치, 나머지 3명 시연 추정"
+    : ranked.length > 0 && ranked.length < roster.length ? " · 주요 후보 2명 보도 수치" : "";
   const retained = lastCount && lastCount !== frame
     ? ` · 직전 집계 ${clock.format(new Date(lastCount.timestamp_kst))} 기준`
     : "";
@@ -107,6 +109,12 @@ function renderCandidateBars(candidates, waiting = false) {
     const value = row.querySelector("strong");
     value.classList.toggle("is-missing", candidate.votes === null);
     value.textContent = waiting ? "" : candidate.votes === null ? "보도 수치 없음" : `${number.format(candidate.votes)}표 · ${candidate.vote_rate.toFixed(2)}%`;
+    if (!waiting && candidate.is_simulated) {
+      const sourceNote = document.createElement("small");
+      sourceNote.className = "candidate-estimate";
+      sourceNote.textContent = "시연 추정";
+      value.append(" ", sourceNote);
+    }
     const fill = row.querySelector(".fill");
     fill.style.background = colors[Number(candidate.candidate_id.split("-").pop()) - 1];
     fill.style.width = waiting || candidate.vote_rate === null ? "0%" : candidate.vote_rate + "%";

@@ -56,6 +56,12 @@ def _count_timeline() -> list[dict]:
                         **candidate,
                         "votes": int(row[f"{prefix}_votes"]),
                         "vote_rate": float(row[f"{prefix}_vote_rate_pct"]),
+                        **(
+                            {"is_simulated": True}
+                            if prefix not in ("oh_se_hoon", "jung_won_oh")
+                            and row.get("other_candidate_votes_basis") == "simulation_interpolation"
+                            else {}
+                        ),
                     })
         timeline.append({
             **row,
