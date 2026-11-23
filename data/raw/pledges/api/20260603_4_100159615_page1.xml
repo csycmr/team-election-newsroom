@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100159615</cnddtId>
+    <sggName>함양군</sggName>
+    <sidoName>경상남도</sidoName>
+    <wiwName>함양군</wiwName>
+    <partyName>무소속</partyName>
+    <krName>이철우</krName>
+    <cnName>李哲雨</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>함양형 기본소득 도입</prmsTitle1>
+    <prmmCont1>1. 정책목표 : 군민 생활안정과 지역경제 선순환 구조 구축
+  ○ 군민 생활안정을 도모하고 직접지원 정책을 통해 지역 내 소비를 확대하여 지역경제 선순환 구조를 구축함
+  ○ 기본소득 지급을 지역 상권과 연계하여 전통시장·소상공인들의 매출 증대 및 지역경제 활성화를 도모함
+
+2. 우선순위 : 단·중기
+
+3. 이행절차 :
+  ○ 전 군민 대상 월 10만원 기본소득 단계적 지급
+  ○ 어르신에게는 장수수당을 추가 지원해 안정된 노후생활 지원.
+  ○ 고등학교 졸업생 대상 운전실습비 및 장학금 지원.
+
+4. 이행기간 : 2026년 ~ 2028년
+
+5. 재원조달방법 : 총 420억원 중 군비 40% 부담 (국·도·군비)</prmmCont1>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2>AI(인공지능) 중소·벤처기업 유치</prmsTitle2>
+    <prmmCont2>1. 정책목표 : 미래 산업 기반구축 및 일자리 창출
+  ○ 공공·민간 데이터를 활용한 AI 기반 산업을 육성하여 지역경제의 신성장동력을 확보함
+  ○ 중소·벤처기업 유치와 디지털 인재 양성을 통해 청년 일자리 창출 및 인구 유입 기반을 마련함
+
+2. 우선순위 : 장기
+
+3. 이행절차 :
+  ○ 농업·관광·산림 등 지역 데이터를 활용한 함양형 디지털 기반 구축
+  ○ 항노화 스마트농업과 디지털 산업 육성으로 함양의 미래 성장동력 확보
+  ○ 대학과의 MOU 체결로 군민 모두가 배울 수 있는 AI 교육공간 및 프로그램 확대
+
+4. 이행기간 : 2026년 ~ 2030년
+
+5. 재원조달방법 : 100억원 (국·도·군비 및 민간투자)</prmmCont2>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3>대전~함양~남해선 철도건설 추진</prmsTitle3>
+    <prmmCont3>1. 정책목표 : 교통 인프라 확충을 통한 지역경제 활성화
+  ○ 국가철도망 구축을 통해 함양을 내륙 교통 중심지로 육성하고 접근성을 획기적으로 개선함
+  ○ 철도 기반 물류·산업·관광 연계를 통해 기업 유치 및 일자리 창출 기반을 마련함
+
+2. 우선순위 : 장기
+
+3. 이행절차 :
+  ○ 국가철도망 구축계획 반영을 위한 중앙정부 및 관계기관 협력 추진
+  ○ 함양역 중심 물류·산업·관광 연계 개발계획 수립
+  ○ 철도 접근성 기반 기업 유치 및 관광벨트 조성 추진
+
+4. 이행기간 : 2026년 ~ 2035년
+
+5. 재원조달방법 : 5조4655억원 (국비)</prmmCont3>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>농산물 가격안정기금 100억원 조성</prmsTitle4>
+    <prmmCont4>1. 정책목표 : 농가소득 안정 및 지속가능한 농업 기반 구축
+  ○ 농산물 가격 변동에 대응할 수 있는 안정기금을 조성하여 농가소득 안정성을 확보함
+  ○ 유통구조 개선과 병행하여 안정적인 농업환경을 조성하고 지역 농업 경쟁력을 강화함
+
+2. 우선순위 : 단·중기
+
+3. 이행절차 :
+  ○ 100억원 규모 농산물 가격안정기금 단계적 조성
+  ○ 주요 농산물 가격 하락 시 차액 지원 및 긴급 지원체계 구축
+  ○ 계약재배 및 유통구조 개선 등 농가소득 안정 정책 병행 추진
+
+4. 이행기간 : 2026년 ~ 2028년
+
+5. 재원조달방법 : 100억원 (군비)</prmmCont4>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5>시내 공용주차장 공간 확대 및 무료화</prmsTitle5>
+    <prmmCont5>1. 정책목표 : 도심 생활환경 개선 및 상권 활성화
+  ○ 공용주차장 확충을 통해 만성적인 주차난을 해소하고, 군민의 생활편의를 높이는 쾌적한 도심 환경을 조성함
+  ○ 주차장 무료화를 통해 전통시장과 상권 접근성을 개선하고, 관광객 및 생활인구 유입 확대를 통한 지역경제 회복을 도모함
+
+2. 우선순위 : 단기
+
+3. 이행절차 :
+  ○ 시내 이면도로 및 노후·빈집 부지 활용 공용주차장 확대
+  ○ 공용주차장 단계적 무료화 추진
+  ○ 전통시장 및 상권 연계 주차환경 개선 추진
+
+4. 이행기간 : 2026년 ~ 2027년
+
+5. 재원조달방법 : 30억 (군비)</prmmCont5>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>

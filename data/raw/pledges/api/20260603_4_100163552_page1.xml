@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100163552</cnddtId>
+    <sggName>구례군</sggName>
+    <sidoName>전라남도</sidoName>
+    <wiwName>구례군</wiwName>
+    <partyName>무소속</partyName>
+    <krName>전경태</krName>
+    <cnName>全京泰</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>왕시루봉 선교사 유적지 복원</prmsTitle1>
+    <prmmCont1>□ 목 표
+  ○ 왕시루봉 선교유적지 복원을 통하여 문화유산의 보존과 기독교성지를 만들어 관광자원 활용
+
+□ 이행방법
+  ○ 현재 잔존 건축물등은 문화재 지정보존 주친 선교문화 유적지 조성 기독교 성도들의 성지순례코스 조정
+    - 
+□ 이행기간
+  ○ 2026. 07. ~ 2028. 07.
+    - 
+□ 재원조달방안 등
+  ○ 군비 50%자부담(개발주체 : 50%)
+    -</prmmCont1>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2>사성암 좌불상 건립</prmsTitle2>
+    <prmmCont2>□ 목 표
+  ○ 사성암 좌불상 건립
+
+□ 이행방법
+  ○ 불교성지를 만들어 관광자원으로 활용하고자 함
+    - 
+□ 이행기간
+  ○ 2026. 07. ~ 2028. 07.
+    - 
+□ 재원조달방안 등
+  ○ 화엄사 19교구 본사 사찰
+    -</prmmCont2>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3>지리산 미니어처 건립</prmsTitle3>
+    <prmmCont3>□ 목 표
+  ○지리산 미니어처 건립
+
+□ 이행방법
+  ○지리산을 50/1 축소하여 관광자원으로 활용하고자 함
+      - 
+□ 이행기간
+  ○2026. 07. ~ 2028. 07.
+      - 
+□ 재원조달방안 등
+  ○군비
+      -</prmmCont3>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>신장투석기계 구입</prmsTitle4>
+    <prmmCont4>□ 목 표
+  ○ 신장투석기계 구입
+
+□ 이행방법
+  ○ 관내에 신장투석환자가 있는데도 외지로 다니는 불편한 실정
+    - 
+□ 이행기간
+  ○ 2026. 07. ~ 2028. 07.
+    - 
+□ 재원조달방안 등
+  ○ 군비</prmmCont4>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5> 의료원에 산부인과 의사를 근무토록 함</prmsTitle5>
+    <prmmCont5>□ 목 표
+  ○ 의료원에 신부인과 의사를 근무토록 함
+
+□ 이행방법
+  ○ 구례에 산부인과 의사가 없어 여러모로 불편한 실정
+    - 
+□ 이행기간
+  ○ 2026. 07. ~ 2028. 07.
+    - 
+□ 재원조달방안 등
+  ○ 군비
+    -</prmmCont5>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>

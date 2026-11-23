@@ -64,13 +64,44 @@ def fetch_candidate_pages(key, election_id, kind, sido):
     return all_items
 
 
+
+def load_pledge_xml(url, raw_path):
+    import time
+
+    if raw_path.exists():
+        cached = raw_path.read_bytes()
+        try:
+            code, _, _, _ = parse_response(cached)
+            if code in ("INFO-00", "00", "INFO-03", "03"):
+                return cached
+        except ValueError:
+            pass
+
+    for attempt in range(3):
+        try:
+            blob = request_xml(url)
+            code, _, _, _ = parse_response(blob)
+            if not code:
+                raise ValueError("??? API ?? ??? ????.")
+            raw_path.parent.mkdir(parents=True, exist_ok=True)
+            raw_path.write_bytes(blob)
+            return blob
+        except (RuntimeError, ValueError) as exc:
+            if attempt == 2:
+                raise RuntimeError(
+                    f"?? ?? 3? ??: {raw_path.name} / {exc}"
+                ) from None
+            time.sleep(2 ** attempt)
+
 def fetch_pledges(key, election_id, kind, candidate_id):
     results = []
     page = 1
     while True:
-        blob = request_xml(pledge_url(key, election_id, kind, candidate_id, page))
-        RAW_PLEDGES.mkdir(parents=True, exist_ok=True)
-        (RAW_PLEDGES / f"{election_id}_{kind}_{candidate_id}_page{page}.xml").write_bytes(blob)
+        raw_path = RAW_PLEDGES / f"{election_id}_{kind}_{candidate_id}_page{page}.xml"
+        blob = load_pledge_xml(
+            pledge_url(key, election_id, kind, candidate_id, page),
+            raw_path,
+        )
         code, msg, total, items = parse_response(blob)
         if code in ("INFO-03", "03"):
             return [], "no_data"
@@ -132,7 +163,13 @@ def main():
         all_candidates.extend(valid)
         for c in valid[:args.max_candidates or None]:
             cid = c["candidate_id"]
-            pledges, status = fetch_pledges(pledge_key, args.election_id, kind, cid)
+            try:
+                pledges, status = fetch_pledges(
+                    pledge_key, args.election_id, kind, cid
+                )
+            except (RuntimeError, ValueError) as exc:
+                pledges, status = [], "error"
+                print(f"  API error: {cid} / {exc}")
             all_pledges.extend(pledges)
             statuses.append({"election_type": kind, "candidate_id": cid,
                              "candidate_name": c["candidate_name"], "pledge_status": status,

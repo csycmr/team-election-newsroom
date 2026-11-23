@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100159309</cnddtId>
+    <sggName>하동군</sggName>
+    <sidoName>경상남도</sidoName>
+    <wiwName>하동군</wiwName>
+    <partyName>더불어민주당</partyName>
+    <krName>제윤경</krName>
+    <cnName>諸閏景</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>농이촌기본소득 지정 관철</prmsTitle1>
+    <prmmCont1>○ 목 표 : 군민의 기븐소득 보장
+
+○ 이행방법 : 추경 추가지 역선정 에 공모 및 반영
+
+○ 이행기간 : 2027 년
+
+○ 재원조달방안 등 : 국비 ·도비 ·군비</prmmCont1>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2>섬진강유역 환경청 유치</prmsTitle2>
+    <prmmCont2>○ 목 표 : 섬진강의 독립적 관리
+
+○ 이행방법 : 국회 건의-기후에너지한경부 사업반영
+
+○ 이행기간 : 2028년 내
+
+○ 재원조달방안 등 : 국비 100%</prmmCont2>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3>국도 2호선 4차선 확정</prmsTitle3>
+    <prmmCont3>○ 목 표 : 원활한 물류, 사람의 이동
+
+○ 이행방법 : 국회 국토위원회 건의-국토교통부
+                     제6차 국도, 구지도 계획 변경에 반여
+
+○ 이행기간 : 임기 내
+
+○ 재원조달방안 등 : 국비 100%</prmmCont3>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>헷빛 발전 소득 마을</prmsTitle4>
+    <prmmCont4>○ 목 표 : 군민 햇빛 기본 소득
+
+○ 이행 방법 : 중앙정부 공모사업
+
+○ 이행기간 : 임기 내
+
+○ 재원조달방안 등 : 국비 . 민간자금</prmmCont4>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5>700Mw급 옥종 양수발전소 건설</prmsTitle5>
+    <prmmCont5>○ 목 표 : 에너지 자립 및 군민 수익창출
+
+○ 이행방법 : 타당성 용역 착수
+
+○ 이행기간 : 임기 내 착수
+
+○ 재원조달방안 등 : 국비 ·군비</prmmCont5>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>

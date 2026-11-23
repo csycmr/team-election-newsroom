@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100165834</cnddtId>
+    <sggName>화순군</sggName>
+    <sidoName>전라남도</sidoName>
+    <wiwName>화순군</wiwName>
+    <partyName>무소속</partyName>
+    <krName>정연지</krName>
+    <cnName>鄭娟知</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>화순 지역 모든 대학생 대상 장학금 지원</prmsTitle1>
+    <prmmCont1>□ 목 표
+  ○ 지역인재육성
+    - 지역 학부모들의 교육 비용 절감과 차별없는 교육 기회 제공
+
+□ 이행방법
+  ○ 대학 진학 후 졸업시까지 학기당 200만 원 지원
+    - 장학생의 경우 생활비 지원
+
+□ 이행기간
+  ○ 2026년 하반기부터 시행
+    - 
+□ 재원조달방안 등
+  ○ 화순군 장학재단 기금 활용
+    -</prmmCont1>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2>대중교통 확대와 전면 무상화</prmsTitle2>
+    <prmmCont2>□ 목 표
+  ○ 비수도권과 농어촌 지역에서 나타나는 교통약자들의 교통 불평등 문제 해결
+    - 대중교통 인프라 및 이동의 공공성 보장으로 주민들의 정주여건 개선
+□ 이행방법
+  ○ 버스운송회사와 계약 체결을 통해 요금지원
+    - 긴급부름택시 제도 운영
+□ 이행기간
+  ○ 2027년 상반기 도입 예정
+    - 
+□ 재원조달방안 등
+  ○ 군비 활용
+    -</prmmCont2>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3> 노인·장애인 일자리 등 줄어든 복지예산 확대</prmsTitle3>
+    <prmmCont3>□ 목 표
+  ○ 월 지원비 삭감과 혹한·혹설 기간(4개월)동안 군 사업이 추진되지 않아 생활고를 겪고 있는 사회적 약자들의 생계 곤란 극복
+   - 
+ □ 이행방법
+  ○ 민선 8기 삭감된 복지 예산 복구
+    - 
+ □ 이행기간
+  ○ 2026년 하반기 도입 예정
+    - 
+ □ 재원조달방안 등
+  ○ 국도군비 활용
+    -</prmmCont3>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>난 산업화 사업 등 화순군 무분별 개발사업 전면 재검토</prmsTitle4>
+    <prmmCont4>□ 목 표
+  ○ 무차별적 군비 소모를 막고 생산적 예산 조정
+    - 
+□ 이행방법
+  ○ 군비 소모 방지를 위해 민관거버넌스 확대 심사제도 도입
+    - 
+□ 이행기간
+  ○ 2026년 하반기 예정
+    - 
+□ 재원조달방안 등
+  ○ 
+    -</prmmCont4>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5> 화순군민 기본소득 지급</prmsTitle5>
+    <prmmCont5>□ 목 표
+  ○ 지역민 기본생활 지원과 지역경제 활성화
+    - 
+□ 이행방법
+  ○ 군민 1인당 지역상품권 연 60만 원 지급
+    - 
+□ 이행기간
+  ○ 2026년 하반기 도입 예정
+    - 
+□ 재원조달방안 등
+  ○ 군비 활용
+    -</prmmCont5>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>

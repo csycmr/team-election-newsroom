@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100159745</cnddtId>
+    <sggName>부안군</sggName>
+    <sidoName>전북특별자치도</sidoName>
+    <wiwName>부안군</wiwName>
+    <partyName>국민의힘</partyName>
+    <krName>김성태</krName>
+    <cnName>金成泰</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>경제 인구감소 회복해결 군민 일인당 250만원 민생회복지원금 8월지급</prmsTitle1>
+    <prmmCont1>□ 목 표
+  ○ 지속적인 결과 평가를 하고 지속적으로 지급하여 부안경제회복 인구감소 2가지 문제를 한번에 해결한다.
+
+□ 이행방법
+  ○ 관행적 예산을 살펴보고 기금운영
+
+□ 이행기간
+  ○ 2026년 8월부터 임기안에
+
+□ 재원조달방안 등
+  ○ 관행적 예산을 줄이고 예산으로 시행한다.</prmmCont1>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2> 노인일자리 월 수입 150만원 확대시행</prmsTitle2>
+    <prmmCont2>□ 목 표
+  ○ 배움과 기술이 부족한 모든 세대들에게 직업 선택의 자유와 일자리 창출한다.
+
+□ 이행방법
+  ○ 복지예산 군비로 이행한다
+
+□ 이행기간
+  ○ 2026년 8월부터 임기안에
+-
+
+□ 재원조달방안 등
+  ○ 관행적 예산을 줄이고 예산으로 이행한다.</prmmCont2>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3> 육아 수당 매월 30만원 지원</prmsTitle3>
+    <prmmCont3>□ 목 표
+  ○ 출생시부터 초등학교 졸업까지 육아보육에 어려움이 없도록 매월 30만원의 육아복지수당이 지원되도록 하겠습니다.
+
+□ 이행방법
+  ○ 복지예산으로 이행한다.
+
+□ 이행기간
+  ○ 2026년 8월부터 임기안에
+
+□ 재원조달방안 등
+  ○ 관행적 예산을 줄이고 예산으로 이행한다.</prmmCont3>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>부안군 13개읍면에 부안소멸 해결 부서 신설</prmsTitle4>
+    <prmmCont4>□ 목 표
+  ○ 소멸되어가는 부안군 6개 면소재지에 스마트 팜 특구지역으로 지정 
+       적극적인 행정지원과 재정지원을 하여 면소재지를 살리겠습니다.
+
+□ 이행방법
+  ○ 공무원들과 함께한다.
+
+□ 이행기간
+  ○ 2026년 8월부터 임기안에
+
+□ 재원조달방안 등
+  ○ 부안군 예산, 군비</prmmCont4>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5>공급과잉 생산 농산물 지방 국가기관 소통 전달체계 확립</prmsTitle5>
+    <prmmCont5>□ 목 표
+  ○ 공급과잉 생산 농산물을 지방자치와 국가기관 국가산하기관 등과 소통 전달 체계를 확립하고 구매로 연결하여 소중한 농산물들이 로타리 패기되는 일이 없도록 하겠습니다.
+
+□ 이행방법
+  ○ 대대적으로 홍보하고 협력을 요청한다.
+
+□ 이행기간
+  ○ 2026년 8월부터 임기안에
+
+□ 재원조달방안 등
+  ○ 부안군민들과 부안군 예산으로 시행한다.</prmmCont5>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>

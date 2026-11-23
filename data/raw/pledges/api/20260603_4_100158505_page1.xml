@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100158505</cnddtId>
+    <sggName>거창군</sggName>
+    <sidoName>경상남도</sidoName>
+    <wiwName>거창군</wiwName>
+    <partyName>무소속</partyName>
+    <krName>이홍기</krName>
+    <cnName>李洪基</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>AI + 로봇 + 드론 = 전략기술 실증기반 구축</prmsTitle1>
+    <prmmCont1>□ 목표
+  ○ AI 로봇산업 실증특구 추진
+  ○  AI 레지던시 캠퍼스 구축
+  ○  드론 메카 거창, 특화 육성
+  ○ 전략기술 공동개발 펀드 조성
+
+□ 이행기간 : 2026년 ~ 2030년
+
+□ 재원조달 방안 등
+  ○ 국비, 도비, 군비, 민간자본 유치</prmmCont1>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2>글로벌 온천테마파크 조성</prmsTitle2>
+    <prmmCont2>□ 목표
+  ○ 가조 온천 획기적 재개발, 관광자원화
+
+□ 이행방법
+  ○ 호텔, 치유센터, 레저, 대규모 온천장 시설 조성
+  ○ 남부권 최대·최고의 체류형 온천 테마파크 조성
+  ○ 로컬푸드, 지역 특산물 상설 판매장 등 부대시설 확충
+  ○ 대규모 민간자본 유치
+
+□ 이행기간 : 2026년 ~ 2030년
+
+□ 재원조달 방안 등
+  ○ 국비, 도비, 군비, 민간자본 유치</prmmCont2>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3>거창농업의 패러다임 대혁신</prmsTitle3>
+    <prmmCont3>□ 목표
+  ○ 거창농업을 생산 중심에서 판매 중심으로 구조적 대전환
+
+□ 이행방법
+  ○ 광역 농특산물 복합물류센터 구축
+  ○ 스마트팜 농정시대 원년
+  ○ 청년농의 농촌 진입장벽 완화
+  ○ 미래 농업전략연구소 설립
+
+□ 이행기간 : 2026년 ~ 2030년
+
+□ 재원조달 방안 등
+  ○ 국비, 도비, 군비, 민간자본 유치</prmmCont3>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>거창 창포원 2.0 추진</prmsTitle4>
+    <prmmCont4>□ 목표
+  ○ 거창 창포원의 콘텐츠 강화를 통한 생활인구 유믹
+
+□ 이행방법
+  ○ 거창국제원예박람회 유치
+  ○ 대한민국 제3호 국가정원 지정 추진
+  ○ 창포연구소 설립 : 뷰티 상품 개발 등 창포산업 클러스트화
+  ○ 보트 등 수상 놀이시설, 수석갤러리, 웹툰 스튜디오 등 이색적 콘텐츠
+
+□ 이행기간 : 2026년 ~ 2030년
+
+□ 재원조달 방안 등
+  ○ 국비, 도비, 군비, 민간자본 유치</prmmCont4>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5>지역경제 체질 강화</prmsTitle5>
+    <prmmCont5>□ 목표
+  ○ 지역 경제기반 강화를 앞둔 거창의 지속가능한 성장
+
+□ 이행방법
+  ○ 농어촌기본소득사업 지정 추진: 거창형 기본소득 모델 구축
+  ○ 스마트 물류 메가 스테이션 구축
+  ○ 승강기산업 고도화 지원
+  ○ 기업형 일자리 플랫폼 구축
+  ○ 전통시장 연계 복합 문화광장 조성
+  ○ 석재산업 활성화
+
+□ 이행기간 : 2026년 ~ 2030년
+
+□ 재원조달 방안 등
+  ○ 국비, 도비, 군비, 민간자본 유치</prmmCont5>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><response>
+<header>
+<resultCode>INFO-00</resultCode>
+<resultMsg>NORMAL SERVICE</resultMsg>
+</header>
+<body>
+<items>
+  <item>
+    <num>1</num>
+    <sgId>20260603</sgId>
+    <sgTypecode>4</sgTypecode>
+    <cnddtId>100159783</cnddtId>
+    <sggName>울릉군</sggName>
+    <sidoName>경상북도</sidoName>
+    <wiwName>울릉군</wiwName>
+    <partyName>더불어민주당</partyName>
+    <krName>정성환</krName>
+    <cnName>鄭成煥</cnName>
+    <prmsCnt>5</prmsCnt>
+    <prmsOrd1>1</prmsOrd1>
+    <prmsRealmName1/>
+    <prmsTitle1>여객선 공영제 시행 및 전 국민 주중 운임 할인</prmsTitle1>
+    <prmmCont1>□ 목표
+  ○ 울릉군의 교통·항만 인프라를 획기적으로 개선
+  ○ 군민의 이동권과 생활 편의 향상과 관광객 확대로 지역경제 활성화
+  ○ 도로환경 조성과 물류비 절감을 통해 정주 여건을 개선하고 지속가능한 지역 발전 기반 구축
+
+□ 이행방법
+  ○ 경상북도·해양수산부 협의를 통한 공영제 도입 추진
+  ○ 공공치원 항로 지정 및 운영 지원 확대
+  ○ 주중 관광객 운임 할인제 도입 추진
+  ○ 여객선 운영사와 협약 체결 및 지원체계 마련
+
+□ 이행기간
+  ○ 단기(1~2년): 제도 검토 및 관계기관 협의
+  ○ 중기(3~4년): 시범 운영 및 지원 확대
+  ○ 장기(5년 이상): 공영제 정착 및 상시 할인체계 구축
+
+□ 재원조달방안
+  ○ 국비 50%(해양수산부 공공항로 지원사업)
+  ○ 경상북도비 30% 및 울릉군비 20% 매칭
+  ○ 공공운영 지원사업 연계</prmmCont1>
+    <prmsOrd2>2</prmsOrd2>
+    <prmsRealmName2/>
+    <prmsTitle2>지구단위계획 규제 완화 및 불법 건축물 양성화 추진</prmsTitle2>
+    <prmmCont2>□ 목표
+  ○ 정주환경 개선
+  ○ 지역 개발 활성화
+  ○ 군민 재산권 보호
+
+□ 이행방법
+  ○ 규제특구 도시지역 특례법 적용 추진
+  ○ 불합리한 건축 규제 정비
+  ○ 장기 미정비 건축물 실태조사 실시
+  ○ 조건부 양성화 및 행정절차 간소화 추진
+
+□ 이행기간
+  ○ 단기(1~2년): 실태조사 및 제도 정비
+  ○ 중기(3~4년): 단계별 규제 완화 시행
+
+□ 재원조달방안
+  ○ 군비 20 %
+  ○ 도비 30 %
+  ○ 국비 50 % 
+  (국토교통부 도시재생·지역활성화 사업 연계)</prmmCont2>
+    <prmsOrd3>3</prmsOrd3>
+    <prmsRealmName3/>
+    <prmsTitle3>저동·도동 야시장 개설 및 주차장 확보</prmsTitle3>
+    <prmmCont3>□ 목표
+  ○ 야간 관광 활성화
+  ○ 소상공인 매출 증대
+  ○ 체류형 관광 기반 구축
+
+□ 이행방법
+  ○ 기존 상권 우선 참여 방식 운영
+  ○ 지역 특산물·먹거리 중심 야시장 조성
+  ○ 공영주차장 확충 및 교통체계 개선
+  ○ 문화공연·야간 콘텐츠 연계 운영
+
+□ 이행기간
+  ○ 단기(1년 이내): 시범 운영
+  ○ 중기(2~3년): 상설화 및 확대 운영
+
+□ 재원조달방안
+  ○ 지방비(도비20%, 군비10%)
+  ○ 국비 50%
+  ○ 민간참여 20%
+  (전통시장 활성화 공모사업 연계)</prmmCont3>
+    <prmsOrd4>4</prmsOrd4>
+    <prmsRealmName4/>
+    <prmsTitle4>깃대봉 모노레일 설치</prmsTitle4>
+    <prmmCont4>□ 목표
+  ○ 관광 접근성 개선
+  ○ 체류형 관광 확대 
+  ○ 신규 관광명소 조성
+
+□ 이행방법
+  ○ 관광개발 기본계획 수립
+  ○ 민간투자 방식(BTO등) 검토
+  ○ 전망대·체험시설 연계 조성
+  ○ 친환경 관광 인프라 구축
+
+□ 이행기간
+  ○ 단기(1년 이내): 계획안 용역
+  ○ 중기∼장기(3~6년): 설계·착공·운영
+
+□ 재원조달방안
+  ○ 민간투자 60 %
+  ○ 국비 20 % 
+  ○ 치방비(도비10 %, 군비10 %)</prmmCont4>
+    <prmsOrd5>5</prmsOrd5>
+    <prmsRealmName5/>
+    <prmsTitle5>주택 건설 총 1,000호 공급(공공임대 500호·민간분양 500호)</prmsTitle5>
+    <prmmCont5>□ 목표
+  ○ 주거 안정 실현
+  ○ 청년·신혼부부 정착 치원
+  ○ 인구 유입 기반 조성
+
+□ 이행방법
+  ○ 공공임대주택 단계별 공급
+  ○ 민간 건설사 투자 유치
+  ○ 정주형 주거단지 조성
+  ○ 기반시설 및 생활 SOC 연계 개발
+
+□ 이행기간
+  ○ 중기∼장기(3∼8): 단계별 공급 추진
+
+□ 재원조달방안
+  ○ LH 및 공공기관 투자 40 %
+  ○ 민간투자 40 %
+  ○ 국비·지방비 20 %</prmmCont5>
+    <prmsOrd6/>
+    <prmsRealmName6/>
+    <prmsTitle6/>
+    <prmmCont6/>
+    <prmsOrd7/>
+    <prmsRealmName7/>
+    <prmsTitle7/>
+    <prmmCont7/>
+    <prmsOrd8/>
+    <prmsRealmName8/>
+    <prmsTitle8/>
+    <prmmCont8/>
+    <prmsOrd9/>
+    <prmsRealmName9/>
+    <prmsTitle9/>
+    <prmmCont9/>
+    <prmsOrd10/>
+    <prmsRealmName10/>
+    <prmsTitle10/>
+    <prmmCont10/>
+  </item>
+</items>
+<numOfRows>10</numOfRows>
+<pageNo>1</pageNo>
+<totalCount>1</totalCount>
+</body>
+</response>
