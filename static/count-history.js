@@ -37,10 +37,12 @@ function renderTimeline(entries) {
   const startTime = entries[0].time;
   const duration = entries.at(-1).time - startTime;
   const toPercent = (time) => 100 * (time - startTime) / duration;
-  const visibleEntries = entries.filter(entry => entry.time_basis !== "simulated");
+  const hasTimelineMarker = (entry) =>
+    entry.time_basis !== "simulated" && entry.time !== Date.parse("2026-06-04T09:00:00+09:00");
+  const visibleEntries = entries.filter(hasTimelineMarker);
   const visiblePositions = visibleEntries.map(entry => toPercent(entry.time));
   const points = entries.map((entry, index) => {
-    if (entry.time_basis === "simulated") return null;
+    if (!hasTimelineMarker(entry)) return null;
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
