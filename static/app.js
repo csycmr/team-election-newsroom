@@ -12,6 +12,21 @@ const breakingEvents = new Set([
   "잠실7동 제2투표소 투표함 2개 이송",
 ]);
 
+const ticker = byId("ticker");
+const tickerCopies = Array.from({ length: 2 }, () => {
+  const copy = document.createElement("span");
+  copy.setAttribute("aria-hidden", "true");
+  ticker.parentElement.append(copy);
+  return copy;
+});
+
+function setTickerText(message) {
+  ticker.textContent = message;
+  for (const copy of tickerCopies) copy.textContent = message;
+}
+
+setTickerText(ticker.textContent);
+
 let socket;
 let snapshot;
 let displayedFrame;
@@ -97,9 +112,9 @@ function render(frame) {
   byId("source").textContent = lastCount?.additional_source_url ? "최종 집계표 ↗" : `${(lastCount || frame).source_name} ↗`;
   const breaking = breakingEvents.has(frame.event) && socket?.readyState === WebSocket.OPEN;
   byId("ticker-alert-light").hidden = !breaking;
-  byId("ticker").textContent = breaking || frame.counted_rate === null
+  setTickerText(breaking || frame.counted_rate === null
     ? eventTitle
-    : `${eventTitle} · 개표율 ${frame.counted_rate_pct}%`;
+    : `${eventTitle} · 개표율 ${frame.counted_rate_pct}%`);
   const tickerMeta = byId("ticker-meta");
   tickerMeta.textContent = isSimulation ? "시연용 재구성" : frame.counted_rate === null ? "보도 기록" : "보도 집계";
   tickerMeta.hidden = false;
@@ -174,7 +189,7 @@ function connectReplay(startStep, delayMs) {
     publishReplayState("stop");
     if (displayedFrame?.step_id !== replayFrames.length) {
       byId("ticker-meta").hidden = true;
-      byId("ticker").textContent = "재생 연결이 종료됐어요. 개표 재생을 눌러 다시 시작해 주세요.";
+      setTickerText("재생 연결이 종료됐어요. 개표 재생을 눌러 다시 시작해 주세요.");
     }
   };
 }
@@ -471,7 +486,7 @@ const countTimelineData = api("/api/count-timeline").then(data => {
   byId("restart").disabled = false;
   return data;
 }).catch(error => {
-  byId("ticker").textContent = "재생 데이터를 불러오지 못했어요. 페이지를 새로고침해 주세요.";
+  setTickerText("재생 데이터를 불러오지 못했어요. 페이지를 새로고침해 주세요.");
   throw error;
 });
 
