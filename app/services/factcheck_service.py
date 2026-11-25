@@ -7,6 +7,13 @@ from app.config import Settings
 from app.models import Article, FactCheckResult
 
 
+# "오세훈 30,359표 앞섬", "0.5%p 차이" 같은 표차·격차 표현은 후보의 득표수/득표율 주장이 아니다.
+_MARGIN_AFTER = r"(?!\s*(?:앞|뒤|차|격차|우세|열세|리드))"
+_NOT_POINTS = r"(?![pP]|\s*포인트)"
+_VOTES_TAIL = r"\s*표" + _MARGIN_AFTER
+_RATE_TAIL = r"\s*%" + _NOT_POINTS + _MARGIN_AFTER
+
+
 async def google_claims(query: str, settings: Settings) -> list[dict]:
     if not settings.google_fact_check_enabled or not settings.google_fact_check_api_key:
         return []
@@ -73,13 +80,13 @@ def build_issues(article: Article, checks: list[dict]) -> list[dict]:
                 issues.append(_issue(
                     f"{name} 득표", f"{name} 후보의 득표 수치가 원 데이터({votes:,}표 · {rate:.2f}%)와 다릅니다.",
                     m.group(0), canonical, where(m.group(0))))
-        for m in re.finditer(prefix + r"(?:득표수\s*)?(\d[\d,]*)\s*표", text):
+        for m in re.finditer(prefix + r"(?:득표수\s*)?(\d[\d,]*)" + _VOTES_TAIL, text):
             if m.start() in pair_starts or int(m.group(1).replace(",", "")) == votes:
                 continue
             issues.append(_issue(
                 f"{name} 득표수", f"{name} 후보의 득표수가 원 데이터({votes:,}표)와 다릅니다.",
                 m.group(0), m.group(0).replace(m.group(1), f"{votes:,}", 1), where(m.group(0))))
-        for m in re.finditer(prefix + r"(?:득표율\s*)?(\d+(?:\.\d+)?)\s*%", text):
+        for m in re.finditer(prefix + r"(?:득표율\s*)?(\d+(?:\.\d+)?)" + _RATE_TAIL, text):
             if math.isclose(float(m.group(1)), rate, abs_tol=0.005):
                 continue
             issues.append(_issue(
@@ -140,11 +147,11 @@ async def check_article(article: Article, settings: Settings) -> FactCheckResult
         # Checking mere number presence would wrongly pass swapped candidates.
         votes = re.findall(
             rf"(?<![가-힣A-Za-z]){escaped}\s*(?:후보(?:는|가|의)?\s*)?"
-            rf"(?:득표수\s*)?(\d[\d,]*)\s*표", text,
+            rf"(?:득표수\s*)?(\d[\d,]*){_VOTES_TAIL}", text,
         )
         rates = re.findall(
             rf"(?<![가-힣A-Za-z]){escaped}\s*(?:후보(?:는|가|의)?\s*)?"
-            rf"(?:득표율\s*)?(\d+(?:\.\d+)?)\s*%", text,
+            rf"(?:득표율\s*)?(\d+(?:\.\d+)?){_RATE_TAIL}", text,
         )
         pairs = re.findall(
             rf"(?<![가-힣A-Za-z]){escaped}\s*(?:후보(?:는|가|의)?\s*)?"
