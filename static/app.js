@@ -58,7 +58,7 @@ function setTickerText(message, stageText) {
 }
 
 function compactCountHeadline(frame, latestCount) {
-  const approximate = frame.time_basis === "approximate" ? "쯤" : "";
+  const approximate = frame.time_basis === "approximate" ? "경" : "";
   const publication = frame.time_basis === "publication_time" ? " 보도 시각" : "";
   const current = approximate || publication ? "" : " 현재";
   const parts = [`${formatHeadlineTime(frame.timestamp_kst)}${approximate}${publication}${current}`];
@@ -149,7 +149,7 @@ function render(frame) {
   void metrics.offsetWidth;
   metrics.classList.add("is-updating");
   const timestamp = clock.format(new Date(frame.timestamp_kst));
-  const approximate = frame.time_basis === "approximate" ? "쯤" : "";
+  const approximate = frame.time_basis === "approximate" ? "경" : "";
   const isSimulation = frame.time_basis === "simulated";
   const eventTitle = isSimulation ? "개표 진행" : frame.event;
   byId("clock").textContent = `${timestamp}${approximate} KST · ${eventTitle}`;
@@ -1020,7 +1020,7 @@ document.addEventListener("count-history-select", (event) => {
 
     const stamp = formatHeadlineTime(snapshot.collected_at);
     const timePhrase = snapshot.time_basis === "approximate"
-      ? `${stamp}쯤`
+      ? `${stamp}경`
       : snapshot.time_basis === "publication_time" ? `${stamp} 보도 기준` : `${stamp} 현재`;
     const event = snapshot.timeline_event || "";
     if (snapshot.counted_rate == null || !snapshot.candidates?.length) {

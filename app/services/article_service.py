@@ -17,7 +17,7 @@ def election_headline(snapshot) -> str:
     collected_at = snapshot.collected_at
     stamp = f"{collected_at.month}월 {collected_at.day}일 {collected_at:%H}시 {collected_at:%M}분"
     if snapshot.time_basis == "approximate":
-        time_phrase = f"{stamp}쯤"
+        time_phrase = f"{stamp}경"
     elif snapshot.time_basis == "publication_time":
         time_phrase = f"{stamp} 보도 기준"
     else:

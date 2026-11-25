@@ -75,7 +75,7 @@ function renderTimeline(entries) {
     const dayLabel = document.createElement("span");
     dayLabel.textContent = `${Number(month)}/${Number(day)}`;
     const clockLabel = document.createElement("span");
-    clockLabel.textContent = `${hours}:${minutes}${entry.time_basis === "approximate" ? "쯤" : ""}`;
+    clockLabel.textContent = `${hours}:${minutes}${entry.time_basis === "approximate" ? "경" : ""}`;
     label.append(dayLabel, clockLabel);
     axis.append(label);
   }
