@@ -670,11 +670,6 @@ input::placeholder, textarea::placeholder {
   content: "";
 }
 
-.count-history-point.is-simulated::before,
-.count-history-legend-dot.is-simulated {
-  background: #b2c2d6;
-}
-
 .count-history-point.is-incident::before,
 .count-history-legend-dot.is-incident {
   background: #ff7765;
@@ -948,6 +943,11 @@ input::placeholder, textarea::placeholder {
 .count-history-point.is-dense::before {
   width: 6px;
   height: 6px;
+}
+
+.count-history-point.is-large::before {
+  width: 13px;
+  height: 13px;
 }
 
 #bars .candidate-estimate {
