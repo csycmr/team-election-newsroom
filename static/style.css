@@ -809,6 +809,20 @@ input::placeholder, textarea::placeholder {
   overflow-wrap: anywhere;
 }
 
+.ticker-stage {
+  display: none;
+}
+
+#draft-ticker-slot .ticker-stage:not(:empty) {
+  display: inline;
+  margin-inline-start: 1em;
+  font-family: "Pretendard Variable", Pretendard, sans-serif;
+  font-size: .72em;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-shadow: none;
+}
+
 #count-history-detail .count-history-meta {
   color: var(--muted);
   font-size: 12px;

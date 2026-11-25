@@ -20,12 +20,20 @@ const tickerCopies = Array.from({ length: 2 }, () => {
   return copy;
 });
 
-function setTickerText(message) {
-  ticker.textContent = message;
-  for (const copy of tickerCopies) copy.textContent = message;
-}
+const tickerRows = [ticker, ...tickerCopies].map((row) => {
+  const headline = document.createTextNode(ticker.textContent);
+  const stage = document.createElement("small");
+  stage.className = "ticker-stage";
+  row.replaceChildren(headline, stage);
+  return { headline, stage };
+});
 
-setTickerText(ticker.textContent);
+function setTickerText(message, stageText) {
+  for (const { headline, stage } of tickerRows) {
+    headline.data = message;
+    if (stageText !== undefined) stage.textContent = stageText;
+  }
+}
 
 let socket;
 let snapshot;
@@ -112,15 +120,17 @@ function render(frame) {
   byId("source").textContent = lastCount?.additional_source_url ? "최종 집계표 ↗" : `${(lastCount || frame).source_name} ↗`;
   const breaking = breakingEvents.has(frame.event) && socket?.readyState === WebSocket.OPEN;
   byId("ticker-alert-light").hidden = !breaking;
-  setTickerText(breaking || frame.counted_rate === null
+  const headline = breaking || frame.counted_rate === null
     ? eventTitle
-    : `${eventTitle} · 개표율 ${frame.counted_rate_pct}%`);
+    : `${eventTitle} · 개표율 ${frame.counted_rate_pct}%`;
+  const stageText = `${frame.step_id}/${replayFrames.length}단계 · ${timestamp} KST · ${eventTitle}`;
+  setTickerText(headline, stageText);
   const tickerMeta = byId("ticker-meta");
   tickerMeta.textContent = isSimulation ? "시연용 재구성" : frame.counted_rate === null ? "보도 기록" : "보도 집계";
   tickerMeta.hidden = false;
 
   renderCandidateBars(rows, !lastCount);
-  byId("draft-step").textContent = `${frame.step_id}/${replayFrames.length}단계 · ${timestamp} KST · ${eventTitle}`;
+  byId("draft-step").textContent = stageText;
   updateActions();
 }
 
