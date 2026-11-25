@@ -1888,3 +1888,18 @@ input::placeholder, textarea::placeholder {
     grid-template-columns: 1fr;
   }
 }
+
+/* 상황판: 실시간 기사 — drop the outer box so only the headline row has a frame */
+.dark-panel.live-headlines {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+/* 편집실: 삭제 under the manuscript */
+.manuscript-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}

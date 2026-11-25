@@ -182,6 +182,7 @@ function updateActions() {
   byId("check").closest("section").classList.toggle("is-stamped", ["fact_checked", "human_reviewed", "approved"].includes(status));
   byId("review").closest("section").classList.toggle("is-stamped", ["human_reviewed", "approved"].includes(status));
   byId("approve").closest("section").classList.toggle("is-stamped", status === "approved");
+  byId("delete-article").disabled = busy || !article;
   const postButton = byId("post-article");
   const approved = article?.status === "approved";
   const posted = approved && postedArticleIds.has(article.article_id);
@@ -367,6 +368,35 @@ byId("post-article").onclick = async () => {
 };
 let archiveRequest = 0;
 let archiveArticleId = null;
+
+byId("delete-article").onclick = async () => {
+  if (busy || !article) return;
+  const target = article;
+  if (!window.confirm(`「${target.title}」 기사를 삭제할까요?\n저장 목록에서 사라지고 되돌릴 수 없어요.`)) return;
+  const feedback = byId("post-status");
+  busy = true;
+  updateActions();
+  try {
+    await api(`/api/articles/${target.article_id}`, undefined, "DELETE");
+    postedArticleIds.delete(target.article_id);
+    article = undefined;
+    byId("article-title-input").value = "";
+    byId("article-body-input").value = "";
+    byId("article-evidence").textContent = "";
+    byId("factcheck-status").textContent = "";
+    byId("human-review-status").textContent = "";
+    feedback.textContent = "";
+    byId("status").textContent = "기사를 삭제했습니다.";
+    archiveArticleId = null;
+    busy = false;
+    await Promise.all([refreshEditorArticles(), refreshArchive(), refreshAudit()]);
+  } catch (error) {
+    feedback.textContent = error.message;
+  } finally {
+    busy = false;
+    updateActions();
+  }
+};
 
 function updateStatusCounts(articles) {
   const counts = {};
