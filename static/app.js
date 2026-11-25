@@ -41,6 +41,7 @@ ticker.replaceChildren(tickerHeadline, tickerStage);
 const tickerWindow = tickerTrack.parentElement;
 const tickerMotion = window.matchMedia("(prefers-reduced-motion: no-preference)");
 const tickerPixelsPerSecond = 180;
+const tickerGap = 24;
 const tickerPasses = new Map();
 let latestTickerRow = ticker;
 let latestTickerStage = tickerStage.textContent;
@@ -52,7 +53,11 @@ function removeTickerPass(row) {
   row.remove();
 }
 
-function animateTickerRow(row) {
+function tickerPosition(pass) {
+  return pass.start - Number(pass.animation.currentTime) * tickerPixelsPerSecond / 1000;
+}
+
+function animateTickerRow(row, precedingRow) {
   const previous = tickerPasses.get(row);
   const windowWidth = tickerWindow.clientWidth;
   const rowWidth = row.offsetWidth;
@@ -66,25 +71,28 @@ function animateTickerRow(row) {
     return;
   }
 
-  if (previous?.windowWidth === windowWidth && previous.rowWidth === rowWidth) return;
+  const preceding = tickerPasses.get(precedingRow);
+  const minimumPosition = preceding
+    ? tickerPosition(preceding) + preceding.rowWidth + tickerGap
+    : -rowWidth;
+  const currentPosition = previous ? tickerPosition(previous) : windowWidth;
+  if (previous?.windowWidth === windowWidth && previous.rowWidth === rowWidth
+      && currentPosition >= minimumPosition - 1) return;
 
-  const elapsed = previous ? Number(previous.animation.currentTime) : 0;
-  const position = previous
-    ? Math.min(windowWidth, Math.max(-rowWidth, previous.windowWidth - elapsed * tickerPixelsPerSecond / 1000))
-    : windowWidth;
+  // Start offscreen. Extra distance gives the preceding headline time to clear the entrance.
+  const start = Math.max(currentPosition, minimumPosition, -rowWidth);
   previous?.animation.cancel();
-
   const animation = row.animate([
-    { transform: `translateX(${windowWidth}px)` },
+    { transform: `translateX(${start}px)` },
     { transform: `translateX(${-rowWidth}px)` },
-  ], { duration: (windowWidth + rowWidth) * 1000 / tickerPixelsPerSecond, fill: "forwards" });
-  tickerPasses.set(row, { animation, windowWidth, rowWidth });
-  animation.currentTime = (windowWidth - position) * 1000 / tickerPixelsPerSecond;
+  ], { duration: (start + rowWidth) * 1000 / tickerPixelsPerSecond, fill: "both" });
+  tickerPasses.set(row, { animation, windowWidth, rowWidth, start });
   animation.onfinish = () => {
     if (tickerPasses.get(row)?.animation !== animation) return;
     if (row === latestTickerRow) {
-      animation.currentTime = 0;
-      animation.play();
+      tickerPasses.delete(row);
+      animation.cancel();
+      animateTickerRow(row);
     } else {
       removeTickerPass(row);
     }
@@ -103,12 +111,16 @@ function setTickerText(message, stageText) {
   if (tickerPasses.has(previous)) previous.setAttribute("aria-hidden", "true");
   else removeTickerPass(previous);
   tickerTrack.append(row);
-  animateTickerRow(row);
+  animateTickerRow(row, previous);
   tickerResize.observe(row);
 }
 
 function refreshTickerAnimations() {
-  for (const row of Array.from(tickerTrack.children)) animateTickerRow(row);
+  let precedingRow;
+  for (const row of Array.from(tickerTrack.children)) {
+    animateTickerRow(row, precedingRow);
+    if (tickerPasses.has(row)) precedingRow = row;
+  }
 }
 
 const tickerResize = new ResizeObserver(refreshTickerAnimations);
