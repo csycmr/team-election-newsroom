@@ -38,24 +38,68 @@ tickerStage.className = "ticker-stage";
 tickerStage.textContent = "개표 재생 대기";
 ticker.replaceChildren(tickerHeadline, tickerStage);
 
-let pendingTickerHeadline;
+const tickerWindow = tickerTrack.parentElement;
+const tickerMotion = window.matchMedia("(prefers-reduced-motion: no-preference)");
+const tickerPixelsPerSecond = 180;
+let pendingTicker;
+let tickerAnimation;
+let tickerWindowWidth = 0;
+let tickerTrackWidth = 0;
 
-function applyPendingTickerHeadline() {
-  if (pendingTickerHeadline === undefined) return;
-  tickerHeadline.textContent = pendingTickerHeadline;
-  pendingTickerHeadline = undefined;
+function applyPendingTicker() {
+  if (!pendingTicker) return;
+  tickerHeadline.textContent = pendingTicker.message;
+  if (pendingTicker.stageText !== undefined) tickerStage.textContent = pendingTicker.stageText;
+  pendingTicker = undefined;
 }
 
-// Replace the headline only when the previous line is outside the window.
-tickerTrack.addEventListener("animationiteration", applyPendingTickerHeadline);
-tickerTrack.addEventListener("animationstart", applyPendingTickerHeadline);
-tickerTrack.addEventListener("animationcancel", applyPendingTickerHeadline);
+function animateTicker() {
+  const windowWidth = tickerWindow.clientWidth;
+  const trackWidth = tickerTrack.offsetWidth;
+  if (!tickerMotion.matches || !windowWidth || !trackWidth) {
+    tickerAnimation?.cancel();
+    tickerAnimation = undefined;
+    applyPendingTicker();
+    return;
+  }
+
+  if (tickerAnimation && windowWidth === tickerWindowWidth && trackWidth === tickerTrackWidth) return;
+
+  // Preserve the text position if the window is resized during a pass.
+  const elapsed = tickerAnimation ? Number(tickerAnimation.currentTime) : 0;
+  const position = tickerAnimation
+    ? Math.min(windowWidth, Math.max(-trackWidth, tickerWindowWidth - elapsed * tickerPixelsPerSecond / 1000))
+    : windowWidth;
+  tickerAnimation?.cancel();
+  tickerWindowWidth = windowWidth;
+  tickerTrackWidth = trackWidth;
+  const animation = tickerTrack.animate([
+    { transform: `translateX(${windowWidth}px)` },
+    { transform: `translateX(${-trackWidth}px)` },
+  ], { duration: (windowWidth + trackWidth) * 1000 / tickerPixelsPerSecond, fill: "forwards" });
+  tickerAnimation = animation;
+  animation.currentTime = (windowWidth - position) * 1000 / tickerPixelsPerSecond;
+  animation.onfinish = () => {
+    if (tickerAnimation !== animation) return;
+    tickerAnimation = undefined;
+    animation.cancel();
+    applyPendingTicker();
+    animateTicker();
+  };
+}
 
 function setTickerText(message, stageText) {
-  if (stageText !== undefined) tickerStage.textContent = stageText;
-  pendingTickerHeadline = message;
-  if (tickerTrack.getAnimations().length === 0) applyPendingTickerHeadline();
+  pendingTicker = { message, stageText: stageText ?? pendingTicker?.stageText };
+  if (!tickerAnimation) {
+    applyPendingTicker();
+    animateTicker();
+  }
 }
+
+const tickerResize = new ResizeObserver(animateTicker);
+tickerResize.observe(tickerWindow);
+tickerResize.observe(tickerTrack);
+tickerMotion.addEventListener("change", animateTicker);
 
 function compactCountHeadline(frame, latestCount) {
   const approximate = frame.time_basis === "approximate" ? "경" : "";
