@@ -1474,3 +1474,50 @@ input::placeholder, textarea::placeholder {
   .news-board th:nth-child(3), .news-board td:nth-child(3) { width: 82px; }
   .news-board th:nth-child(4), .news-board td:nth-child(4) { display: none; }
 }
+
+/* 보도실 기사: paper-like cream page with navy type */
+.news-pane {
+  background: #fbf7ee;
+  border-color: #e6dcc6;
+  color: #1b2a4a;
+}
+
+.news-pane > h3 {
+  color: #1b2a4a;
+}
+
+.news-pane .news-kicker {
+  color: #c0392b;
+}
+
+.news-pane .news-title {
+  color: #13213f;
+}
+
+.news-pane .news-byline {
+  border-color: #e0d5bd;
+  color: #5a6680;
+}
+
+.news-pane .news-author {
+  color: #1b2a4a;
+}
+
+.news-pane .news-body p {
+  color: #24314f;
+}
+
+.news-pane .news-sources {
+  background: #f3ecdc;
+  border-color: #e0d5bd;
+  color: #1b2a4a;
+}
+
+.news-pane .news-sources a {
+  color: #1d4f91;
+}
+
+.news-pane .news-note,
+.news-pane .news-empty {
+  color: #6b7488;
+}
