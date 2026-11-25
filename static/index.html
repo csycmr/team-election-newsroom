@@ -18,8 +18,8 @@
   <div class="workspace-wrap">
     <nav class="workspace-nav" aria-label="작업 화면">
       <button type="button" class="active" data-view="election" aria-selected="true">개표 상황판</button>
-      <button type="button" data-view="draft" aria-selected="false">뉴스룸</button>
-      <button type="button" data-view="library" aria-selected="false">기사 목록</button>
+      <button type="button" data-view="draft" aria-selected="false">편집실</button>
+      <button type="button" data-view="library" aria-selected="false">보도창</button>
     </nav>
     <main>
       <section class="workspace-card view is-active" id="view-election" aria-labelledby="election-heading">
@@ -39,6 +39,19 @@
           <section class="dark-panel"><div class="panel-heading"><h3>개표 전광판</h3><span class="small-chip">서울 전체</span></div><div id="metrics" class="metrics"><div><span>개표 진행률</span><strong id="progress">—</strong></div><div><span>집계 유효표</span><strong id="total">—</strong><span id="total-meta" class="metric-source" hidden></span></div><div><span>현재 1위</span><strong id="leader">—</strong></div><div><span>1·2위 득표 차</span><strong id="gap">—</strong></div></div><p id="meta" class="dark-muted">서울특별시 전체 · 보도 기록 재생</p><a id="source" href="https://www.data.go.kr/data/15162288/fileData.do" target="_blank" rel="noopener noreferrer">선거 데이터 출처 확인 ↗</a></section>
           <section class="dark-panel"><div class="panel-heading"><h3>후보별 득표 현황</h3><span class="small-chip">득표순</span></div><div id="bars"></div></section>
         </div>
+        <section class="dark-panel live-headlines" aria-labelledby="live-headlines-title">
+          <div class="panel-heading"><h3 id="live-headlines-title">실시간 기사</h3><span class="small-chip">편집실 연동</span></div>
+          <div class="live-headline-list" aria-live="polite">
+            <button type="button" class="live-headline" id="live-headline-breaking" disabled>
+              <span class="live-headline-kind">속보</span>
+              <span class="live-headline-body"><strong>개표 재생을 시작하면 편집실 속보 기사가 표시됩니다.</strong><small>1~15단계 개표 기사</small></span>
+            </button>
+            <button type="button" class="live-headline is-pledge" id="live-headline-pledge" disabled>
+              <span class="live-headline-kind">공약</span>
+              <span class="live-headline-body"><strong>편집실에서 작성한 공약 기사가 표시됩니다.</strong><small>후보 공약 기사</small></span>
+            </button>
+          </div>
+        </section>
         <section class="dark-panel count-history" aria-labelledby="count-history-title">
           <div class="count-history-header">
             <h4 id="count-history-title">개표 타임라인</h4>
@@ -107,7 +120,7 @@
       </section>
 
       <section class="workspace-card view" id="view-draft" aria-labelledby="draft-heading" hidden>
-        <div class="page-title"><div><p class="eyebrow mint">NEWSROOM / ARTICLE</p><h2 id="draft-heading">뉴스룸</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div><div class="header-actions" id="draft-replay-slot"></div></div>
+        <div class="page-title"><div><p class="eyebrow mint">NEWSROOM / ARTICLE</p><h2 id="draft-heading">편집실</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div><div class="header-actions" id="draft-replay-slot"></div></div>
         <div id="draft-ticker-slot"></div>
         <div class="editor-grid draft-layout">
           <section class="light-pane editor-controls">
@@ -150,7 +163,7 @@
               </label>
             </section>
             <section class="light-pane editor-manuscript">
-              <h3>원고</h3>
+              <h3>기사 원고</h3>
               <div class="article-fields">
                 <label for="article-title-input">제목</label>
                 <input id="article-title-input" placeholder="제목" disabled>
@@ -190,7 +203,7 @@
 
       <section class="workspace-card view" id="view-library" aria-labelledby="library-heading" hidden>
         <div class="page-title">
-          <div><p class="eyebrow mint">NEWSROOM / ARCHIVE</p><h2 id="library-heading">기사 목록</h2></div>
+          <div><p class="eyebrow mint">NEWSROOM / ARCHIVE</p><h2 id="library-heading">보도창</h2></div>
           <button id="refresh-articles" type="button" class="primary">목록 새로고침</button>
         </div>
         <div class="editor-grid archive-grid">

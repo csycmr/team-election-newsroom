@@ -1001,6 +1001,7 @@ input::placeholder, textarea::placeholder {
 
 .editor-stage-heading .step-indicator {
   display: inline-block;
+  color: #fff;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -1082,7 +1083,7 @@ input::placeholder, textarea::placeholder {
 
 .draft-command-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) 11.5em;
   gap: 7px 8px;
 }
 
@@ -1107,6 +1108,7 @@ input::placeholder, textarea::placeholder {
 
 .draft-command-row > button {
   padding-inline: 7px;
+  white-space: nowrap;
   word-break: keep-all;
 }
 
@@ -1126,4 +1128,90 @@ input::placeholder, textarea::placeholder {
 .library-preview {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+/* Live article headlines on the election board, fed by the editing room. */
+.live-headlines {
+  min-height: 0;
+  margin-top: 24px;
+}
+
+.live-headline-list {
+  display: grid;
+  gap: 10px;
+}
+
+.live-headline {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  text-align: left;
+  color: #f0f5fb;
+  background: #131f2d;
+  border: 1px solid #2a394b;
+  border-radius: 9px;
+}
+
+.live-headline:not(:disabled):hover {
+  border-color: var(--mint);
+}
+
+.live-headline:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.live-headline-kind {
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  background: #b4323f;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.live-headline.is-pledge .live-headline-kind {
+  color: #0b121d;
+  background: var(--mint);
+}
+
+.live-headline-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.live-headline-body strong {
+  font-size: 17px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.live-headline-body small {
+  color: #a5b5c8;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.live-headline.is-empty .live-headline-body strong {
+  color: #8696a8;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.live-headline.is-updated {
+  animation: live-headline-flash 0.8s ease;
+}
+
+@keyframes live-headline-flash {
+  from { border-color: var(--mint); background: #1a3337; }
+  to { border-color: #2a394b; background: #131f2d; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-headline.is-updated { animation: none; }
 }

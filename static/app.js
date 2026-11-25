@@ -365,7 +365,7 @@ async function refreshArchive() {
     if (!articles.length) {
       list.textContent = "승인된 기사가 없습니다.";
       title.textContent = "기사 본문";
-      preview.textContent = "편집장 승인 후 기사 목록에 표시됩니다.";
+      preview.textContent = "편집장 승인 후 보도창에 표시됩니다.";
       archiveArticleId = null;
       return;
     }
@@ -620,4 +620,112 @@ document.addEventListener("count-history-select", (event) => {
     byId("rate-trend").textContent = "개표 추이 로드 실패: " + error.message;
     byId("gap-trend").textContent = "데이터를 불러올 수 없습니다.";
   });
+})();
+
+// Live headlines on the election board: show the editing room's articles for the
+// replay stage being played (breaking) and rotate through pledge articles.
+(() => {
+  const breakingSlot = byId("live-headline-breaking");
+  const pledgeSlot = byId("live-headline-pledge");
+  const statusRank = { approved: 4, human_reviewed: 3, fact_checked: 2, draft: 1 };
+  let liveArticles = [];
+  let currentStep = 0;
+  let liveRequest = 0;
+
+  const better = (a, b) => (statusRank[a.status] || 0) > (statusRank[b.status] || 0);
+
+  function fill(slot, item, emptyText, meta) {
+    const strong = slot.querySelector("strong");
+    const small = slot.querySelector("small");
+    const changed = slot.dataset.articleId !== (item?.article_id || "");
+    slot.dataset.articleId = item?.article_id || "";
+    slot.disabled = !item;
+    slot.classList.toggle("is-empty", !item);
+    strong.textContent = item ? item.title : emptyText;
+    small.textContent = meta;
+    if (item && changed) {
+      slot.classList.remove("is-updated");
+      void slot.offsetWidth;
+      slot.classList.add("is-updated");
+    }
+  }
+
+  function renderLiveHeadlines() {
+    const total = replayFrames.length || 15;
+    if (!currentStep) {
+      fill(breakingSlot, null, "개표 재생을 시작하면 편집실 속보 기사가 표시됩니다.", `1~${total}단계 개표 기사`);
+    } else {
+      let pick = null;
+      for (const item of liveArticles) {
+        const step = item.snapshot?.step_id;
+        if (item.article_type === "pledge" || !step || step > currentStep) continue;
+        if (!pick || step > pick.snapshot.step_id || (step === pick.snapshot.step_id && better(item, pick))) pick = item;
+      }
+      if (pick) {
+        const step = pick.snapshot.step_id;
+        const lag = step === currentStep ? "" : ` · 현재 ${currentStep}단계 기사 대기 중`;
+        fill(breakingSlot, pick, "", `${step}/${total}단계 · ${states[pick.status] || pick.status}${lag}`);
+      } else {
+        fill(breakingSlot, null, `${currentStep}단계까지 작성된 속보 기사가 없습니다. 편집실에서 초안을 작성해 주세요.`, `${currentStep}/${total}단계`);
+      }
+    }
+
+    const pledges = liveArticles.filter(item => item.article_type === "pledge");
+    if (!pledges.length) {
+      fill(pledgeSlot, null, "편집실에서 작성한 공약 기사가 아직 없습니다.", "후보 공약 기사");
+    } else {
+      const index = Math.max(0, currentStep - 1) % pledges.length;
+      const item = pledges[index];
+      fill(pledgeSlot, item, "", `공약 기사 ${index + 1}/${pledges.length} · ${states[item.status] || item.status}`);
+    }
+  }
+
+  async function refreshLiveHeadlines() {
+    const request = ++liveRequest;
+    try {
+      const { articles } = await api("/api/articles?limit=100");
+      if (request !== liveRequest) return;
+      liveArticles = articles.filter(item => item.status !== "rejected");
+    } catch {
+      // Keep the last known headlines if the list cannot be refreshed.
+    }
+    renderLiveHeadlines();
+  }
+
+  const showStep = (frame) => {
+    currentStep = frame?.step_id || 0;
+    refreshLiveHeadlines();
+  };
+
+  const previousRender = render;
+  render = function (frame) {
+    previousRender(frame);
+    showStep(frame);
+  };
+
+  // Articles written or approved in the editing room show up without waiting for the next stage.
+  const previousRefreshEditor = refreshEditorArticles;
+  refreshEditorArticles = async function (...args) {
+    refreshLiveHeadlines();
+    return previousRefreshEditor.apply(this, args);
+  };
+
+  for (const slot of [breakingSlot, pledgeSlot]) {
+    slot.addEventListener("click", async () => {
+      const articleId = slot.dataset.articleId;
+      if (!articleId || busy) return;
+      openWorkspaceView("draft");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      try {
+        showArticle(await api(`/api/articles/${articleId}`));
+        byId("status").textContent = states[article.status] || article.status;
+        byId("editor-article-select").value = articleId;
+        await refreshAudit();
+      } catch (error) {
+        byId("status").textContent = error.message;
+      }
+    });
+  }
+
+  refreshLiveHeadlines();
 })();
