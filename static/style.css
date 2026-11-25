@@ -1578,6 +1578,8 @@ input::placeholder, textarea::placeholder {
 .editor-approval {
   position: relative;
   isolation: isolate;
+  overflow: hidden;
+  overflow: clip;
 }
 
 .is-stamped::after {
@@ -1585,7 +1587,8 @@ input::placeholder, textarea::placeholder {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url("/static/approved-stamp.svg?v=1") right 14px bottom 10px / min(62%, 260px) no-repeat;
+  /* fixed size and anchor; the box clips it, so a stamp touching a corner may be cut off */
+  background: url("/static/approved-stamp.svg?v=1") right -12px bottom -8px / min(250px, 100%) no-repeat;
   opacity: 0.55;
   filter: brightness(1.5) saturate(1.2);
   pointer-events: none;
@@ -1593,8 +1596,8 @@ input::placeholder, textarea::placeholder {
 }
 
 @keyframes stamp-in {
-  from { opacity: 0; transform: scale(1.25); }
-  to { opacity: 0.55; transform: scale(1); }
+  from { opacity: 0; }
+  to { opacity: 0.55; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1902,4 +1905,18 @@ input::placeholder, textarea::placeholder {
   display: flex;
   justify-content: flex-end;
   margin-top: 12px;
+}
+
+/* 편집실 02~04: reserve the space status text and history will use, so completing a
+   stage (and its stamp) never resizes or shifts the boxes */
+#factcheck-status,
+#human-review-status {
+  min-height: 4.5em;
+  margin-bottom: 0;
+}
+
+.editor-approval .audit-list {
+  height: 168px;
+  overflow-y: auto;
+  align-content: start;
 }
