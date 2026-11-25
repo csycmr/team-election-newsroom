@@ -56,6 +56,19 @@ function renderResults(data) {
   selectionOutline.setAttribute("class", "district-selection-outline");
   selectionOutline.setAttribute("aria-hidden", "true");
 
+  function selectDistrictFromMap(district) {
+    showDistrict(district);
+    const row = buttons.get(district.name).closest("li");
+    const listTop = ranking.getBoundingClientRect().top + ranking.clientTop;
+    const rowBounds = row.getBoundingClientRect();
+    const top = ranking.scrollTop + rowBounds.top - listTop
+      + (rowBounds.height - ranking.clientHeight) / 2;
+    ranking.scrollTo({
+      top,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    });
+  }
+
   function showDistrict(district) {
     select.value = district.name;
     selectionOutline.setAttribute("d", district.outline);
@@ -97,11 +110,11 @@ function renderResults(data) {
     const title = document.createElementNS(svgNamespace, "title");
     title.textContent = label;
     path.append(title);
-    path.addEventListener("click", () => showDistrict(district));
+    path.addEventListener("click", () => selectDistrictFromMap(district));
     path.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        showDistrict(district);
+        selectDistrictFromMap(district);
       }
     });
     map.append(path);
