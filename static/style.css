@@ -1077,3 +1077,13 @@ input::placeholder, textarea::placeholder {
   padding-top: 17px;
   border-top: 1px solid var(--line);
 }
+
+
+.form-field.draft-mode {
+  margin-bottom: 0;
+}
+
+.actions.draft-current-actions {
+  justify-content: flex-end;
+  margin-top: 8px;
+}

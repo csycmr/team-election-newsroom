@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=balanced-editor">
+  <link rel="stylesheet" href="/static/style.css?v=draft-button-placement">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -105,7 +105,10 @@
       <section class="workspace-card view" id="view-draft" aria-labelledby="draft-heading" hidden>
         <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 생성</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div><span class="step-indicator">01 / 초안</span></div>
         <div class="editor-grid draft-layout">
-          <section class="light-pane editor-controls"><h3>초안 생성</h3><p class="pane-description">재생 중이거나 선택한 단계의 집계 또는 사건으로 초안을 작성합니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field">작성 방식<select id="generation-mode"><option value="template">데이터 문구 조합</option><option value="ai">AI로 문안 생성</option></select></label><p id="draft-step" class="pane-description">개표 재생 대기</p><div class="actions"><button type="button" class="primary" id="draft" disabled>현재 집계로 초안</button></div>
+          <section class="light-pane editor-controls"><h3>초안 생성</h3><p class="pane-description">재생 중이거나 선택한 단계의 집계 또는 사건으로 초안을 작성합니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field draft-mode">작성 방식<select id="generation-mode"><option value="template">데이터 문구 조합</option><option value="ai">AI로 문안 생성</option></select></label><div class="actions draft-current-actions">
+            <button type="button" class="primary" id="draft" disabled>현재 집계로 초안</button>
+          </div>
+          <p id="draft-step" class="pane-description">개표 재생 대기</p>
           <div class="pledge-actions">
             <div class="pledge-candidates" role="group" aria-label="공약 후보 선택">
               <button type="button" data-pledge-candidate="정원오" aria-pressed="true">정원오</button>
