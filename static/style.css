@@ -1370,6 +1370,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .board-kind {
+  vertical-align: middle;
   margin-right: 6px;
   padding: 2px 6px;
   border-radius: 4px;
@@ -1379,6 +1380,11 @@ input::placeholder, textarea::placeholder {
 }
 
 .board-title button {
+  max-width: calc(100% - 46px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
   padding: 0;
   border: 0;
   background: none;
