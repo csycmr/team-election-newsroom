@@ -17,6 +17,35 @@ const JUNG_COLOR = "#679bff";
 const MIN_ROW_HEIGHT = 14;
 const STACKED_ROW_HEIGHT = 18;
 
+// Label anchors inside district boundaries in the map viewBox.
+const districtLabelPositions = {
+  "강남구": [289, 248],
+  "강동구": [383, 199],
+  "강북구": [267, 102],
+  "강서구": [60, 178],
+  "관악구": [189, 306],
+  "광진구": [332, 204],
+  "구로구": [80, 278],
+  "금천구": [145, 315],
+  "노원구": [315, 46],
+  "도봉구": [277, 60],
+  "동대문구": [298, 157],
+  "동작구": [187, 257],
+  "마포구": [131, 176],
+  "서대문구": [181, 168],
+  "서초구": [251, 280],
+  "성동구": [286, 197],
+  "성북구": [262, 140],
+  "송파구": [358, 252],
+  "양천구": [109, 240],
+  "영등포구": [151, 234],
+  "용산구": [224, 223],
+  "은평구": [172, 111],
+  "종로구": [211, 121],
+  "중구": [241, 188],
+  "중랑구": [337, 138],
+};
+
 function pace(name) {
   let hash = 0;
   for (const char of name) hash = (hash * 31 + char.codePointAt(0)) >>> 0;
@@ -73,6 +102,28 @@ function setup({ finals, timeline }) {
     list.append(row);
     return { ...district, pace: pace(district.name), path, title, row, oh, jung, value };
   });
+  const labels = document.createElementNS(svgNamespace, "g");
+  labels.setAttribute("aria-hidden", "true");
+  labels.setAttribute("pointer-events", "none");
+  labels.setAttribute("fill", "#fff");
+  labels.setAttribute("stroke", "#0e1723");
+  labels.setAttribute("stroke-width", "2");
+  labels.setAttribute("paint-order", "stroke");
+  labels.setAttribute("font-size", "10");
+  labels.setAttribute("font-weight", "700");
+  labels.setAttribute("text-anchor", "middle");
+  labels.setAttribute("dominant-baseline", "central");
+  for (const district of districts) {
+    const position = districtLabelPositions[district.name];
+    if (!position) continue;
+    const [x, y] = position;
+    const label = document.createElementNS(svgNamespace, "text");
+    label.setAttribute("x", x);
+    label.setAttribute("y", y);
+    label.textContent = district.name;
+    labels.append(label);
+  }
+  map.append(labels);
   find("live-district-map").append(map);
 
   function lastCountedFrame(frame) {
