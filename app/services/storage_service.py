@@ -39,6 +39,12 @@ class Storage:
                 status=excluded.status, updated_at=excluded.updated_at""",
                 (article.article_id, payload, article.status, article.created_at.isoformat(), article.updated_at.isoformat()))
 
+    def delete_article(self, article_id: str) -> bool:
+        """Remove an article; its audit log is kept as an editorial record."""
+        with self.connect() as db:
+            deleted = db.execute("DELETE FROM articles WHERE article_id=?", (article_id,)).rowcount
+        return bool(deleted)
+
     def get_article(self, article_id: str) -> Article | None:
         with self.connect() as db:
             row = db.execute("SELECT payload FROM articles WHERE article_id=?", (article_id,)).fetchone()
@@ -81,12 +87,13 @@ class Storage:
         placeholders = ", ".join("?" for _ in article_ids)
         with self.connect() as db:
             rows = db.execute(
-                f"""SELECT p.article_id, MIN(p.created_at) AS posted_at,
+                f"""SELECT p.article_id, p.created_at AS posted_at,
                     (SELECT r.actor FROM audit_logs r WHERE r.article_id = p.article_id
                      AND r.action = 'human_reviewed' ORDER BY r.id DESC LIMIT 1) AS author
                 FROM audit_logs p
                 WHERE p.article_id IN ({placeholders}) AND p.action = 'posted'
-                GROUP BY p.article_id""",
+                  AND p.id = (SELECT MAX(q.id) FROM audit_logs q
+                              WHERE q.article_id = p.article_id AND q.action IN ('posted', 'unposted'))""",
                 article_ids,
             ).fetchall()
         return {

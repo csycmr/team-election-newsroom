@@ -314,6 +314,29 @@ def post_to_newsroom(article_id: str):
     return {**article.model_dump(mode="json"), "posted": True}
 
 
+@app.post("/api/articles/{article_id}/revise")
+def revise_posted_article(article_id: str):
+    """Take an approved article back to draft so it can be edited and re-approved."""
+    article = required_article(article_id)
+    if article.status != "approved":
+        raise HTTPException(409, "편집장 승인을 마친 기사만 수정으로 되돌릴 수 있습니다.")
+    if article_id in storage.posted_article_ids([article_id]):
+        storage.log(article_id, "unposted", "editor", "수정을 위해 보도실 게시 취소")
+    article.status = "draft"
+    article.updated_at = now_seoul()
+    storage.save_article(article)
+    storage.log(article_id, "revision_requested", "editor", "보도실에서 수정 요청")
+    return article
+
+
+@app.delete("/api/articles/{article_id}")
+def delete_article(article_id: str):
+    required_article(article_id)
+    storage.log(article_id, "deleted", "editor", "기사 삭제")
+    storage.delete_article(article_id)
+    return {"deleted": True, "article_id": article_id}
+
+
 @app.get("/api/articles/{article_id}/audit")
 def audit(article_id: str):
     required_article(article_id)

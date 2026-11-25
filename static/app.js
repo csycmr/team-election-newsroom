@@ -449,6 +449,59 @@ function renderNewsArticle(item) {
   }
   target.append(element("p", "news-note",
     "이 기사는 AI 도구로 초안을 작성한 뒤 팩트체크, 사람 검토, 편집장 승인을 거쳐 게시했습니다."));
+
+  const actions = element("div", "news-actions");
+  const feedback = element("p", "news-feedback");
+  feedback.setAttribute("role", "status");
+  const edit = element("button", "news-edit", "수정");
+  const remove = element("button", "news-delete", "삭제");
+  edit.type = remove.type = "button";
+  actions.append(edit, remove);
+  target.append(actions, feedback);
+
+  const run = async (operation) => {
+    if (busy) return;
+    busy = true;
+    edit.disabled = remove.disabled = true;
+    try {
+      await operation();
+    } catch (error) {
+      feedback.textContent = error.message;
+      edit.disabled = remove.disabled = false;
+    } finally {
+      busy = false;
+      updateActions();
+    }
+  };
+
+  edit.onclick = () => {
+    if (!window.confirm("보도실 게시를 내리고 초안으로 되돌려 편집실에서 수정합니다.\n수정 후 다시 팩트체크·사람 검토·편집장 승인을 거쳐야 게시할 수 있어요. 계속할까요?")) return;
+    run(async () => {
+      const revised = await api(`/api/articles/${item.article_id}/revise`, undefined, "POST");
+      postedArticleIds.delete(item.article_id);
+      openWorkspaceView("draft");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      showArticle(revised);
+      byId("status").textContent = "보도실 게시를 내리고 초안으로 되돌렸습니다. 수정 후 다시 검토해 주세요.";
+      await Promise.all([refreshArchive(), refreshAudit()]);
+    });
+  };
+
+  remove.onclick = () => {
+    if (!window.confirm(`「${item.title}」 기사를 삭제할까요?\n삭제하면 보도실과 편집실에서 모두 사라지고 되돌릴 수 없어요.`)) return;
+    run(async () => {
+      await api(`/api/articles/${item.article_id}`, undefined, "DELETE");
+      postedArticleIds.delete(item.article_id);
+      if (article?.article_id === item.article_id) {
+        article = undefined;
+        byId("article-title-input").value = "";
+        byId("article-body-input").value = "";
+        byId("article-evidence").textContent = "";
+      }
+      archiveArticleId = null;
+      await refreshArchive();
+    });
+  };
 }
 
 async function refreshArchive() {

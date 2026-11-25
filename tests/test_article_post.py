@@ -25,3 +25,31 @@ def test_only_approved_articles_can_be_posted_to_newsroom(tmp_path, monkeypatch)
     assert row["author"] == "기자"
     assert row["posted_at"]
     assert [log["action"] for log in client.get(path + "/audit").json()].count("posted") == 1
+
+
+def test_posted_article_can_be_revised_or_deleted(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "storage", Storage(tmp_path / "articles.db"))
+    client = TestClient(main.app)
+    frame = client.get("/api/replay").json()[-1]
+
+    def approved_article():
+        article = client.post("/api/articles", json={"snapshot": frame}).json()
+        path = f"/api/articles/{article['article_id']}"
+        client.post(path + "/fact-check")
+        client.post(path + "/human-review", json={"reviewer": "기자"})
+        client.post(path + "/approve", json={"reviewer": "편집장"})
+        client.post(path + "/post")
+        return path
+
+    path = approved_article()
+    revised = client.post(path + "/revise")
+    assert revised.status_code == 200 and revised.json()["status"] == "draft"
+    client.post(path + "/fact-check")
+    client.post(path + "/human-review", json={"reviewer": "기자"})
+    client.post(path + "/approve", json={"reviewer": "편집장"})
+    assert client.get("/api/articles?status=approved").json()["articles"][0]["posted"] is False
+
+    other = approved_article()
+    assert client.delete(other).status_code == 200
+    assert client.get(other).status_code == 404
+    assert client.delete(other).status_code == 404

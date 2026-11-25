@@ -1521,3 +1521,51 @@ input::placeholder, textarea::placeholder {
 .news-pane .news-empty {
   color: #6b7488;
 }
+
+.news-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #e0d5bd;
+}
+
+.news-actions button {
+  min-width: 76px;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.news-pane .news-edit {
+  color: #1b2a4a;
+  background: #fff;
+  border: 1px solid #b9c2d4;
+}
+
+.news-pane .news-edit:hover:not(:disabled) {
+  background: #eef1f7;
+}
+
+.news-pane .news-delete {
+  color: #fff;
+  background: #b4323f;
+  border: 1px solid #b4323f;
+}
+
+.news-pane .news-delete:hover:not(:disabled) {
+  background: #c8404c;
+}
+
+.news-feedback:empty {
+  display: none;
+}
+
+.news-feedback {
+  margin: 10px 0 0;
+  color: #b4323f;
+  font-size: 12px;
+  text-align: right;
+}
