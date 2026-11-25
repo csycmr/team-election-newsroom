@@ -950,11 +950,10 @@ input::placeholder, textarea::placeholder {
 
 .editor-grid.draft-layout {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: auto auto auto 1fr;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas:
     "controls manuscript"
-    "factcheck manuscript"
-    "human-review manuscript"
+    "review manuscript"
     "approval manuscript";
 }
 
@@ -966,12 +965,19 @@ input::placeholder, textarea::placeholder {
   grid-area: manuscript;
 }
 
-.draft-layout .editor-factcheck {
-  grid-area: factcheck;
+.editor-review-pair {
+  grid-area: review;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
-.draft-layout .editor-human-review {
-  grid-area: human-review;
+.editor-review-pair .light-pane {
+  padding-inline: clamp(10px, 1.5vw, 24px);
+}
+
+.editor-review-pair .step-indicator {
+  white-space: normal;
 }
 
 .draft-layout .editor-approval {
@@ -1016,8 +1022,7 @@ input::placeholder, textarea::placeholder {
     grid-template-areas:
       "controls"
       "manuscript"
-      "factcheck"
-      "human-review"
+      "review"
       "approval";
   }
 }

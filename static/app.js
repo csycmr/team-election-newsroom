@@ -245,21 +245,22 @@ const states = {
   rejected: "반려",
 };
 
-async function editorialAction(operation) {
+async function editorialAction(operation, feedbackId = "status") {
   if (busy) return;
+  const feedback = byId(feedbackId);
+  if (feedbackId !== "status") byId("status").textContent = "";
   busy = true;
   updateActions();
   try {
     const result = await operation();
-    article = result.article || result;
-    showArticle(article);
-    byId("status").textContent = result.result?.reason || states[article.status];
+    showArticle(result.article || result);
+    feedback.textContent = result.result?.reason || states[article.status];
     if (result.result && result.result.status !== "pass") {
-      byId("status").textContent += ` (${result.result.status})`;
+      feedback.textContent += ` (${result.result.status})`;
     }
     await Promise.all([refreshArticleList(), refreshAudit()]);
   } catch (error) {
-    byId("status").textContent = error.message;
+    feedback.textContent = error.message;
   } finally {
     busy = false;
     updateActions();
@@ -292,21 +293,26 @@ byId("save").onclick = () => editorialAction(() =>
     body: byId("article-body-input").value,
   }, "PUT"));
 byId("check").onclick = () => editorialAction(() =>
-  api(`/api/articles/${article.article_id}/fact-check`, undefined, "POST"));
+  api(`/api/articles/${article.article_id}/fact-check`, undefined, "POST"), "factcheck-status");
 
 for (const [button, endpoint] of [["review", "human-review"], ["approve", "approve"]]) {
   byId(button).onclick = () => {
+    const feedbackId = button === "review" ? "human-review-status" : "status";
     const reviewer = byId("reviewer").value.trim();
     if (!reviewer) {
-      byId("status").textContent = "검토자 이름을 입력해 주세요.";
+      byId(feedbackId).textContent = "검토자 이름을 입력해 주세요.";
       byId("reviewer").focus();
       return;
     }
-    editorialAction(() => api(`/api/articles/${article.article_id}/${endpoint}`, { reviewer }, "POST"));
+    editorialAction(() => api(`/api/articles/${article.article_id}/${endpoint}`, { reviewer }, "POST"), feedbackId);
   };
 }
 
 function showArticle(next) {
+  if (article?.article_id !== next.article_id || next.status === "draft") {
+    byId("factcheck-status").textContent = "";
+    byId("human-review-status").textContent = "";
+  }
   article = next;
   byId("article-title-input").value = next.title;
   byId("article-body-input").value = next.body;
