@@ -423,7 +423,7 @@ function renderNewsArticle(item) {
   const byline = element("div", "news-byline");
   byline.append(
     element("span", "news-author", `${item.author} 기자`),
-    element("span", "", `입력 ${dotted(articleDate, item.posted_at)}`),
+    element("span", "", `입력 ${dotted(articleDate, item.dated_at)}`),
     element("span", "", `No. ${item.board_number}`),
   );
   const body = element("div", "news-body");
@@ -518,7 +518,7 @@ async function refreshArchive() {
     rememberPosted(approved);
     const articles = approved
       .filter(item => item.posted_at)
-      .sort((a, b) => Date.parse(a.posted_at) - Date.parse(b.posted_at))
+      .sort((a, b) => Date.parse(a.dated_at) - Date.parse(b.dated_at) || Date.parse(a.posted_at) - Date.parse(b.posted_at))
       .map((item, index) => ({ ...item, board_number: index + 1 }))
       .reverse();
     list.replaceChildren();
@@ -557,7 +557,7 @@ async function refreshArchive() {
       kind.className = "board-kind";
       kind.textContent = item.article_type === "pledge" ? "공약" : "속보";
       titleCell.append(kind, button);
-      row.insertCell().textContent = dotted(boardDate, item.posted_at);
+      row.insertCell().textContent = dotted(boardDate, item.dated_at);
       row.insertCell().textContent = item.author;
       row.onclick = () => showArchivedArticle(item);
     }

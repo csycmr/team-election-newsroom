@@ -4,6 +4,21 @@ from app import main
 from app.services.storage_service import Storage
 
 
+def frame_dateline(frame):
+    from datetime import datetime
+    return datetime.fromisoformat(frame["collected_at"]).isoformat()
+
+
+def test_pledge_articles_are_dated_on_june_2():
+    from app.models import Article
+    from datetime import datetime
+    article = Article(article_type="pledge", article_id="abc", title="t", body="b", status="approved",
+                      evidence=[], created_at=datetime.now(), updated_at=datetime.now())
+    dated = main.article_dateline(article)
+    assert dated.startswith("2026-06-02T") and dated.endswith("+09:00")
+    assert dated == main.article_dateline(article)
+
+
 def test_only_approved_articles_can_be_posted_to_newsroom(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "storage", Storage(tmp_path / "articles.db"))
     client = TestClient(main.app)
@@ -24,6 +39,7 @@ def test_only_approved_articles_can_be_posted_to_newsroom(tmp_path, monkeypatch)
     assert row["posted"] is True
     assert row["author"] == "기자"
     assert row["posted_at"]
+    assert row["dated_at"] == frame_dateline(frame)
     assert [log["action"] for log in client.get(path + "/audit").json()].count("posted") == 1
 
 

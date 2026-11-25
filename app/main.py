@@ -1,5 +1,7 @@
 import asyncio
+import hashlib
 import secrets
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
@@ -8,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.adapters.cms import publish
 from app.config import ROOT, get_settings
-from app.models import ArticleCreate, ArticleUpdate, ReviewRequest, PledgeArticleCreate
+from app.models import Article, ArticleCreate, ArticleUpdate, ReviewRequest, PledgeArticleCreate
 from app.services.article_service import generate_article, generate_ai_article
 from app.services.election_service import fetch_snapshot
 from app.services.factcheck_service import check_article
@@ -202,6 +204,21 @@ def required_article(article_id: str):
     return article
 
 
+def article_dateline(article: Article) -> str:
+    """Date shown in 보도실: the count moment for count articles, a fixed 6/2 time for pledges.
+
+    The newsroom replays a past election, so posted articles carry the time they would
+    have run, not the real click time. Pledge times are derived from the article id so
+    each article keeps the same time on every load.
+    """
+    if article.article_type != "pledge" and article.snapshot is not None:
+        return article.snapshot.collected_at.isoformat()
+    seed = int(hashlib.sha256(article.article_id.encode()).hexdigest(), 16)
+    hour = 9 + seed % 10
+    minute = (seed // 10) % 60
+    return datetime(2026, 6, 2, hour, minute, tzinfo=timezone(timedelta(hours=9))).isoformat()
+
+
 @app.get("/api/articles")
 def list_articles(
     status: str | None = Query(default=None, pattern="^(draft|fact_checked|human_reviewed|approved|rejected)$"),
@@ -219,6 +236,7 @@ def list_articles(
                 "posted": article.article_id in posted,
                 "posted_at": posted.get(article.article_id, {}).get("posted_at"),
                 "author": posted.get(article.article_id, {}).get("author"),
+                "dated_at": article_dateline(article),
             }
             for article in articles
         ],
