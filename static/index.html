@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=draft-button-placement">
+  <link rel="stylesheet" href="/static/style.css?v=four-editor-stages">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -103,9 +103,10 @@
       </section>
 
       <section class="workspace-card view" id="view-draft" aria-labelledby="draft-heading" hidden>
-        <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 생성</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div><span class="step-indicator">01 / 초안</span></div>
+        <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 생성</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div></div>
         <div class="editor-grid draft-layout">
-          <section class="light-pane editor-controls"><h3>초안 생성</h3><p class="pane-description">재생 중이거나 선택한 단계의 집계 또는 사건으로 초안을 작성합니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field draft-mode">작성 방식<select id="generation-mode"><option value="template">데이터 문구 조합</option><option value="ai">AI로 문안 생성</option></select></label><div class="actions draft-current-actions">
+          <section class="light-pane editor-controls">
+            <h3 class="editor-stage-heading"><span class="step-indicator">01/초안 작성</span></h3><p class="pane-description">재생 중이거나 선택한 단계의 집계 또는 사건으로 초안을 작성합니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field draft-mode">작성 방식<select id="generation-mode"><option value="template">데이터 문구 조합</option><option value="ai">AI로 문안 생성</option></select></label><div class="actions draft-current-actions">
             <button type="button" class="primary" id="draft" disabled>현재 집계로 초안</button>
           </div>
           <p id="draft-step" class="pane-description">개표 재생 대기</p>
@@ -118,14 +119,27 @@
           </div>
           <div class="status-box" id="status" role="status">개표 재생 대기</div><div class="editor-save-actions"><button type="button" id="save" disabled>기사 수정 저장</button></div></section>
         <section class="light-pane editor-manuscript"><h3>기사 원고</h3><div class="article-fields"><label for="article-title-input">기사 제목</label><input id="article-title-input" placeholder="기사 제목" disabled><label for="article-body-input">기사 본문</label><textarea id="article-body-input" rows="17" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea></div><p id="article-evidence" class="evidence-note"></p></section>
-        <section class="light-pane editor-review" aria-labelledby="review-heading">
-          <div class="page-title"><div><p class="eyebrow mint">NEWSROOM / VERIFICATION</p><h3 id="review-heading">팩트체크·편집장 승인</h3><p class="description">원본 수치·후보·지역·기준시각을 확인하고, 사람 검토 후 최종 승인합니다.</p></div><span class="step-indicator">02 / 검토</span></div>
-          <h4>검증·승인 단계</h4><div class="actions review-actions"><button type="button" id="check" disabled>① 팩트체크</button><button type="button" id="review" disabled>② 사람 검토</button><button type="button" id="approve" disabled>③ 편집장 승인</button></div><label class="form-field">검토자 이름<input id="reviewer" placeholder="검토자 이름 입력"></label><p class="pane-description">팩트체크에 통과한 기사만 사람 검토 단계로 진행할 수 있습니다. 최종 승인 기록은 편집 이력에 저장됩니다.</p><div id="review-current-status" class="status-box">선택된 기사 없음</div>
-          <div class="editor-audit">
-            <h4>편집 이력</h4>
-            <div id="article-audit" class="audit-list">기사를 선택해 주세요.</div>
-          </div>
-        </section>
+          <section class="light-pane editor-factcheck">
+            <h3 class="editor-stage-heading"><span class="step-indicator">02/팩트체크</span></h3>
+            <p class="pane-description">원본 수치·후보·지역·기준시각을 확인합니다.</p>
+            <div class="actions"><button type="button" id="check" disabled>팩트체크</button></div>
+          </section>
+          <section class="light-pane editor-human-review">
+            <h3 class="editor-stage-heading"><span class="step-indicator">03/사람 검토</span></h3>
+            <p class="pane-description">팩트체크에 통과한 기사만 검토할 수 있습니다.</p>
+            <label class="form-field">검토자 이름<input id="reviewer" placeholder="검토자 이름 입력"></label>
+            <div class="actions"><button type="button" id="review" disabled>사람 검토</button></div>
+          </section>
+          <section class="light-pane editor-approval">
+            <h3 class="editor-stage-heading"><span class="step-indicator">04/편집장 승인</span></h3>
+            <p class="pane-description">사람 검토를 마친 기사를 승인하면 편집 이력에 기록됩니다.</p>
+            <div class="actions"><button type="button" id="approve" disabled>편집장 승인</button></div>
+            <div id="review-current-status" class="status-box">선택된 기사 없음</div>
+            <div class="editor-audit">
+              <h4>편집 이력</h4>
+              <div id="article-audit" class="audit-list">기사를 선택해 주세요.</div>
+            </div>
+          </section>
         </div>
       </section>
 
