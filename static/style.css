@@ -965,8 +965,15 @@ input::placeholder, textarea::placeholder {
 }
 
 .pledge-candidates button[aria-pressed="true"] {
-  background: var(--mint);
   color: #0b121d;
+}
+
+.pledge-candidates button[data-pledge-candidate="정원오"][aria-pressed="true"] {
+  background: #679bff;
+}
+
+.pledge-candidates button[data-pledge-candidate="오세훈"][aria-pressed="true"] {
+  background: #ed737e;
 }
 
 
