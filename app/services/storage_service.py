@@ -70,6 +70,18 @@ class Storage:
             ).fetchall()
         return {row["article_id"] for row in rows}
 
+    def posted_article_ids(self, article_ids: list[str]) -> set[str]:
+        """Articles an editor has posted to the in-app 보도실 archive."""
+        if not article_ids:
+            return set()
+        placeholders = ", ".join("?" for _ in article_ids)
+        with self.connect() as db:
+            rows = db.execute(
+                f"SELECT DISTINCT article_id FROM audit_logs WHERE article_id IN ({placeholders}) AND action = 'posted'",
+                article_ids,
+            ).fetchall()
+        return {row["article_id"] for row in rows}
+
     def log(self, article_id: str, action: str, actor: str, detail: dict | str):
         detail_text = detail if isinstance(detail, str) else json.dumps(detail, ensure_ascii=False)
         with self.connect() as db:

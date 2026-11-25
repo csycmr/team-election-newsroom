@@ -178,6 +178,13 @@ function updateActions() {
   byId("review").disabled = busy || article?.status !== "fact_checked";
   byId("approve").disabled = busy || article?.status !== "human_reviewed";
   byId("reject").disabled = busy || article?.status !== "human_reviewed";
+  const postButton = byId("post-article");
+  const approved = article?.status === "approved";
+  const posted = approved && postedArticleIds.has(article.article_id);
+  postButton.textContent = posted ? "보도실 게시 완료" : approved ? "보도실에 게시" : "편집장 승인 전";
+  postButton.classList.toggle("is-ready", approved && !posted);
+  postButton.classList.toggle("is-posted", posted);
+  postButton.disabled = busy || !approved || posted;
 }
 
 function disconnectReplay() {
@@ -318,6 +325,7 @@ function showArticle(next) {
     byId("factcheck-status").textContent = "";
     byId("human-review-status").textContent = "";
   }
+  if (article?.article_id !== next.article_id) byId("post-status").textContent = "";
   article = next;
   byId("article-title-input").value = next.title;
   byId("article-body-input").value = next.body;
@@ -327,6 +335,32 @@ function showArticle(next) {
 }
 
 let editorListRequest = 0;
+const postedArticleIds = new Set();
+
+function rememberPosted(articles) {
+  for (const item of articles) {
+    if (item.posted) postedArticleIds.add(item.article_id);
+  }
+}
+
+byId("post-article").onclick = async () => {
+  if (busy || article?.status !== "approved") return;
+  const feedback = byId("post-status");
+  busy = true;
+  updateActions();
+  try {
+    await api(`/api/articles/${article.article_id}/post`, undefined, "POST");
+    postedArticleIds.add(article.article_id);
+    archiveArticleId = article.article_id;
+    feedback.textContent = "보도실에 게시했습니다.";
+    await Promise.all([refreshArchive(), refreshAudit()]);
+  } catch (error) {
+    feedback.textContent = error.message;
+  } finally {
+    busy = false;
+    updateActions();
+  }
+};
 let archiveRequest = 0;
 let archiveArticleId = null;
 
@@ -342,6 +376,7 @@ async function refreshEditorArticles() {
   try {
     const { articles } = await api(`/api/articles?${query}`);
     if (request !== editorListRequest) return;
+    rememberPosted(articles);
     target.replaceChildren(new Option(articles.length ? "기사 선택" : "저장된 기사가 없습니다.", ""));
     for (const item of articles) {
       target.add(new Option(item.title, item.article_id));
@@ -360,13 +395,15 @@ async function refreshArchive() {
   const title = byId("library-article-title");
   const preview = byId("library-preview");
   try {
-    const { articles } = await api("/api/articles?status=approved&limit=100");
+    const { articles: approved } = await api("/api/articles?status=approved&limit=100");
     if (request !== archiveRequest) return;
+    rememberPosted(approved);
+    const articles = approved.filter(item => postedArticleIds.has(item.article_id));
     list.replaceChildren();
     if (!articles.length) {
-      list.textContent = "승인된 기사가 없습니다.";
+      list.textContent = "보도실에 게시된 기사가 없습니다.";
       title.textContent = "기사 본문";
-      preview.textContent = "편집장 승인 후 보도실에 표시됩니다.";
+      preview.textContent = "편집실에서 편집장 승인 후 '보도실에 게시'를 누르면 여기에 표시됩니다.";
       archiveArticleId = null;
       return;
     }
@@ -390,7 +427,7 @@ async function refreshArchive() {
       const headline = document.createElement("strong");
       headline.textContent = item.title;
       const status = document.createElement("small");
-      status.textContent = item.published ? "게시 완료" : "편집장 승인 완료";
+      status.textContent = item.published ? "보도실 게시 · CMS 전송 완료" : "보도실 게시";
       button.append(headline, status);
       button.onclick = () => showArchivedArticle(item);
       list.append(button);

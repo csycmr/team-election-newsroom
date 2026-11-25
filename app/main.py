@@ -208,12 +208,16 @@ def list_articles(
     limit: int = Query(default=100, ge=1, le=100),
 ):
     articles = storage.list_articles(status=status, limit=limit)
-    published_ids = storage.published_article_ids(
-        [article.article_id for article in articles if article.status == "approved"]
-    )
+    approved_ids = [article.article_id for article in articles if article.status == "approved"]
+    published_ids = storage.published_article_ids(approved_ids)
+    posted_ids = storage.posted_article_ids(approved_ids)
     return {
         "articles": [
-            {**article.model_dump(mode="json"), "published": article.article_id in published_ids}
+            {
+                **article.model_dump(mode="json"),
+                "published": article.article_id in published_ids,
+                "posted": article.article_id in posted_ids,
+            }
             for article in articles
         ],
         "count": len(articles),
@@ -296,6 +300,16 @@ def reject(article_id: str, request: ReviewRequest):
     storage.save_article(article)
     storage.log(article_id, "rejected", request.reviewer, request.note)
     return article
+
+
+@app.post("/api/articles/{article_id}/post")
+def post_to_newsroom(article_id: str):
+    article = required_article(article_id)
+    if article.status != "approved":
+        raise HTTPException(409, "편집장 승인을 마친 기사만 보도실에 게시할 수 있습니다.")
+    if article_id not in storage.posted_article_ids([article_id]):
+        storage.log(article_id, "posted", "editor", "보도실 게시")
+    return {**article.model_dump(mode="json"), "posted": True}
 
 
 @app.get("/api/articles/{article_id}/audit")

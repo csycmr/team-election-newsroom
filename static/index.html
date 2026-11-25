@@ -168,9 +168,13 @@
                 <label for="article-title-input">제목</label>
                 <input id="article-title-input" placeholder="제목" disabled>
                 <label for="article-body-input">본문</label>
-                <textarea id="article-body-input" rows="17" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea>
+                <textarea id="article-body-input" rows="12" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea>
               </div>
               <p id="article-evidence" class="evidence-note"></p>
+            </section>
+            <section class="light-pane editor-publish">
+              <button type="button" class="post-button" id="post-article" disabled>편집장 승인 전</button>
+              <p id="post-status" class="pane-description editor-feedback" role="status"></p>
             </section>
           </div>
           <div class="editor-review-pair">
@@ -208,7 +212,7 @@
         </div>
         <div class="editor-grid archive-grid">
           <section class="light-pane">
-            <h3>승인·게시 기사</h3>
+            <h3>보도실 게시 기사</h3>
             <div id="article-list" class="article-list">저장된 기사를 불러오는 중입니다.</div>
           </section>
           <section class="light-pane">
