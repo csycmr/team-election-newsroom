@@ -389,55 +389,131 @@ async function refreshEditorArticles() {
   }
 }
 
+const boardDate = new Intl.DateTimeFormat("ko-KR", {
+  timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit",
+});
+const articleDate = new Intl.DateTimeFormat("ko-KR", {
+  timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit",
+  hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+});
+const dotted = (formatter, value) => formatter.format(new Date(value)).replace(/\.\s?/g, ".").replace(/\.$/, "").replace(/\.(\d{2}:)/, " $1");
+
+function articleParagraphs(body) {
+  const blocks = body.split(/\n+/).map(text => text.trim()).filter(Boolean);
+  if (blocks.length > 1) return blocks;
+  const sentences = body.split(/(?<=[.!?])\s+/).map(text => text.trim()).filter(Boolean);
+  const paragraphs = [];
+  for (let index = 0; index < sentences.length; index += 2) {
+    paragraphs.push(sentences.slice(index, index + 2).join(" "));
+  }
+  return paragraphs;
+}
+
+function renderNewsArticle(item) {
+  const target = byId("library-article");
+  target.replaceChildren();
+  const element = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+  const kicker = element("p", "news-kicker", item.article_type === "pledge" ? "공약" : "개표 속보");
+  const title = element("h4", "news-title", item.title);
+  const byline = element("div", "news-byline");
+  byline.append(
+    element("span", "news-author", `${item.author} 기자`),
+    element("span", "", `입력 ${dotted(articleDate, item.posted_at)}`),
+    element("span", "", `No. ${item.board_number}`),
+  );
+  const body = element("div", "news-body");
+  for (const paragraph of articleParagraphs(item.body)) body.append(element("p", "", paragraph));
+  target.append(kicker, title, byline, body);
+
+  const evidence = (item.evidence || []).filter(source => source.source_url);
+  if (evidence.length) {
+    const sources = element("aside", "news-sources");
+    sources.append(element("strong", "", "근거 자료"));
+    const list = element("ul");
+    for (const source of evidence) {
+      const row = element("li");
+      const link = element("a", "", `[${source.evidence_id}] ${source.title || source.source}`);
+      link.href = source.source_url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      row.append(link);
+      list.append(row);
+    }
+    sources.append(list);
+    target.append(sources);
+  }
+  target.append(element("p", "news-note",
+    "이 기사는 AI 도구로 초안을 작성한 뒤 팩트체크, 사람 검토, 편집장 승인을 거쳐 게시했습니다."));
+}
+
 async function refreshArchive() {
   const request = ++archiveRequest;
   const list = byId("article-list");
-  const title = byId("library-article-title");
-  const preview = byId("library-preview");
+  const showEmpty = (message) => {
+    byId("library-article").replaceChildren(Object.assign(document.createElement("p"), {
+      className: "news-empty", textContent: message,
+    }));
+  };
   try {
     const { articles: approved } = await api("/api/articles?status=approved&limit=100");
     if (request !== archiveRequest) return;
     rememberPosted(approved);
-    const articles = approved.filter(item => postedArticleIds.has(item.article_id));
+    const articles = approved
+      .filter(item => item.posted_at)
+      .sort((a, b) => Date.parse(a.posted_at) - Date.parse(b.posted_at))
+      .map((item, index) => ({ ...item, board_number: index + 1 }))
+      .reverse();
     list.replaceChildren();
     if (!articles.length) {
       list.textContent = "보도실에 게시된 기사가 없습니다.";
-      title.textContent = "기사 본문";
-      preview.textContent = "편집실에서 편집장 승인 후 '보도실에 게시'를 누르면 여기에 표시됩니다.";
+      showEmpty("편집실에서 편집장 승인 후 '보도실에 게시'를 누르면 여기에 표시됩니다.");
       archiveArticleId = null;
       return;
     }
 
-    const selected = articles.find(item => item.article_id === archiveArticleId) || articles[0];
+    const table = document.createElement("table");
+    table.innerHTML = '<thead><tr><th scope="col">번호</th><th scope="col">제목</th><th scope="col">게시일</th><th scope="col">작성자</th></tr></thead>';
+    const rows = document.createElement("tbody");
+    table.append(rows);
+
     function showArchivedArticle(item) {
       archiveArticleId = item.article_id;
-      title.textContent = item.title;
-      preview.textContent = item.body;
-      for (const button of list.querySelectorAll("button")) {
-        const current = button.dataset.articleId === item.article_id;
-        button.classList.toggle("is-current", current);
-        button.setAttribute("aria-pressed", String(current));
+      renderNewsArticle(item);
+      for (const row of rows.rows) {
+        const current = row.dataset.articleId === item.article_id;
+        row.classList.toggle("is-current", current);
+        row.querySelector("button").setAttribute("aria-current", String(current));
       }
     }
 
     for (const item of articles) {
+      const row = rows.insertRow();
+      row.dataset.articleId = item.article_id;
+      row.insertCell().textContent = item.board_number;
+      const titleCell = row.insertCell();
+      titleCell.className = "board-title";
       const button = document.createElement("button");
       button.type = "button";
-      button.dataset.articleId = item.article_id;
-      const headline = document.createElement("strong");
-      headline.textContent = item.title;
-      const status = document.createElement("small");
-      status.textContent = item.published ? "보도실 게시 · CMS 전송 완료" : "보도실 게시";
-      button.append(headline, status);
-      button.onclick = () => showArchivedArticle(item);
-      list.append(button);
+      button.textContent = item.title;
+      const kind = document.createElement("span");
+      kind.className = "board-kind";
+      kind.textContent = item.article_type === "pledge" ? "공약" : "속보";
+      titleCell.append(kind, button);
+      row.insertCell().textContent = dotted(boardDate, item.posted_at);
+      row.insertCell().textContent = item.author;
+      row.onclick = () => showArchivedArticle(item);
     }
-    showArchivedArticle(selected);
+    list.append(table);
+    showArchivedArticle(articles.find(item => item.article_id === archiveArticleId) || articles[0]);
   } catch (error) {
     if (request !== archiveRequest) return;
     list.textContent = error.message;
-    title.textContent = "기사 본문";
-    preview.textContent = "";
+    showEmpty("");
   }
 }
 

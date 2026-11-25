@@ -210,13 +210,15 @@ def list_articles(
     articles = storage.list_articles(status=status, limit=limit)
     approved_ids = [article.article_id for article in articles if article.status == "approved"]
     published_ids = storage.published_article_ids(approved_ids)
-    posted_ids = storage.posted_article_ids(approved_ids)
+    posted = storage.posted_details(approved_ids)
     return {
         "articles": [
             {
                 **article.model_dump(mode="json"),
                 "published": article.article_id in published_ids,
-                "posted": article.article_id in posted_ids,
+                "posted": article.article_id in posted,
+                "posted_at": posted.get(article.article_id, {}).get("posted_at"),
+                "author": posted.get(article.article_id, {}).get("author"),
             }
             for article in articles
         ],

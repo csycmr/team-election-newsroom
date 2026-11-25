@@ -20,5 +20,8 @@ def test_only_approved_articles_can_be_posted_to_newsroom(tmp_path, monkeypatch)
     posted = client.post(path + "/post")
     assert posted.status_code == 200 and posted.json()["posted"] is True
     assert client.post(path + "/post").status_code == 200
-    assert client.get("/api/articles?status=approved").json()["articles"][0]["posted"] is True
+    row = client.get("/api/articles?status=approved").json()["articles"][0]
+    assert row["posted"] is True
+    assert row["author"] == "기자"
+    assert row["posted_at"]
     assert [log["action"] for log in client.get(path + "/audit").json()].count("posted") == 1

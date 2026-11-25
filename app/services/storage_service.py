@@ -72,15 +72,27 @@ class Storage:
 
     def posted_article_ids(self, article_ids: list[str]) -> set[str]:
         """Articles an editor has posted to the in-app 보도실 archive."""
+        return set(self.posted_details(article_ids))
+
+    def posted_details(self, article_ids: list[str]) -> dict[str, dict]:
+        """Posted time and byline (the human reviewer) for posted articles."""
         if not article_ids:
-            return set()
+            return {}
         placeholders = ", ".join("?" for _ in article_ids)
         with self.connect() as db:
             rows = db.execute(
-                f"SELECT DISTINCT article_id FROM audit_logs WHERE article_id IN ({placeholders}) AND action = 'posted'",
+                f"""SELECT p.article_id, MIN(p.created_at) AS posted_at,
+                    (SELECT r.actor FROM audit_logs r WHERE r.article_id = p.article_id
+                     AND r.action = 'human_reviewed' ORDER BY r.id DESC LIMIT 1) AS author
+                FROM audit_logs p
+                WHERE p.article_id IN ({placeholders}) AND p.action = 'posted'
+                GROUP BY p.article_id""",
                 article_ids,
             ).fetchall()
-        return {row["article_id"] for row in rows}
+        return {
+            row["article_id"]: {"posted_at": row["posted_at"], "author": row["author"] or "AI 뉴스룸"}
+            for row in rows
+        }
 
     def log(self, article_id: str, action: str, actor: str, detail: dict | str):
         detail_text = detail if isinstance(detail, str) else json.dumps(detail, ensure_ascii=False)
