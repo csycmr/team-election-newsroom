@@ -26,7 +26,6 @@ const timeBasis = {
 function renderTimeline(entries) {
   const axis = byId("count-history-axis");
   const detail = byId("count-history-detail");
-  let current = 0;
   let animation;
   let linked = false;
   const cursor = document.createElement("span");
@@ -37,23 +36,19 @@ function renderTimeline(entries) {
   const startTime = entries[0].time;
   const duration = entries.at(-1).time - startTime;
   const toPercent = (time) => 100 * (time - startTime) / duration;
-  const hasTimelineMarker = (entry) =>
-    entry.time_basis !== "simulated" && entry.time !== Date.parse("2026-06-04T09:00:00+09:00");
-  const visibleEntries = entries.filter(hasTimelineMarker);
-  const visiblePositions = visibleEntries.map(entry => toPercent(entry.time));
+  const positions = entries.map(entry => toPercent(entry.time));
   const points = entries.map((entry, index) => {
-    if (!hasTimelineMarker(entry)) return null;
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
     point.classList.toggle("is-incident", index > 0 && entry.counted_rate_pct === "");
-    const position = toPercent(entry.time);
-    const visibleIndex = visiblePositions.indexOf(position);
-    const nearNeighbor = [visiblePositions[visibleIndex - 1], visiblePositions[visibleIndex + 1]]
+    point.classList.toggle("is-simulated", entry.time_basis === "simulated");
+    const position = positions[index];
+    const nearNeighbor = [positions[index - 1], positions[index + 1]]
       .some(neighbor => neighbor !== undefined && Math.abs(neighbor - position) < 2.4);
     point.classList.toggle("is-dense", nearNeighbor);
     point.style.left = `${position}%`;
-    point.title = `${timestampLabel.format(entry.time)} · ${entry.event}`;
+    point.title = `${entry.step_id}단계 · ${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);
     point.addEventListener("click", () => {
       if (linked) return;
@@ -65,7 +60,7 @@ function renderTimeline(entries) {
     return point;
   });
   const labelLanes = [];
-  for (const entry of visibleEntries) {
+  for (const entry of entries) {
     const position = toPercent(entry.time);
     const openLane = labelLanes.findIndex(last => position - last >= 4.8);
     const lane = openLane === -1 ? labelLanes.length : openLane;
@@ -87,13 +82,12 @@ function renderTimeline(entries) {
   axis.style.setProperty("--extra-label-height", `${(labelLanes.length - 1) * 31}px`);
 
   function show(index) {
-    current = index;
     const entry = entries[index];
-    points.forEach((point, pointIndex) => point?.setAttribute("aria-pressed", String(pointIndex === index)));
+    points.forEach((point, pointIndex) => point.setAttribute("aria-pressed", String(pointIndex === index)));
     const headline = document.createElement("p");
     const title = document.createElement("strong");
     const eventTitle = entry.time_basis === "simulated" ? "개표 진행" : entry.event;
-    title.textContent = `${timestampLabel.format(entry.time)} · ${eventTitle}`;
+    title.textContent = `${entry.step_id}단계 · ${timestampLabel.format(entry.time)} · ${eventTitle}`;
     headline.append(title);
     const basis = document.createElement("p");
     basis.className = "count-history-meta";

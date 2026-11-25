@@ -654,6 +654,11 @@ input::placeholder, textarea::placeholder {
   content: "";
 }
 
+.count-history-point.is-simulated::before,
+.count-history-legend-dot.is-simulated {
+  background: #b2c2d6;
+}
+
 .count-history-point.is-incident::before,
 .count-history-legend-dot.is-incident {
   background: #ff7765;
@@ -902,9 +907,8 @@ input::placeholder, textarea::placeholder {
 }
 
 .count-history-point.is-dense {
-  top: 7px;
-  width: 11px;
-  height: 11px;
+  width: 7px;
+  border: 0;
 }
 
 .count-history-point.is-dense::before {
