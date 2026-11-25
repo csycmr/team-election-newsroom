@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=timeline-15">
+  <link rel="stylesheet" href="/static/style.css?v=replay-article-button">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -23,7 +23,13 @@
     </nav>
     <main>
       <section class="workspace-card view is-active" id="view-election" aria-labelledby="election-heading">
-        <div class="page-title"><div><p class="eyebrow mint">LIVE REPLAY / ELECTION BOARD</p><h2 id="election-heading">2026 서울시장 개표 상황판</h2><p class="description" id="clock">2026년 6월 3일 · 제9회 전국동시지방선거</p></div><div class="header-actions"><button type="button" class="primary" id="start" disabled>개표 재생</button><button type="button" id="restart" disabled>처음부터</button><button type="button" class="primary" id="replay-draft" disabled>현재 집계로 초안</button></div></div>
+        <div class="page-title"><div><p class="eyebrow mint">LIVE REPLAY / ELECTION BOARD</p><h2 id="election-heading">2026 서울시장 개표 상황판</h2><p class="description" id="clock">2026년 6월 3일 · 제9회 전국동시지방선거</p></div><div class="header-actions">
+          <div class="replay-controls" role="group" aria-label="개표 재생 제어">
+            <button type="button" class="primary" id="start" disabled>개표 재생</button>
+            <button type="button" id="restart" disabled>처음부터</button>
+          </div>
+          <button type="button" class="floating-button replay-article-button" id="replay-draft" aria-label="현재 집계로 기사 작성" disabled><span>현재 집계로<br>기사 작성</span></button>
+        </div></div>
         <div class="ticker"><b>개표 속보</b><span id="ticker-alert-light" class="ticker-alert-light" aria-hidden="true" hidden></span><div class="ticker-window" role="status"><div class="ticker-track"><span id="ticker">개표 재생을 누르면 5초마다 개표 상황이 표시됩니다.</span></div></div><span id="ticker-meta" class="ticker-meta" hidden></span></div>
         <div class="dashboard">
           <section class="dark-panel"><div class="panel-heading"><h3>개표 전광판</h3><span class="small-chip">서울 전체</span></div><div id="metrics" class="metrics"><div><span>개표 진행률</span><strong id="progress">—</strong></div><div><span>집계 유효표</span><strong id="total">—</strong><span id="total-meta" class="metric-source" hidden></span></div><div><span>현재 1위</span><strong id="leader">—</strong></div><div><span>1·2위 득표 차</span><strong id="gap">—</strong></div></div><p id="meta" class="dark-muted">서울특별시 전체 · 보도 기록 재생</p><a id="source" href="https://www.data.go.kr/data/15162288/fileData.do" target="_blank" rel="noopener noreferrer">선거 데이터 출처 확인 ↗</a></section>
