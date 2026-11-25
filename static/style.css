@@ -1109,9 +1109,14 @@ input::placeholder, textarea::placeholder {
 .editor-save-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
-  padding-top: 17px;
-  border-top: 1px solid var(--line);
+  margin-top: 14px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* 01 박스: no status text under the pledge selector (errors still show) */
+#status:not(.has-error) {
+  display: none;
 }
 
 

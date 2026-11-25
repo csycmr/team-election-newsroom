@@ -272,9 +272,17 @@ const states = {
 // 01 박스 상태 문구에는 '편집장 승인 완료'를 띄우지 않는다 (승인 상태는 04 박스에 표시).
 const statusLine = (item) => (item.status === "approved" ? "" : states[item.status] || item.status);
 
+// The 01 box status line stays blank except when something fails.
+function showStatusError(message) {
+  const line = byId("status");
+  line.textContent = message;
+  line.classList.add("has-error");
+}
+
 async function editorialAction(operation, feedbackId = "status", onSuccess) {
   if (busy) return;
   const feedback = byId(feedbackId);
+  byId("status").classList.remove("has-error");
   if (feedbackId !== "status") byId("status").textContent = "";
   busy = true;
   updateActions();
@@ -290,6 +298,7 @@ async function editorialAction(operation, feedbackId = "status", onSuccess) {
     await Promise.all([refreshEditorArticles(), refreshArchive(), refreshAudit()]);
   } catch (error) {
     feedback.textContent = error.message;
+    if (feedbackId === "status") feedback.classList.add("has-error");
   } finally {
     busy = false;
     updateActions();
@@ -742,7 +751,7 @@ byId("editor-article-select").onchange = async (event) => {
     byId("status").textContent = statusLine(article);
     await refreshAudit();
   } catch (error) {
-    byId("status").textContent = error.message;
+    showStatusError(error.message);
   } finally {
     busy = false;
     updateActions();
@@ -1073,7 +1082,7 @@ document.addEventListener("count-history-select", (event) => {
       byId("editor-article-select").value = articleId;
       await refreshAudit();
     } catch (error) {
-      byId("status").textContent = error.message;
+      showStatusError(error.message);
     }
   });
 
