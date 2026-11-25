@@ -269,6 +269,9 @@ const states = {
   rejected: "반려",
 };
 
+// 01 박스 상태 문구에는 '편집장 승인 완료'를 띄우지 않는다 (승인 상태는 04 박스에 표시).
+const statusLine = (item) => (item.status === "approved" ? "" : states[item.status] || item.status);
+
 async function editorialAction(operation, feedbackId = "status", onSuccess) {
   if (busy) return;
   const feedback = byId(feedbackId);
@@ -279,7 +282,7 @@ async function editorialAction(operation, feedbackId = "status", onSuccess) {
     const result = await operation();
     showArticle(result.article || result);
     onSuccess?.();
-    feedback.textContent = result.result?.reason || states[article.status];
+    feedback.textContent = result.result?.reason || (feedbackId === "status" ? statusLine(article) : states[article.status]);
     if (result.result && result.result.status !== "pass") {
       feedback.textContent += ` (${result.result.status})`;
     }
@@ -736,7 +739,7 @@ byId("editor-article-select").onchange = async (event) => {
   updateActions();
   try {
     showArticle(await api(`/api/articles/${articleId}`));
-    byId("status").textContent = states[article.status] || article.status;
+    byId("status").textContent = statusLine(article);
     await refreshAudit();
   } catch (error) {
     byId("status").textContent = error.message;
@@ -1066,7 +1069,7 @@ document.addEventListener("count-history-select", (event) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     try {
       showArticle(await api(`/api/articles/${articleId}`));
-      byId("status").textContent = states[article.status] || article.status;
+      byId("status").textContent = statusLine(article);
       byId("editor-article-select").value = articleId;
       await refreshAudit();
     } catch (error) {
