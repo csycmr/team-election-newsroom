@@ -85,6 +85,10 @@ a, .eyebrow.mint {
   padding-inline: max(24px, calc((100vw - 1480px) / 2));
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 .workspace-wrap {
   /* Allow 1280px of content plus the wrapper and card insets. */
   max-width: calc(1280px + 2 * (24px + 28px + 1px));
@@ -97,6 +101,8 @@ a, .eyebrow.mint {
 }
 
 .workspace-card {
+  inline-size: 100%;
+  min-inline-size: 0;
   background: var(--ink);
   border-color: var(--line);
   border-radius: 8px;
