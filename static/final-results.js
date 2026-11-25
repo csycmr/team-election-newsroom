@@ -137,7 +137,9 @@ function renderResults(data) {
   for (const pledge of data.pledges) {
     const grid = element("ol", "pledge-grid");
     grid.append(...pledge.titles.map((title) => element("li", "method-card", title)));
-    find("pledge-results").append(element("h4", "", `${pledge.name} · ${pledge.party}`), grid);
+    const column = element("section", "pledge-column");
+    column.append(element("h4", "", `${pledge.name} · ${pledge.party}`), grid);
+    find("pledge-results").append(column);
   }
 
   select.addEventListener("change", () => {
@@ -148,7 +150,7 @@ function renderResults(data) {
 }
 
 try {
-  const response = await fetch("/static/final-results.json");
+  const response = await fetch("/static/final-results.json?v=candidate-comparison");
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   renderResults(await response.json());
   find("final-results-content").hidden = false;
