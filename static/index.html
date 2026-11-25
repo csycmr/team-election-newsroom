@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=20261125-row">
+  <link rel="stylesheet" href="/static/style.css?v=20261125-districts">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -62,6 +62,26 @@
             </div>
             <div id="count-history-detail" aria-live="polite"></div>
             <a href="https://github.com/csycmr/team-election-newsroom/blob/main/data/replay/count_timeline.csv">GitHub 원본 CSV ↗</a>
+          </div>
+        </section>
+        <section class="dark-panel live-districts" aria-labelledby="live-districts-title">
+          <div class="panel-heading"><h3 id="live-districts-title">자치구별 개표 현황</h3><span class="small-chip">재생 연동 · 시연용 추정</span></div>
+          <p id="live-district-status" class="dark-muted" role="status">자치구 개표 자료를 불러오는 중이에요.</p>
+          <div id="live-districts-content" class="live-districts-grid" hidden>
+            <div>
+              <div id="live-district-map" class="live-district-map"></div>
+              <ul class="district-legend live-district-legend">
+                <li><span style="background:#ed737e"></span>오세훈 우세</li>
+                <li><span style="background:#679bff"></span>정원오 우세</li>
+                <li><span style="background:#1c2733"></span>개표 전</li>
+              </ul>
+              <p class="chart-note">색이 진할수록 개표가 많이 진행된 구예요.</p>
+            </div>
+            <div>
+              <div class="live-district-head"><span>자치구</span><span><b style="color:#ed737e">오세훈</b> · <b style="color:#679bff">정원오</b> 득표 비율</span><span>개표율</span></div>
+              <ol id="live-district-bars" class="live-district-bars"></ol>
+              <p class="chart-note">오세훈 우세가 큰 구부터 정렬 · 최종 자치구 결과를 바탕으로 단계별 개표를 재구성한 시연용 추정치예요.</p>
+            </div>
           </div>
         </section>
         <section class="election-analytics" aria-label="개표 추이 분석">
@@ -235,8 +255,9 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js?v=20261125-row"></script>
-  <script type="module" src="/static/count-history.js?v=20261125-row"></script>
-  <script type="module" src="/static/final-results.js?v=20261125-row"></script>
+  <script src="/static/app.js?v=20261125-districts"></script>
+  <script type="module" src="/static/count-history.js?v=20261125-districts"></script>
+  <script type="module" src="/static/final-results.js?v=20261125-districts"></script>
+  <script type="module" src="/static/live-districts.js?v=20261125-districts"></script>
 </body>
 </html>

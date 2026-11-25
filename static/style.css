@@ -1682,3 +1682,101 @@ input::placeholder, textarea::placeholder {
     grid-row: 2;
   }
 }
+
+/* 자치구별 개표 현황 (replay-linked) */
+.live-districts {
+  min-height: 0;
+  margin-top: 24px;
+}
+
+.live-districts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.live-district-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.live-district-map path {
+  stroke: #0e1723;
+  stroke-width: 1.2;
+  transition: fill .6s ease, fill-opacity .6s ease;
+}
+
+.live-district-legend {
+  margin-top: 10px;
+}
+
+.live-district-head {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 58px;
+  gap: 10px;
+  padding: 0 0 8px;
+  border-bottom: 1px solid #2a394b;
+  color: #a5b5c8;
+  font-size: 12px;
+}
+
+.live-district-head span:last-child {
+  text-align: right;
+}
+
+.live-district-bars {
+  position: relative;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.live-district-row {
+  position: absolute;
+  inset: 0 0 auto;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 58px;
+  align-items: center;
+  gap: 10px;
+  height: 26px;
+  font-size: 13px;
+  transition: transform .6s ease;
+}
+
+.live-district-name {
+  color: #e1effb;
+  white-space: nowrap;
+}
+
+.live-district-track {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1c2733;
+}
+
+.live-district-oh,
+.live-district-jung {
+  height: 100%;
+  transition: width .6s ease;
+}
+
+.live-district-oh { background: #ed737e; }
+.live-district-jung { background: #679bff; margin-left: auto; }
+
+.live-district-value {
+  color: #a5b5c8;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 850px) {
+  .live-districts-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-district-row, .live-district-oh, .live-district-jung, .live-district-map path { transition: none; }
+}
