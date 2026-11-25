@@ -927,8 +927,7 @@ input::placeholder, textarea::placeholder {
 
 .ticker-meta {
   color: #f7c0c7;
-  flex: 0 0 8em;
-  margin-inline-start: auto;
+  flex: 0 0 6.5em;
   white-space: nowrap;
   text-align: right;
 }
