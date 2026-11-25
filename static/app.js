@@ -223,11 +223,6 @@ function render(frame) {
   byId("clock").textContent = `${timestamp}${approximate} KST · ${eventTitle}`;
   byId("progress").textContent = lastCount ? lastCount.counted_rate_pct + "%" : "—";
   byId("total").textContent = total === null ? "—" : number.format(total);
-  const totalMeta = byId("total-meta");
-  totalMeta.textContent = lastCount?.counted_valid_votes_basis === "simulation_interpolation"
-    ? "시연 데이터 기반 추정"
-    : lastCount?.counted_valid_votes_basis === "simulated" ? "시연 수치" : "";
-  totalMeta.hidden = !totalMeta.textContent;
   byId("leader").textContent = ranked[0]?.candidate_name ?? "—";
   byId("gap").textContent = ranked.length >= 2 ? number.format(ranked[0].votes - ranked[1].votes) : "—";
 

@@ -895,7 +895,6 @@ input::placeholder, textarea::placeholder {
 
 .site-header-right .demo-badge,
 .ticker-meta,
-.metrics .metric-source,
 #bars .is-missing {
   color: var(--muted);
   font-size: 12px;
@@ -935,14 +934,6 @@ input::placeholder, textarea::placeholder {
 .ticker-meta[hidden] {
   display: block;
   visibility: hidden;
-}
-
-.metrics .metric-source[hidden] {
-  display: none;
-}
-
-.metrics .metric-source {
-  margin-top: 4px;
 }
 
 .valid-votes-source {
