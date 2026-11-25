@@ -982,7 +982,8 @@ input::placeholder, textarea::placeholder {
 .editor-stage-heading .step-indicator {
   display: inline-block;
   font-family: inherit;
-  line-height: 1.3;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .editor-audit {

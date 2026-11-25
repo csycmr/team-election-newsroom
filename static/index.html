@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=draft-control-pairs">
+  <link rel="stylesheet" href="/static/style.css?v=editor-stage-heading-size">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -24,9 +24,11 @@
     <main>
       <section class="workspace-card view is-active" id="view-election" aria-labelledby="election-heading">
         <div class="page-title"><div><p class="eyebrow mint">LIVE REPLAY / ELECTION BOARD</p><h2 id="election-heading">2026 서울시장 개표 상황판</h2><p class="description" id="clock">2026년 6월 3일 · 제9회 전국동시지방선거</p></div><div class="header-actions">
-          <div class="replay-controls" role="group" aria-label="개표 재생 제어">
-            <button type="button" class="primary" id="start" disabled>개표 재생</button>
-            <button type="button" id="restart" disabled>처음부터</button>
+          <div id="election-replay-slot">
+            <div class="replay-controls" id="count-replay-controls" role="group" aria-label="개표 재생 제어">
+              <button type="button" class="primary" id="start" disabled>개표 재생</button>
+              <button type="button" id="restart" disabled>처음부터</button>
+            </div>
           </div>
           <button type="button" class="floating-button replay-article-button" id="replay-draft" aria-label="현재 집계로 기사 작성" disabled><span>현재 집계로<br>기사 작성</span></button>
         </div></div>
@@ -105,7 +107,7 @@
       </section>
 
       <section class="workspace-card view" id="view-draft" aria-labelledby="draft-heading" hidden>
-        <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 생성</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div></div>
+        <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 생성</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div><div class="header-actions" id="draft-replay-slot"></div></div>
         <div id="draft-ticker-slot"></div>
         <div class="editor-grid draft-layout">
           <section class="light-pane editor-controls">
@@ -173,7 +175,7 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js?v=draft-control-pairs"></script>
+  <script src="/static/app.js?v=shared-replay-controls"></script>
   <script type="module" src="/static/count-history.js?v=timeline-15"></script>
   <script type="module" src="/static/final-results.js?v=candidate-comparison"></script>
 </body>

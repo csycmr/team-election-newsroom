@@ -370,10 +370,15 @@ refreshArticleList();
 const workspaceViews = new Set(["election", "draft", "library"]);
 function openWorkspaceView(name) {
   if (!workspaceViews.has(name)) return;
-  const tickerSlot = byId(`${name}-ticker-slot`);
-  const countTicker = byId("count-ticker");
-  if (tickerSlot && countTicker.parentElement !== tickerSlot) {
-    tickerSlot.append(countTicker);
+  for (const [elementId, slotName] of [
+    ["count-ticker", "ticker"],
+    ["count-replay-controls", "replay"],
+  ]) {
+    const slot = byId(`${name}-${slotName}-slot`);
+    const element = byId(elementId);
+    if (slot && element.parentElement !== slot) {
+      slot.append(element);
+    }
   }
   document.querySelectorAll(".workspace-nav [data-view]").forEach((button) => {
     const active = button.dataset.view === name;
