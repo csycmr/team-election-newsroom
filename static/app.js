@@ -177,6 +177,7 @@ function updateActions() {
   byId("check").disabled = busy || article?.status !== "draft";
   byId("review").disabled = busy || article?.status !== "fact_checked";
   byId("approve").disabled = busy || article?.status !== "human_reviewed";
+  byId("reject").disabled = busy || article?.status !== "human_reviewed";
 }
 
 function disconnectReplay() {
@@ -299,7 +300,7 @@ byId("save").onclick = () => editorialAction(() =>
 byId("check").onclick = () => editorialAction(() =>
   api(`/api/articles/${article.article_id}/fact-check`, undefined, "POST"), "factcheck-status");
 
-for (const [button, endpoint] of [["review", "human-review"], ["approve", "approve"]]) {
+for (const [button, endpoint] of [["review", "human-review"], ["approve", "approve"], ["reject", "reject"]]) {
   byId(button).onclick = () => {
     const feedbackId = button === "review" ? "human-review-status" : "status";
     const reviewer = byId("reviewer").value.trim();

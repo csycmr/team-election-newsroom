@@ -43,12 +43,11 @@ function renderTimeline(entries) {
     point.className = "count-history-point";
     point.classList.toggle("is-incident", entry.counted_rate_pct === "" && entry.event.includes("잠실7동"));
     const smallPoint = entry.timestamp_kst === "2026-06-04T04:55:00+09:00";
-    const largePoint = entry.timestamp_kst === "2026-06-04T07:16:00+09:00";
+    const regularPoint = entry.timestamp_kst === "2026-06-04T07:16:00+09:00";
     const position = positions[index];
     const nearNeighbor = [positions[index - 1], positions[index + 1]]
       .some(neighbor => neighbor !== undefined && Math.abs(neighbor - position) < 2.4);
-    point.classList.toggle("is-dense", !largePoint && (smallPoint || nearNeighbor));
-    point.classList.toggle("is-large", largePoint);
+    point.classList.toggle("is-dense", !regularPoint && (smallPoint || nearNeighbor));
     point.style.left = `${position}%`;
     point.title = `${entry.step_id}단계 · ${timestampLabel.format(entry.time)} · ${entry.event}`;
     point.setAttribute("aria-label", point.title);

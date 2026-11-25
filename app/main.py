@@ -286,6 +286,18 @@ def approve(article_id: str, request: ReviewRequest):
     return article
 
 
+@app.post("/api/articles/{article_id}/reject")
+def reject(article_id: str, request: ReviewRequest):
+    article = required_article(article_id)
+    if article.status != "human_reviewed":
+        raise HTTPException(409, "사람 검토를 마친 기사만 반려할 수 있습니다.")
+    article.status = "rejected"
+    article.updated_at = now_seoul()
+    storage.save_article(article)
+    storage.log(article_id, "rejected", request.reviewer, request.note)
+    return article
+
+
 @app.get("/api/articles/{article_id}/audit")
 def audit(article_id: str):
     required_article(article_id)

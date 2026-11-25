@@ -96,8 +96,45 @@ html {
 }
 
 .workspace-nav {
-  gap: 8px;
-  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: -1px;
+  padding-inline: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.workspace-nav button {
+  padding: 14px 18px 13px;
+  border: 1px solid #2a394b;
+  border-bottom-color: var(--line);
+  border-radius: 12px 12px 0 0;
+  background: #101a26;
+  color: #9fb0c2;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: left;
+  transform: translateY(5px);
+  transition: transform .15s ease, background .15s ease, color .15s ease;
+}
+
+.workspace-nav button:hover:not(:disabled) {
+  background: #162536;
+  color: #e1effb;
+  transform: translateY(2px);
+}
+
+.workspace-nav button.active,
+.workspace-nav button[aria-selected=true],
+.workspace-nav button.active:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--mint);
+  border-color: var(--line);
+  border-top: 3px solid var(--mint);
+  border-bottom-color: var(--ink);
+  padding-top: 12px;
+  transform: none;
 }
 
 .workspace-card {
@@ -351,8 +388,14 @@ input::placeholder, textarea::placeholder {
   .workspace-card {
     padding: 12px;
   }
+  .workspace-nav {
+    gap: 4px;
+    padding-inline: 4px;
+  }
   .workspace-nav button {
     padding-inline: 9px;
+    font-size: 13px;
+    text-align: center;
   }
   .metrics strong {
     font-size: clamp(16px, 5.5vw, 25px);
@@ -945,11 +988,6 @@ input::placeholder, textarea::placeholder {
   height: 6px;
 }
 
-.count-history-point.is-large::before {
-  width: 13px;
-  height: 13px;
-}
-
 #bars .candidate-estimate {
   margin-inline-start: 4px;
   color: var(--muted);
@@ -1213,4 +1251,17 @@ input::placeholder, textarea::placeholder {
 
 @media (prefers-reduced-motion: reduce) {
   .live-headline.is-updated { animation: none; }
+}
+
+.approval-actions button {
+  flex: 1 1 0;
+}
+
+.reject-button:not(:disabled) {
+  color: #ffb1a8;
+  border-color: #7a3a36;
+}
+
+.reject-button:hover:not(:disabled) {
+  background: #3a2224;
 }
