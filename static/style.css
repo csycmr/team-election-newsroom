@@ -1001,7 +1001,6 @@ input::placeholder, textarea::placeholder {
 
 .editor-stage-heading .step-indicator {
   display: inline-block;
-  color: #fff;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
