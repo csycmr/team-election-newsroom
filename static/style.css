@@ -934,14 +934,73 @@ input::placeholder, textarea::placeholder {
   white-space: nowrap;
 }
 
-.editor-review {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
+.editor-grid.draft-layout {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "controls manuscript"
+    "review manuscript";
+}
+
+.draft-layout .editor-controls {
+  grid-area: controls;
+}
+
+.draft-layout .editor-manuscript {
+  grid-area: manuscript;
+}
+
+.draft-layout .editor-review {
+  grid-area: review;
+  align-self: start;
+}
+
+.editor-review .page-title {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .editor-review .page-title h3 {
   margin: 0;
+}
+
+.editor-review h4 {
+  margin: 0 0 8px;
+}
+
+.editor-audit {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.editor-audit h4,
+.editor-audit .audit-list {
+  color: #a1aab5;
+  font-size: 11px;
+}
+
+.editor-audit .audit-list {
+  gap: 4px;
+}
+
+.editor-audit .audit-list > div {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 850px) {
+  .editor-grid.draft-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "controls"
+      "manuscript"
+      "review";
+  }
 }
 
 .pledge-actions {
