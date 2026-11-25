@@ -20,17 +20,21 @@ const tickerCopies = Array.from({ length: 2 }, () => {
   return copy;
 });
 
+const initialTickerHeadline = ticker.textContent;
 const tickerRows = [ticker, ...tickerCopies].map((row) => {
-  const headline = document.createTextNode(ticker.textContent);
+  const headline = document.createElement("span");
+  headline.className = "ticker-headline";
+  headline.textContent = initialTickerHeadline;
   const stage = document.createElement("small");
   stage.className = "ticker-stage";
+  stage.textContent = "개표 재생 대기";
   row.replaceChildren(headline, stage);
   return { headline, stage };
 });
 
 function setTickerText(message, stageText) {
   for (const { headline, stage } of tickerRows) {
-    headline.data = message;
+    headline.textContent = message;
     if (stageText !== undefined) stage.textContent = stageText;
   }
 }

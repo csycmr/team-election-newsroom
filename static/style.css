@@ -819,11 +819,15 @@ input::placeholder, textarea::placeholder {
   display: none;
 }
 
-#draft-ticker-slot .ticker-stage:not(:empty) {
+#draft-ticker-slot .ticker-headline,
+#draft-ticker-slot .ticker-meta {
+  display: none;
+}
+
+#draft-ticker-slot .ticker-stage {
   display: inline;
-  margin-inline-start: 1em;
   font-family: "Pretendard Variable", Pretendard, sans-serif;
-  font-size: .72em;
+  font-size: clamp(14px, 1.6vw, 21px);
   font-weight: 600;
   letter-spacing: normal;
   text-shadow: none;
