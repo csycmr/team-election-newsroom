@@ -336,8 +336,17 @@ byId("revise-article").onclick = async () => {
   );
   byId("status").textContent = "수정 모드입니다. 내용을 고친 뒤 '초안 저장'부터 다시 진행해 주세요.";
 };
-byId("check").onclick = () => editorialAction(() =>
-  api(`/api/articles/${article.article_id}/fact-check`, undefined, "POST"), "factcheck-status");
+// 적용 등으로 원고가 바뀌었으면 먼저 저장한 뒤 그 내용으로 팩트체크한다.
+byId("check").onclick = () => editorialAction(async () => {
+  const id = article.article_id;
+  const title = byId("article-title-input").value;
+  const body = byId("article-body-input").value;
+  if (title !== article.title || body !== article.body) {
+    await api(`/api/articles/${id}`, { title, body }, "PUT");
+    needsSave.delete(id);
+  }
+  return api(`/api/articles/${id}/fact-check`, undefined, "POST");
+}, "factcheck-status");
 
 for (const [button, endpoint] of [["review", "human-review"], ["approve", "approve"], ["reject", "reject"]]) {
   byId(button).onclick = () => {
@@ -394,7 +403,7 @@ function renderFactIssues(issues) {
         field.value = value;
         apply.disabled = true;
         apply.textContent = "적용됨";
-        note.textContent = "원고에 반영했어요. '초안 저장' 후 다시 팩트체크해 주세요.";
+        note.textContent = "원고에 반영했어요. '팩트체크'를 다시 누르면 저장 후 검사해요.";
       };
       card.append(apply, note);
     } else {
