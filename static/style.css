@@ -1021,49 +1021,6 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-.pledge-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 18px 0;
-}
-
-.pledge-candidates {
-  display: flex;
-  flex: 0 0 auto;
-  border: 1px solid #3c5063;
-  border-radius: 8px;
-}
-
-.pledge-candidates button,
-.pledge-actions > button {
-  padding: 9px clamp(7px, 1vw, 13px);
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.pledge-candidates button {
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: #d7e5f0;
-  white-space: nowrap;
-}
-
-.pledge-candidates button[aria-pressed="true"] {
-  color: #0b121d;
-}
-
-.pledge-candidates button[data-pledge-candidate="정원오"][aria-pressed="true"] {
-  background: #679bff;
-}
-
-.pledge-candidates button[data-pledge-candidate="오세훈"][aria-pressed="true"] {
-  background: #ed737e;
-}
-
-
 .replay-controls {
   display: flex;
   flex-wrap: wrap;
@@ -1097,11 +1054,42 @@ input::placeholder, textarea::placeholder {
 }
 
 
-.form-field.draft-mode {
-  margin-bottom: 0;
+.draft-command-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
 }
 
-.actions.draft-current-actions {
-  justify-content: flex-end;
-  margin-top: 8px;
+.draft-command-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 8px;
+}
+
+.draft-command-row .form-field {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.draft-command-row select {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid #3b4b5e;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #e1effb;
+}
+
+.draft-command-row select,
+.draft-command-row > button {
+  font-size: 13px;
+}
+
+.draft-command-row > button {
+  padding-inline: 7px;
+  word-break: keep-all;
+}
+
+.editor-feedback:empty {
+  margin: 0;
 }
