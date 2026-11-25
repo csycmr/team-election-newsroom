@@ -182,7 +182,10 @@ function updateActions() {
   byId("check").closest("section").classList.toggle("is-stamped", ["fact_checked", "human_reviewed", "approved"].includes(status));
   byId("review").closest("section").classList.toggle("is-stamped", ["human_reviewed", "approved"].includes(status));
   byId("approve").closest("section").classList.toggle("is-stamped", status === "approved");
-  byId("delete-article").disabled = busy || !article;
+  const deleteButton = byId("delete-article");
+  deleteButton.disabled = busy || !article || postedArticleIds.has(article.article_id);
+  deleteButton.title = article && postedArticleIds.has(article.article_id)
+    ? "보도실에 게시된 기사는 보도실에서 삭제해 주세요." : "";
   const postButton = byId("post-article");
   const approved = article?.status === "approved";
   const posted = approved && postedArticleIds.has(article.article_id);
@@ -358,7 +361,7 @@ byId("post-article").onclick = async () => {
     postedArticleIds.add(article.article_id);
     archiveArticleId = article.article_id;
     feedback.textContent = "";
-    await Promise.all([refreshArchive(), refreshAudit()]);
+    await Promise.all([refreshEditorArticles(), refreshArchive(), refreshAudit()]);
   } catch (error) {
     feedback.textContent = error.message;
   } finally {
@@ -424,12 +427,16 @@ async function refreshEditorArticles() {
     ]);
     if (request !== editorListRequest) return;
     rememberPosted(articles);
-    updateStatusCounts(everything || articles);
-    target.replaceChildren(new Option(articles.length ? "기사 선택" : "저장된 기사가 없습니다.", ""));
-    for (const item of articles) {
+    if (everything) rememberPosted(everything);
+    // Articles already posted to the 보도실 are managed there, not in the editing room's saved list.
+    const unposted = (list) => list.filter((item) => !item.posted);
+    const saved = unposted(articles);
+    updateStatusCounts(unposted(everything || articles));
+    target.replaceChildren(new Option(saved.length ? "기사 선택" : "저장된 기사가 없습니다.", ""));
+    for (const item of saved) {
       target.add(new Option(item.title, item.article_id));
     }
-    target.value = articles.some(item => item.article_id === article?.article_id) ? article.article_id : "";
+    target.value = saved.some(item => item.article_id === article?.article_id) ? article.article_id : "";
   } catch (error) {
     if (request === editorListRequest) target.replaceChildren(new Option(error.message, ""));
   } finally {
@@ -531,7 +538,7 @@ function renderNewsArticle(item) {
       window.scrollTo({ top: 0, behavior: "smooth" });
       showArticle(revised);
       byId("status").textContent = "보도실 게시를 내리고 초안으로 되돌렸습니다. 수정 후 다시 검토해 주세요.";
-      await Promise.all([refreshArchive(), refreshAudit()]);
+      await Promise.all([refreshEditorArticles(), refreshArchive(), refreshAudit()]);
     });
   };
 
