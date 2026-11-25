@@ -19,7 +19,7 @@
     <nav class="workspace-nav" aria-label="작업 화면">
       <button type="button" class="active" data-view="election" aria-selected="true">개표 상황판</button>
       <button type="button" data-view="draft" aria-selected="false">편집실</button>
-      <button type="button" data-view="library" aria-selected="false">보도창</button>
+      <button type="button" data-view="library" aria-selected="false">보도실</button>
     </nav>
     <main>
       <section class="workspace-card view is-active" id="view-election" aria-labelledby="election-heading">
@@ -144,7 +144,7 @@
               </div>
             </div>
             <p id="status" class="pane-description editor-feedback" role="status"></p>
-            <div class="editor-save-actions"><button type="button" id="save" disabled>기사 수정 저장</button></div></section>
+            <div class="editor-save-actions"><button type="button" id="save" disabled>초안 저장</button></div></section>
           <div class="editor-manuscript-column">
             <section class="light-pane editor-article-browser">
               <h3>작성 중인 기사</h3>
@@ -203,7 +203,7 @@
 
       <section class="workspace-card view" id="view-library" aria-labelledby="library-heading" hidden>
         <div class="page-title">
-          <div><p class="eyebrow mint">NEWSROOM / ARCHIVE</p><h2 id="library-heading">보도창</h2></div>
+          <div><p class="eyebrow mint">NEWSROOM / ARCHIVE</p><h2 id="library-heading">보도실</h2></div>
           <button id="refresh-articles" type="button" class="primary">목록 새로고침</button>
         </div>
         <div class="editor-grid archive-grid">

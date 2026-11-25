@@ -366,7 +366,7 @@ async function refreshArchive() {
     if (!articles.length) {
       list.textContent = "승인된 기사가 없습니다.";
       title.textContent = "기사 본문";
-      preview.textContent = "편집장 승인 후 보도창에 표시됩니다.";
+      preview.textContent = "편집장 승인 후 보도실에 표시됩니다.";
       archiveArticleId = null;
       return;
     }
