@@ -916,7 +916,7 @@ input::placeholder, textarea::placeholder {
   .ticker-track {
     display: flex;
     width: max-content;
-    animation: ticker-scroll-right 4s linear infinite;
+    animation: ticker-scroll-left 4s linear infinite;
   }
 
   .ticker-track > [aria-hidden="true"] {
@@ -931,9 +931,9 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-@keyframes ticker-scroll-right {
-  from { transform: translateX(-33.333333%); }
-  to { transform: translateX(0); }
+@keyframes ticker-scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333333%); }
 }
 
 .ticker-meta {
