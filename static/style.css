@@ -1924,3 +1924,68 @@ input::placeholder, textarea::placeholder {
 .manuscript-actions {
   gap: 8px;
 }
+
+/* 02 팩트체크: failed-claim cards (원문 / 오류사항 / 수정 제안 / 적용) */
+.factcheck-issues {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.factcheck-issue {
+  padding: 12px 14px;
+  border: 1px solid #7a3a36;
+  border-radius: 9px;
+  background: #1c1519;
+}
+
+.factcheck-issue h4 {
+  margin: 0 0 8px;
+  color: #ffb1a8;
+  font-size: 14px;
+}
+
+.factcheck-line {
+  display: grid;
+  grid-template-columns: 4.6em minmax(0, 1fr);
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.factcheck-label {
+  color: #8696a8;
+  font-weight: 700;
+}
+
+.factcheck-text {
+  overflow-wrap: anywhere;
+}
+
+.factcheck-line.is-original .factcheck-text {
+  color: #ffd1d5;
+  text-decoration: line-through;
+  text-decoration-color: #b4323f;
+}
+
+.factcheck-line.is-error .factcheck-text {
+  color: #e8c8c4;
+}
+
+.factcheck-line.is-suggestion .factcheck-text {
+  color: var(--mint);
+  font-weight: 700;
+}
+
+.factcheck-apply {
+  margin-top: 4px;
+  padding: 7px 18px;
+}
+
+.factcheck-note {
+  margin: 8px 0 0;
+  color: #a5b5c8;
+  font-size: 12px;
+  line-height: 1.5;
+}

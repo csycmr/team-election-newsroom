@@ -79,3 +79,5 @@ class FactCheckResult(BaseModel):
     checks: list[dict]
     external_claims: list[dict] = []
     llm_review: dict = Field(default_factory=lambda: {"mode": "disabled", "issues": []})
+    # 팩트 오류별 원문·오류사항·수정 제안 (편집실 '적용' 버튼이 사용)
+    issues: list[dict] = []

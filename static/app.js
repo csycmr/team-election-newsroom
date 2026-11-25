@@ -283,6 +283,7 @@ async function editorialAction(operation, feedbackId = "status", onSuccess) {
     if (result.result && result.result.status !== "pass") {
       feedback.textContent += ` (${result.result.status})`;
     }
+    if (feedbackId === "factcheck-status") renderFactIssues(result.result?.issues || []);
     await Promise.all([refreshEditorArticles(), refreshArchive(), refreshAudit()]);
   } catch (error) {
     feedback.textContent = error.message;
@@ -351,8 +352,61 @@ for (const [button, endpoint] of [["review", "human-review"], ["approve", "appro
   };
 }
 
+// 팩트체크 실패 시 원문 · 오류사항 · 수정 제안 · 적용 버튼을 02 박스 아래에 보여준다.
+const factEl = (tag, className, text) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+};
+
+function renderFactIssues(issues) {
+  const target = byId("factcheck-issues");
+  target.replaceChildren();
+  for (const issue of issues) {
+    const card = factEl("section", "factcheck-issue");
+    card.append(factEl("h4", "", issue.field));
+    const row = (label, text, className) => {
+      const line = factEl("p", `factcheck-line ${className}`);
+      line.append(factEl("span", "factcheck-label", label), factEl("span", "factcheck-text", text));
+      return line;
+    };
+    card.append(
+      row("원문", issue.original || "(원문에 해당 문구가 없어요)", "is-original"),
+      row("오류사항", issue.message, "is-error"),
+    );
+    if (issue.suggestion) {
+      card.append(row("수정 제안", issue.suggestion, "is-suggestion"));
+      const apply = factEl("button", "primary factcheck-apply", "적용");
+      apply.type = "button";
+      const note = factEl("p", "factcheck-note");
+      apply.onclick = () => {
+        const field = byId(issue.target === "title" ? "article-title-input" : "article-body-input");
+        if (field.disabled) { note.textContent = "지금은 원고를 고칠 수 없는 상태예요."; return; }
+        let value = field.value;
+        if (issue.action === "replace") {
+          if (!value.includes(issue.original)) { note.textContent = "원문에서 해당 문구를 찾지 못했어요. 이미 고쳤을 수 있어요."; return; }
+          value = value.replace(issue.original, () => issue.suggestion);
+        } else {
+          const at = value.lastIndexOf("출처:");
+          value = at > 0 ? `${value.slice(0, at)}${issue.suggestion} ${value.slice(at)}` : `${value} ${issue.suggestion}`.trim();
+        }
+        field.value = value;
+        apply.disabled = true;
+        apply.textContent = "적용됨";
+        note.textContent = "원고에 반영했어요. '초안 저장' 후 다시 팩트체크해 주세요.";
+      };
+      card.append(apply, note);
+    } else {
+      card.append(factEl("p", "factcheck-note", "자동으로 고칠 수 없는 항목이에요. 원 데이터나 근거를 확인해 주세요."));
+    }
+    target.append(card);
+  }
+}
+
 function showArticle(next) {
   if (article?.article_id !== next.article_id || next.status === "draft") {
+    byId("factcheck-issues").replaceChildren();
     byId("factcheck-status").textContent = "";
     byId("human-review-status").textContent = "";
   }
