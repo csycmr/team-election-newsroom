@@ -130,7 +130,6 @@ function render(frame) {
   tickerMeta.hidden = false;
 
   renderCandidateBars(rows, !lastCount);
-  byId("draft-step").textContent = stageText;
   updateActions();
 }
 

@@ -130,7 +130,6 @@
                 <button type="button" class="primary" id="pledge-draft">공약으로 초안 생성</button>
               </div>
             </div>
-            <p id="draft-step" class="pane-description">개표 재생 대기</p>
             <p id="status" class="pane-description editor-feedback" role="status"></p>
             <div class="editor-save-actions"><button type="button" id="save" disabled>기사 수정 저장</button></div></section>
         <section class="light-pane editor-manuscript"><h3>기사 원고</h3><div class="article-fields"><label for="article-title-input">기사 제목</label><input id="article-title-input" placeholder="기사 제목" disabled><label for="article-body-input">기사 본문</label><textarea id="article-body-input" rows="17" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea></div><p id="article-evidence" class="evidence-note"></p></section>
@@ -179,7 +178,7 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js?v=review-stage-feedback"></script>
+  <script src="/static/app.js?v=editor-ticker-only"></script>
   <script type="module" src="/static/count-history.js?v=timeline-15"></script>
   <script type="module" src="/static/final-results.js?v=candidate-comparison"></script>
 </body>
