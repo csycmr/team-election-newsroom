@@ -166,6 +166,9 @@ function renderCandidateBars(candidates, waiting = false) {
   }
 }
 
+// Articles sent back with 수정 must go through 초안 저장 again before the next fact check.
+const needsSave = new Set();
+
 function updateActions() {
   byId("draft").disabled = busy || !snapshot;
   byId("replay-draft").disabled = busy || !snapshot;
@@ -174,7 +177,8 @@ function updateActions() {
   byId("save").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-title-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-body-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
-  byId("check").disabled = busy || article?.status !== "draft";
+  byId("check").disabled = busy || article?.status !== "draft" || needsSave.has(article?.article_id);
+  byId("revise-article").disabled = busy || !article || article.status === "draft";
   byId("review").disabled = busy || article?.status !== "fact_checked";
   byId("approve").disabled = busy || article?.status !== "human_reviewed";
   byId("reject").disabled = busy || article?.status !== "human_reviewed";
@@ -265,7 +269,7 @@ const states = {
   rejected: "반려",
 };
 
-async function editorialAction(operation, feedbackId = "status") {
+async function editorialAction(operation, feedbackId = "status", onSuccess) {
   if (busy) return;
   const feedback = byId(feedbackId);
   if (feedbackId !== "status") byId("status").textContent = "";
@@ -274,6 +278,7 @@ async function editorialAction(operation, feedbackId = "status") {
   try {
     const result = await operation();
     showArticle(result.article || result);
+    onSuccess?.();
     feedback.textContent = result.result?.reason || states[article.status];
     if (result.result && result.result.status !== "pass") {
       feedback.textContent += ` (${result.result.status})`;
@@ -307,11 +312,29 @@ function draftCurrentStep() {
 
 byId("draft").onclick = draftCurrentStep;
 byId("replay-draft").onclick = draftCurrentStep;
-byId("save").onclick = () => editorialAction(() =>
-  api(`/api/articles/${article.article_id}`, {
-    title: byId("article-title-input").value,
-    body: byId("article-body-input").value,
-  }, "PUT"));
+byId("save").onclick = () => {
+  const id = article.article_id;
+  editorialAction(() =>
+    api(`/api/articles/${id}`, {
+      title: byId("article-title-input").value,
+      body: byId("article-body-input").value,
+    }, "PUT"), "status", () => needsSave.delete(id));
+};
+
+byId("revise-article").onclick = async () => {
+  if (busy || !article || article.status === "draft") return;
+  if (!window.confirm("수정하면 팩트체크·사람 검토·편집장 승인(도장)이 모두 취소되고 초안으로 돌아가요.\n초안 저장부터 다시 해야 하고, 보도실에 게시된 기사는 게시가 내려가요. 계속할까요?")) return;
+  const id = article.article_id;
+  await editorialAction(
+    () => api(`/api/articles/${id}/revise`, undefined, "POST"),
+    "status",
+    () => {
+      needsSave.add(id);
+      postedArticleIds.delete(id);
+    },
+  );
+  byId("status").textContent = "수정 모드입니다. 내용을 고친 뒤 '초안 저장'부터 다시 진행해 주세요.";
+};
 byId("check").onclick = () => editorialAction(() =>
   api(`/api/articles/${article.article_id}/fact-check`, undefined, "POST"), "factcheck-status");
 
@@ -534,10 +557,11 @@ function renderNewsArticle(item) {
     run(async () => {
       const revised = await api(`/api/articles/${item.article_id}/revise`, undefined, "POST");
       postedArticleIds.delete(item.article_id);
+      needsSave.add(item.article_id);
       openWorkspaceView("draft");
       window.scrollTo({ top: 0, behavior: "smooth" });
       showArticle(revised);
-      byId("status").textContent = "보도실 게시를 내리고 초안으로 되돌렸습니다. 수정 후 다시 검토해 주세요.";
+      byId("status").textContent = "보도실 게시를 내리고 초안으로 되돌렸습니다. 수정 후 '초안 저장'부터 다시 진행해 주세요.";
       await Promise.all([refreshEditorArticles(), refreshArchive(), refreshAudit()]);
     });
   };

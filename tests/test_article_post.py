@@ -60,6 +60,9 @@ def test_posted_article_can_be_revised_or_deleted(tmp_path, monkeypatch):
     path = approved_article()
     revised = client.post(path + "/revise")
     assert revised.status_code == 200 and revised.json()["status"] == "draft"
+    assert client.post(path + "/fact-check").status_code == 409  # 초안 저장부터 다시
+    saved = client.put(path, json={"title": revised.json()["title"], "body": revised.json()["body"]})
+    assert saved.status_code == 200
     client.post(path + "/fact-check")
     client.post(path + "/human-review", json={"reviewer": "기자"})
     client.post(path + "/approve", json={"reviewer": "편집장"})

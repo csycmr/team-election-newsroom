@@ -1920,3 +1920,7 @@ input::placeholder, textarea::placeholder {
   overflow-y: auto;
   align-content: start;
 }
+
+.manuscript-actions {
+  gap: 8px;
+}

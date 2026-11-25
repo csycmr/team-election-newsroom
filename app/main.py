@@ -277,6 +277,12 @@ def update_article(article_id: str, request: ArticleUpdate):
 @app.post("/api/articles/{article_id}/fact-check")
 async def fact_check(article_id: str):
     article = required_article(article_id)
+    # 수정으로 되돌린 기사는 초안 저장을 다시 거쳐야 팩트체크할 수 있다.
+    for entry in storage.logs(article_id):
+        if entry["action"] == "article_updated":
+            break
+        if entry["action"] == "revision_requested":
+            raise HTTPException(409, "수정한 기사는 초안 저장부터 다시 해 주세요.")
     result = (check_pledge_article(article, rag) if article.article_type == "pledge"
               else await check_article(article, settings))
     article.status = "fact_checked" if result.status == "pass" else "draft"
@@ -334,16 +340,16 @@ def post_to_newsroom(article_id: str):
 
 @app.post("/api/articles/{article_id}/revise")
 def revise_posted_article(article_id: str):
-    """Take an approved article back to draft so it can be edited and re-approved."""
+    """Take a reviewed or approved article back to draft so it can be edited and re-approved."""
     article = required_article(article_id)
-    if article.status != "approved":
-        raise HTTPException(409, "편집장 승인을 마친 기사만 수정으로 되돌릴 수 있습니다.")
+    if article.status not in {"fact_checked", "human_reviewed", "approved", "rejected"}:
+        raise HTTPException(409, "팩트체크 이후 단계의 기사만 수정으로 되돌릴 수 있습니다.")
     if article_id in storage.posted_article_ids([article_id]):
         storage.log(article_id, "unposted", "editor", "수정을 위해 보도실 게시 취소")
     article.status = "draft"
     article.updated_at = now_seoul()
     storage.save_article(article)
-    storage.log(article_id, "revision_requested", "editor", "보도실에서 수정 요청")
+    storage.log(article_id, "revision_requested", "editor", "수정 요청: 팩트체크·검토·승인 초기화")
     return article
 
 
