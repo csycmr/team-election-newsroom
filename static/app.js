@@ -156,6 +156,7 @@ function renderCandidateBars(candidates, waiting = false) {
 function updateActions() {
   byId("draft").disabled = busy || !snapshot;
   byId("replay-draft").disabled = busy || !snapshot;
+  byId("pledge-draft").disabled = busy;
   byId("save").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-title-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-body-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
@@ -259,11 +260,21 @@ function createDraft(frame, mode = "template") {
   return editorialAction(() => api("/api/articles", { snapshot: frame, generation_mode: mode }, "POST"));
 }
 
+const pledgeCandidates = document.querySelectorAll("[data-pledge-candidate]");
+for (const candidate of pledgeCandidates) {
+  candidate.addEventListener("click", () => {
+    for (const option of pledgeCandidates) {
+      option.setAttribute("aria-pressed", String(option === candidate));
+    }
+  });
+}
+
 byId("pledge-draft").onclick = () => {
-  const query = byId("pledge-article-query").value.trim();
-  if (query.length < 2) { byId("status").textContent = "후보자와 지역을 입력해 주세요."; return; }
-  editorialAction(() => api("/api/articles/from-pledges", {query}, "POST"));
+  const candidate = document.querySelector('[data-pledge-candidate][aria-pressed="true"]');
+  const query = `서울시장 ${candidate.dataset.pledgeCandidate} 공약`;
+  editorialAction(() => api("/api/articles/from-pledges", { query }, "POST"));
 };
+
 function draftCurrentStep() {
   const selectedSnapshot = snapshot;
   if (!selectedSnapshot || busy) return;

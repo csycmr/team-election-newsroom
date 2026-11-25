@@ -929,3 +929,38 @@ input::placeholder, textarea::placeholder {
 .editor-review .page-title h3 {
   margin: 0;
 }
+
+.pledge-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.pledge-candidates {
+  display: flex;
+  flex: 0 0 auto;
+  border: 1px solid #3c5063;
+  border-radius: 8px;
+}
+
+.pledge-candidates button,
+.pledge-actions > button {
+  padding: 9px clamp(7px, 1vw, 13px);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.pledge-candidates button {
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #d7e5f0;
+  white-space: nowrap;
+}
+
+.pledge-candidates button[aria-pressed="true"] {
+  background: var(--mint);
+  color: #0b121d;
+}
