@@ -71,22 +71,19 @@ function animateTickerRow(row, precedingRow) {
     return;
   }
 
-  const preceding = tickerPasses.get(precedingRow);
-  const minimumPosition = preceding
-    ? tickerPosition(preceding) + preceding.rowWidth + tickerGap
-    : -rowWidth;
-  const currentPosition = previous ? tickerPosition(previous) : windowWidth;
-  if (previous?.windowWidth === windowWidth && previous.rowWidth === rowWidth
-      && currentPosition >= minimumPosition - 1) return;
+  // Once a headline starts, keep its path intact across layout changes.
+  if (previous) return;
 
-  // Start offscreen. Extra distance gives the preceding headline time to clear the entrance.
-  const start = Math.max(currentPosition, minimumPosition, -rowWidth);
-  previous?.animation.cancel();
+  const preceding = tickerPasses.get(precedingRow);
+  const precedingEnd = preceding
+    ? tickerPosition(preceding) + precedingRow.offsetWidth + tickerGap
+    : 0;
+  const start = Math.max(windowWidth, precedingEnd);
   const animation = row.animate([
     { transform: `translateX(${start}px)` },
     { transform: `translateX(${-rowWidth}px)` },
   ], { duration: (start + rowWidth) * 1000 / tickerPixelsPerSecond, fill: "both" });
-  tickerPasses.set(row, { animation, windowWidth, rowWidth, start });
+  tickerPasses.set(row, { animation, start });
   animation.onfinish = () => {
     if (tickerPasses.get(row)?.animation !== animation) return;
     if (row === latestTickerRow) {
