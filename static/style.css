@@ -1783,13 +1783,17 @@ input::placeholder, textarea::placeholder {
 
 /* ---- 2026-11-25 polish ---- */
 /* 상황판: 공약 섹션 — one box per candidate, titles one point smaller */
-.final-subsection > h3 {
-  font-size: 15.75pt;
+/* section title = same as "개표 흐름 분석", box title = same as "주요 후보 득표율 추이" */
+.final-subsection:has(#pledge-results) > h3 {
+  font-family: Paperlogy, "Pretendard Variable", Pretendard, sans-serif;
+  font-size: clamp(22px, 2.7vw, 32px);
+  line-height: 1.2;
 }
 
 #pledge-results h4 {
   margin: 0 0 12px;
-  font-size: 11.75pt;
+  font-size: 21px;
+  line-height: 1.2;
 }
 
 .pledge-column.method-card {
