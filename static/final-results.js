@@ -136,8 +136,8 @@ function renderResults(data) {
 
   for (const pledge of data.pledges) {
     const grid = element("ol", "pledge-grid");
-    grid.append(...pledge.titles.map((title) => element("li", "method-card", title)));
-    const column = element("section", "pledge-column");
+    grid.append(...pledge.titles.map((title) => element("li", "", title)));
+    const column = element("section", "pledge-column method-card");
     column.append(element("h4", "", `${pledge.name} · ${pledge.party}`), grid);
     find("pledge-results").append(column);
   }

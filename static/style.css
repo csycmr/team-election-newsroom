@@ -1780,3 +1780,106 @@ input::placeholder, textarea::placeholder {
 @media (prefers-reduced-motion: reduce) {
   .live-district-row, .live-district-oh, .live-district-jung, .live-district-map path { transition: none; }
 }
+
+/* ---- 2026-11-25 polish ---- */
+/* 상황판: 공약 섹션 — one box per candidate, titles one point smaller */
+.final-subsection > h3 {
+  font-size: 15.75pt;
+}
+
+#pledge-results h4 {
+  margin: 0 0 12px;
+  font-size: 11.75pt;
+}
+
+.pledge-column.method-card {
+  padding: 18px 20px;
+}
+
+.pledge-grid {
+  gap: 0;
+  margin: 0;
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+.pledge-grid li {
+  padding: 7px 0;
+  border-top: 1px solid #22313f;
+  line-height: 1.5;
+}
+
+.pledge-grid li:first-child {
+  border-top: 0;
+}
+
+/* 상황판: 자치구 막대 — thin line bars, height matched to the map */
+.live-districts-grid {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+}
+
+.live-district-row {
+  height: var(--row-height, 18px);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.live-district-track {
+  height: 3px;
+  border-radius: 2px;
+}
+
+.live-district-oh,
+.live-district-jung {
+  border-radius: 0;
+}
+
+/* 편집실: 속보창 typography identical to the 상황판 속보 */
+#draft-ticker-slot .ticker-stage {
+  font-family: Paperlogy, "Pretendard Variable", Pretendard, sans-serif;
+  font-size: clamp(17px, 2vw, 27px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -.035em;
+  color: #fff0eb;
+  text-shadow: 0 0 6px #ff667d, 0 0 14px #ff395c;
+}
+
+/* 편집실: 01~04 banners one point smaller, never wrapping */
+.editor-stage-heading .step-indicator {
+  font-size: 15.75pt;
+  white-space: nowrap;
+}
+
+@media (max-width: 850px) {
+  .editor-stage-heading .step-indicator,
+  .editor-review-pair .step-indicator {
+    padding-inline: 10px;
+    font-size: clamp(11px, 3.3vw, 15.75pt);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-review-pair .light-pane {
+    padding-inline: 8px;
+  }
+
+  .editor-stage-heading .step-indicator {
+    padding-inline: 8px;
+    font-size: 11px;
+  }
+}
+
+/* 보도실: board above article on narrow screens */
+@media (max-width: 850px) {
+  .archive-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 850px) {
+  .live-districts-grid {
+    grid-template-columns: 1fr;
+  }
+}

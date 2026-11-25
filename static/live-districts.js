@@ -14,7 +14,8 @@ const OH = "오세훈";
 const JUNG = "정원오";
 const OH_COLOR = "#ed737e";
 const JUNG_COLOR = "#679bff";
-const ROW_HEIGHT = 26;
+const MIN_ROW_HEIGHT = 14;
+const STACKED_ROW_HEIGHT = 18;
 
 function pace(name) {
   let hash = 0;
@@ -50,7 +51,8 @@ function setup({ finals, timeline }) {
   map.setAttribute("role", "img");
   map.setAttribute("aria-label", "서울 자치구별 개표 진행 지도");
   const list = find("live-district-bars");
-  list.style.height = `${finals.districts.length * ROW_HEIGHT}px`;
+  let rowHeight = STACKED_ROW_HEIGHT;
+  let order = [];
 
   const districts = finals.districts.map((district) => {
     const path = document.createElementNS(svgNamespace, "path");
@@ -80,6 +82,24 @@ function setup({ finals, timeline }) {
       .at(-1) || null;
   }
 
+  // Make the bar block exactly as tall as the map when the two sit side by side.
+  function fitRows() {
+    const grid = find("live-districts-content");
+    const side = grid && getComputedStyle(grid).gridTemplateColumns.split(" ").length > 1;
+    const head = list.previousElementSibling;
+    if (side) {
+      const available = map.getBoundingClientRect().height - (head ? head.offsetHeight : 0) - 8;
+      rowHeight = Math.max(MIN_ROW_HEIGHT, available / districts.length);
+    } else {
+      rowHeight = STACKED_ROW_HEIGHT;
+    }
+    list.style.height = `${districts.length * rowHeight}px`;
+    list.style.setProperty("--row-height", `${rowHeight}px`);
+    order.forEach((entry, index) => {
+      entry.row.style.transform = `translateY(${index * rowHeight}px)`;
+    });
+  }
+
   function update(frame) {
     const counted = lastCountedFrame(frame);
     const cityRate = counted?.counted_rate ?? 0;
@@ -100,12 +120,14 @@ function setup({ finals, timeline }) {
       return { district, progress, ohRate, jungRate, margin: ohRate - jungRate };
     });
 
-    rows
+    const sorted = rows
       .slice()
-      .sort((a, b) => b.margin - a.margin || a.district.name.localeCompare(b.district.name, "ko"))
+      .sort((a, b) => b.margin - a.margin || a.district.name.localeCompare(b.district.name, "ko"));
+    order = sorted.map((entry) => entry.district);
+    sorted
       .forEach((entry, index) => {
         const { district, progress, ohRate, jungRate } = entry;
-        district.row.style.transform = `translateY(${index * ROW_HEIGHT}px)`;
+        district.row.style.transform = `translateY(${index * rowHeight}px)`;
         const started = progress > 0;
         const pair = ohRate + jungRate || 1;
         district.oh.style.width = started ? `${ohRate / pair * 100}%` : "0%";
@@ -134,11 +156,15 @@ function setup({ finals, timeline }) {
   });
   document.addEventListener("count-history-select", (event) => update(event.detail));
   update(null);
+  return fitRows;
 }
 
 try {
-  setup(await load());
+  const fitRows = setup(await load());
   find("live-districts-content").hidden = false;
+  fitRows();
+  window.addEventListener("resize", fitRows);
+  if (window.ResizeObserver) new ResizeObserver(fitRows).observe(find("live-district-map"));
 } catch (error) {
   find("live-district-status").textContent = "자치구 개표 자료를 불러오지 못했어요.";
   console.error("Live district results", error);
