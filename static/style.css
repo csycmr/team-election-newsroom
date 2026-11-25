@@ -1274,12 +1274,14 @@ input::placeholder, textarea::placeholder {
 }
 
 .editor-publish {
-  padding-block: 16px;
+  display: grid;
 }
 
 .post-button {
   width: 100%;
-  padding: 14px 18px;
+  min-height: 56px;
+  padding: 16px 18px;
+  border-radius: 12px;
   font-size: 15px;
   font-weight: 700;
 }
@@ -1568,4 +1570,32 @@ input::placeholder, textarea::placeholder {
   color: #b4323f;
   font-size: 12px;
   text-align: right;
+}
+
+/* Completed review stages get an APPROVED rubber stamp behind their content */
+.editor-factcheck,
+.editor-human-review,
+.editor-approval {
+  position: relative;
+  isolation: isolate;
+}
+
+.is-stamped::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("/static/approved-stamp.svg?v=1") center / min(88%, 340px) no-repeat;
+  opacity: 0.32;
+  pointer-events: none;
+  animation: stamp-in 0.35s ease-out;
+}
+
+@keyframes stamp-in {
+  from { opacity: 0; transform: scale(1.25); }
+  to { opacity: 0.32; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-stamped::after { animation: none; }
 }

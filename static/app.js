@@ -178,6 +178,10 @@ function updateActions() {
   byId("review").disabled = busy || article?.status !== "fact_checked";
   byId("approve").disabled = busy || article?.status !== "human_reviewed";
   byId("reject").disabled = busy || article?.status !== "human_reviewed";
+  const status = article?.status;
+  byId("check").closest("section").classList.toggle("is-stamped", ["fact_checked", "human_reviewed", "approved"].includes(status));
+  byId("review").closest("section").classList.toggle("is-stamped", ["human_reviewed", "approved"].includes(status));
+  byId("approve").closest("section").classList.toggle("is-stamped", status === "approved");
   const postButton = byId("post-article");
   const approved = article?.status === "approved";
   const posted = approved && postedArticleIds.has(article.article_id);
@@ -352,7 +356,7 @@ byId("post-article").onclick = async () => {
     await api(`/api/articles/${article.article_id}/post`, undefined, "POST");
     postedArticleIds.add(article.article_id);
     archiveArticleId = article.article_id;
-    feedback.textContent = "보도실에 게시했습니다.";
+    feedback.textContent = "";
     await Promise.all([refreshArchive(), refreshAudit()]);
   } catch (error) {
     feedback.textContent = error.message;
