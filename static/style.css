@@ -971,8 +971,12 @@ input::placeholder, textarea::placeholder {
   grid-area: controls;
 }
 
-.draft-layout .editor-manuscript {
+.editor-manuscript-column {
   grid-area: manuscript;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  min-width: 0;
 }
 
 .editor-review-pair {
@@ -1110,11 +1114,6 @@ input::placeholder, textarea::placeholder {
   margin: 0;
 }
 
-
-.editor-article-browser {
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--line);
-}
 
 .editor-article-browser .form-field {
   margin-block: 10px;

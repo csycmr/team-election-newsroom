@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=timeline-marker-emphasis">
+  <link rel="stylesheet" href="/static/style.css?v=separate-manuscript-panels">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -132,24 +132,34 @@
             </div>
             <p id="status" class="pane-description editor-feedback" role="status"></p>
             <div class="editor-save-actions"><button type="button" id="save" disabled>기사 수정 저장</button></div></section>
-        <section class="light-pane editor-manuscript">
-          <div class="editor-article-browser">
-            <h3>작성 중인 기사</h3>
-            <label class="form-field">상태
-              <select id="article-filter">
-                <option value="">전체</option>
-                <option value="draft">초안</option>
-                <option value="fact_checked">팩트체크 통과</option>
-                <option value="human_reviewed">사람 검토 완료</option>
-                <option value="approved">편집장 승인</option>
-                <option value="rejected">반려</option>
-              </select>
-            </label>
-            <label class="form-field">저장된 기사
-              <select id="editor-article-select" disabled><option value="">저장된 기사 불러오는 중</option></select>
-            </label>
+          <div class="editor-manuscript-column">
+            <section class="light-pane editor-article-browser">
+              <h3>작성 중인 기사</h3>
+              <label class="form-field">상태
+                <select id="article-filter">
+                  <option value="">전체</option>
+                  <option value="draft">초안</option>
+                  <option value="fact_checked">팩트체크 통과</option>
+                  <option value="human_reviewed">사람 검토 완료</option>
+                  <option value="approved">편집장 승인</option>
+                  <option value="rejected">반려</option>
+                </select>
+              </label>
+              <label class="form-field">저장된 기사
+                <select id="editor-article-select" disabled><option value="">저장된 기사 불러오는 중</option></select>
+              </label>
+            </section>
+            <section class="light-pane editor-manuscript">
+              <h3>기사 원고</h3>
+              <div class="article-fields">
+                <label for="article-title-input">기사 제목</label>
+                <input id="article-title-input" placeholder="기사 제목" disabled>
+                <label for="article-body-input">기사 본문</label>
+                <textarea id="article-body-input" rows="17" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea>
+              </div>
+              <p id="article-evidence" class="evidence-note"></p>
+            </section>
           </div>
-          <h3>기사 원고</h3><div class="article-fields"><label for="article-title-input">기사 제목</label><input id="article-title-input" placeholder="기사 제목" disabled><label for="article-body-input">기사 본문</label><textarea id="article-body-input" rows="17" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea></div><p id="article-evidence" class="evidence-note"></p></section>
           <div class="editor-review-pair">
             <section class="light-pane editor-factcheck">
               <h3 class="editor-stage-heading"><span class="step-indicator">02 / 팩트체크</span></h3>
