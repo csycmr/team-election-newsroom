@@ -1617,9 +1617,9 @@ input::placeholder, textarea::placeholder {
 .live-headline-window {
   position: relative;
   display: block;
-  height: 2.8em;
+  height: 1.4em;
   overflow: hidden;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.4;
 }
 
@@ -1627,13 +1627,10 @@ input::placeholder, textarea::placeholder {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  white-space: normal;
+  display: block;
+  white-space: nowrap;
   text-overflow: ellipsis;
-  overflow-wrap: anywhere;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.4;
   transform: translateY(0);
   opacity: 1;
