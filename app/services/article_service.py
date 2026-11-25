@@ -4,6 +4,14 @@ from app.models import Article, ArticleCreate
 from app.services.time_service import now_seoul
 
 
+def _compact_vote_margin(votes: int) -> str:
+    if votes >= 10_000:
+        ten_thousands, remainder = divmod(votes, 10_000)
+        rest = f" {remainder:,}" if remainder else ""
+        return f"{ten_thousands:,}만{rest}표"
+    return f"{votes:,}표"
+
+
 def election_headline(snapshot) -> str:
     """Build a timestamped, fact-led headline from the selected count snapshot."""
     collected_at = snapshot.collected_at
@@ -18,16 +26,16 @@ def election_headline(snapshot) -> str:
     event = (snapshot.timeline_event or "").strip()
     if snapshot.counted_rate is None or not snapshot.candidates:
         if "투표용지 부족" in event:
-            detail = "잠실7동 제2투표소에서 투표용지 부족으로 투표가 연장됐습니다."
+            detail = "잠실7동 투표용지 부족으로 투표가 연장됐습니다."
         elif "투표함 2개" in event:
-            detail = "잠실7동 제2투표소 투표함 2개 이송이 지연됐습니다."
+            detail = "잠실7동 투표함 2개가 이송됐습니다."
         elif "개표 시작" in event:
             detail = "서울시장 선거 개표가 시작됐습니다."
         elif event:
             detail = f"{event} 상황이 전해졌습니다."
         else:
             detail = "집계 상황을 확인 중입니다."
-        return f"[서울시장 개표상황] {time_phrase} {detail}"
+        return f"[서울시장 개표상황] {time_phrase}, {detail}"
 
     ordered = sorted(snapshot.candidates, key=lambda candidate: candidate.votes, reverse=True)
     leader = ordered[0]
@@ -40,18 +48,20 @@ def election_headline(snapshot) -> str:
     if len(ordered) > 1:
         gap = leader.votes - ordered[1].votes
         if gap:
-            lead_text = f"{leader.candidate_name} 후보가 {gap:,}표 앞서 선두를 달리고 있습니다."
+            lead_text = f"{leader.candidate_name} 후보가 {_compact_vote_margin(gap)} 차로 선두입니다."
         else:
             lead_text = f"{leader.candidate_name} 후보와 2위 후보가 동률입니다."
     else:
         lead_text = f"{leader.candidate_name} 후보가 선두입니다."
 
-    simulation_label = "시연용 재구성 집계에서 " if snapshot.record_type == "simulated" else ""
-    if snapshot.counted_rate == 100:
-        count_text = f"{simulation_label}최종 개표율은 {snapshot.counted_rate:.2f}%입니다."
-    else:
-        count_text = f"{simulation_label}개표율은 {snapshot.counted_rate:.2f}%입니다."
-    return f"[서울시장 개표상황] {time_phrase} {count_text} {lead_text}{incident}"
+    rate = f"{snapshot.counted_rate:g}%"
+    count_text = f"최종 개표율 {rate}" if snapshot.counted_rate == 100 else f"개표율 {rate}"
+    if "역전" in event and "차로 선두" in lead_text:
+        lead_text = lead_text.removesuffix("선두입니다.") + "역전 선두입니다."
+    elif snapshot.counted_rate == 100 and "차로 선두" in lead_text:
+        lead_text = lead_text.removesuffix("선두입니다.") + "최종 선두입니다."
+    incident = "" if "역전" in event or "최종 개표 완료" in event else incident
+    return f"[서울시장 개표상황] {time_phrase}, {count_text}, {lead_text}{incident}"
 
 
 def generate_article(request: ArticleCreate) -> Article:

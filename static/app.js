@@ -12,6 +12,14 @@ function formatHeadlineTime(value) {
   const parts = Object.fromEntries(headlineClock.formatToParts(new Date(value)).map(({ type, value }) => [type, value]));
   return `${Number(parts.month)}월 ${Number(parts.day)}일 ${parts.hour}시 ${parts.minute}분`;
 }
+function formatHeadlineMargin(votes) {
+  if (votes >= 10_000) {
+    const tenThousands = Math.floor(votes / 10_000);
+    const remainder = votes % 10_000;
+    return `${number.format(tenThousands)}만${remainder ? ` ${number.format(remainder)}` : ""}표`;
+  }
+  return `${number.format(votes)}표`;
+}
 const colors = ["#ed737e", "#679bff", "#f3cd58", "#b896ff", "#f2a875"];
 
 const breakingEvents = new Set([
@@ -56,18 +64,16 @@ function compactCountHeadline(frame, latestCount) {
   const ranked = [...(count?.candidates ?? [])].sort((a, b) => b.votes - a.votes);
 
   if (frame.counted_rate !== null && frame.counted_rate_pct != null) {
-    parts.push(`${frame.time_basis === "simulated" ? "시연 개표율" : "개표율"} ${frame.counted_rate_pct}%`);
+    parts.push(`개표율 ${Number(frame.counted_rate_pct).toString()}%`);
   } else if (count?.counted_rate_pct != null) {
-    parts.push(`${count.time_basis === "simulated" ? "직전 시연 집계" : "직전 집계"} ${count.counted_rate_pct}%`);
+    parts.push(`직전 집계 ${Number(count.counted_rate_pct).toString()}%`);
   }
 
   if (ranked.length > 1) {
     const margin = ranked[0].votes - ranked[1].votes;
-    const qualifier = count?.time_basis === "simulated"
-      ? "시연 선두"
-      : frame.counted_rate === null ? "직전 선두" : "선두";
+    const qualifier = frame.counted_rate === null ? "직전 선두" : "선두";
     const reversal = frame.event?.includes("역전") ? " 역전" : "";
-    parts.push(`${ranked[0].candidate_name} ${number.format(margin)}표 차 ${qualifier}${reversal}`);
+    parts.push(`${ranked[0].candidate_name} ${formatHeadlineMargin(margin)} 차 ${qualifier}${reversal}`);
   } else if (ranked.length === 1) {
     parts.push(`${ranked[0].candidate_name} 선두`);
   }
@@ -1009,7 +1015,6 @@ document.addEventListener("count-history-select", (event) => {
   function liveArticleTitle(item) {
     const snapshot = item.snapshot;
     if (item.article_type === "pledge" || !snapshot?.collected_at) return item.title;
-    if (item.title.startsWith("[서울시장 개표상황]")) return item.title;
 
     const stamp = formatHeadlineTime(snapshot.collected_at);
     const timePhrase = snapshot.time_basis === "approximate"
@@ -1018,15 +1023,15 @@ document.addEventListener("count-history-select", (event) => {
     const event = snapshot.timeline_event || "";
     if (snapshot.counted_rate == null || !snapshot.candidates?.length) {
       if (event.includes("투표용지 부족")) {
-        return `[서울시장 개표상황] ${timePhrase} 잠실7동 제2투표소에서 투표용지 부족으로 투표가 연장됐습니다.`;
+        return `[서울시장 개표상황] ${timePhrase}, 잠실7동 투표용지 부족으로 투표가 연장됐습니다.`;
       }
       if (event.includes("투표함 2개")) {
-        return `[서울시장 개표상황] ${timePhrase} 잠실7동 제2투표소 투표함 2개 이송이 지연됐습니다.`;
+        return `[서울시장 개표상황] ${timePhrase}, 잠실7동 투표함 2개가 이송됐습니다.`;
       }
       if (event.includes("개표 시작")) {
-        return `[서울시장 개표상황] ${timePhrase} 서울시장 선거 개표가 시작됐습니다.`;
+        return `[서울시장 개표상황] ${timePhrase}, 서울시장 선거 개표가 시작됐습니다.`;
       }
-      return `[서울시장 개표상황] ${timePhrase} ${event || item.title} 상황이 전해졌습니다.`;
+      return `[서울시장 개표상황] ${timePhrase}, ${event || item.title} 상황이 전해졌습니다.`;
     }
 
     const candidates = [...snapshot.candidates].sort((a, b) => b.votes - a.votes);
@@ -1036,15 +1041,15 @@ document.addEventListener("count-history-select", (event) => {
       ? `${leader.candidate_name} 후보가 선두입니다.`
       : margin === 0
         ? `${leader.candidate_name} 후보와 2위 후보가 동률입니다.`
-        : `${leader.candidate_name} 후보가 ${number.format(margin)}표 앞서 선두를 달리고 있습니다.`;
-    const simulated = snapshot.record_type === "simulated" ? "시연용 재구성 집계에서 " : "";
-    const count = snapshot.counted_rate === 100
-      ? `${simulated}최종 개표율은 ${Number(snapshot.counted_rate).toFixed(2)}%입니다.`
-      : `${simulated}개표율은 ${Number(snapshot.counted_rate).toFixed(2)}%입니다.`;
-    const incident = event.includes("역전")
-      ? ` ${leader.candidate_name} 후보가 역전에 성공했습니다.`
-      : event.includes("최종 개표 완료") ? " 최종 개표가 완료됐습니다." : "";
-    return `[서울시장 개표상황] ${timePhrase} ${count} ${lead}${incident}`;
+        : `${leader.candidate_name} 후보가 ${formatHeadlineMargin(margin)} 차로 선두입니다.`;
+    const rate = Number(snapshot.counted_rate).toString();
+    const count = snapshot.counted_rate === 100 ? `최종 개표율 ${rate}%` : `개표율 ${rate}%`;
+    const incident = event.includes("역전") && margin != null && margin !== 0
+      ? `${leader.candidate_name} 후보가 ${formatHeadlineMargin(margin)} 차로 역전 선두입니다.`
+      : event.includes("최종 개표 완료") && margin != null && margin !== 0
+        ? `${leader.candidate_name} 후보가 ${formatHeadlineMargin(margin)} 차로 최종 선두입니다.`
+        : lead;
+    return `[서울시장 개표상황] ${timePhrase}, ${count}, ${incident}`;
   }
 
   function show(key, label, title, articleId, isPledge) {
