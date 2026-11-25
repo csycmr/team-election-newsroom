@@ -1585,7 +1585,7 @@ input::placeholder, textarea::placeholder {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url("/static/approved-stamp.svg?v=1") center / min(88%, 340px) no-repeat;
+  background: url("/static/approved-stamp.svg?v=1") right 14px bottom 10px / min(62%, 260px) no-repeat;
   opacity: 0.55;
   filter: brightness(1.5) saturate(1.2);
   pointer-events: none;
