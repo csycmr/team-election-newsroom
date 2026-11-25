@@ -4,6 +4,14 @@ const clock = new Intl.DateTimeFormat("ko-KR", {
   timeZone: "Asia/Seoul", month: "long", day: "numeric",
   hour: "2-digit", minute: "2-digit", hourCycle: "h23",
 });
+const headlineClock = new Intl.DateTimeFormat("ko-KR", {
+  timeZone: "Asia/Seoul", month: "numeric", day: "numeric",
+  hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+});
+function formatHeadlineTime(value) {
+  const parts = Object.fromEntries(headlineClock.formatToParts(new Date(value)).map(({ type, value }) => [type, value]));
+  return `${Number(parts.month)}월 ${Number(parts.day)}일 ${parts.hour}시 ${parts.minute}분`;
+}
 const colors = ["#ed737e", "#679bff", "#f3cd58", "#b896ff", "#f2a875"];
 
 const breakingEvents = new Set([
@@ -37,6 +45,40 @@ function setTickerText(message, stageText) {
     headline.textContent = message;
     if (stageText !== undefined) stage.textContent = stageText;
   }
+}
+
+function compactCountHeadline(frame, latestCount) {
+  const approximate = frame.time_basis === "approximate" ? "쯤" : "";
+  const publication = frame.time_basis === "publication_time" ? " 보도 시각" : "";
+  const current = approximate || publication ? "" : " 현재";
+  const parts = [`${formatHeadlineTime(frame.timestamp_kst)}${approximate}${publication}${current}`];
+  const count = frame.counted_rate === null ? latestCount : frame;
+  const ranked = [...(count?.candidates ?? [])].sort((a, b) => b.votes - a.votes);
+
+  if (frame.counted_rate !== null && frame.counted_rate_pct != null) {
+    parts.push(`${frame.time_basis === "simulated" ? "시연 개표율" : "개표율"} ${frame.counted_rate_pct}%`);
+  } else if (count?.counted_rate_pct != null) {
+    parts.push(`${count.time_basis === "simulated" ? "직전 시연 집계" : "직전 집계"} ${count.counted_rate_pct}%`);
+  }
+
+  if (ranked.length > 1) {
+    const margin = ranked[0].votes - ranked[1].votes;
+    const qualifier = count?.time_basis === "simulated"
+      ? "시연 선두"
+      : frame.counted_rate === null ? "직전 선두" : "선두";
+    const reversal = frame.event?.includes("역전") ? " 역전" : "";
+    parts.push(`${ranked[0].candidate_name} ${number.format(margin)}표 차 ${qualifier}${reversal}`);
+  } else if (ranked.length === 1) {
+    parts.push(`${ranked[0].candidate_name} 선두`);
+  }
+
+  const event = frame.event || "";
+  if (event.includes("투표용지 부족")) parts.push("잠실7동 투표용지 부족으로 투표 연장");
+  else if (event.includes("투표함 2개")) parts.push("잠실7동 투표함 2개 이송");
+  else if (event.includes("최종 개표 완료")) parts.push("최종 개표 완료");
+  else if (event.includes("개표 시작")) parts.push("개표 시작");
+
+  return parts.join(" · ");
 }
 
 let socket;
@@ -124,9 +166,7 @@ function render(frame) {
   byId("source").textContent = lastCount?.additional_source_url ? "최종 집계표 ↗" : `${(lastCount || frame).source_name} ↗`;
   const breaking = breakingEvents.has(frame.event) && socket?.readyState === WebSocket.OPEN;
   byId("ticker-alert-light").hidden = !breaking;
-  const headline = breaking || frame.counted_rate === null
-    ? eventTitle
-    : `${eventTitle} · 개표율 ${frame.counted_rate_pct}%`;
+  const headline = compactCountHeadline(frame, lastCount);
   const stageText = `${frame.step_id}/${replayFrames.length}단계 · ${timestamp} KST · ${eventTitle}`;
   setTickerText(headline, stageText);
   const tickerMeta = byId("ticker-meta");
@@ -966,6 +1006,47 @@ document.addEventListener("count-history-select", (event) => {
 
   const better = (a, b) => (statusRank[a.status] || 0) > (statusRank[b.status] || 0);
 
+  function liveArticleTitle(item) {
+    const snapshot = item.snapshot;
+    if (item.article_type === "pledge" || !snapshot?.collected_at) return item.title;
+    if (item.title.startsWith("[서울시장 개표상황]")) return item.title;
+
+    const stamp = formatHeadlineTime(snapshot.collected_at);
+    const timePhrase = snapshot.time_basis === "approximate"
+      ? `${stamp}쯤`
+      : snapshot.time_basis === "publication_time" ? `${stamp} 보도 기준` : `${stamp} 현재`;
+    const event = snapshot.timeline_event || "";
+    if (snapshot.counted_rate == null || !snapshot.candidates?.length) {
+      if (event.includes("투표용지 부족")) {
+        return `[서울시장 개표상황] ${timePhrase} 잠실7동 제2투표소에서 투표용지 부족으로 투표가 연장됐습니다.`;
+      }
+      if (event.includes("투표함 2개")) {
+        return `[서울시장 개표상황] ${timePhrase} 잠실7동 제2투표소 투표함 2개 이송이 지연됐습니다.`;
+      }
+      if (event.includes("개표 시작")) {
+        return `[서울시장 개표상황] ${timePhrase} 서울시장 선거 개표가 시작됐습니다.`;
+      }
+      return `[서울시장 개표상황] ${timePhrase} ${event || item.title} 상황이 전해졌습니다.`;
+    }
+
+    const candidates = [...snapshot.candidates].sort((a, b) => b.votes - a.votes);
+    const leader = candidates[0];
+    const margin = candidates.length > 1 ? leader.votes - candidates[1].votes : null;
+    const lead = margin == null
+      ? `${leader.candidate_name} 후보가 선두입니다.`
+      : margin === 0
+        ? `${leader.candidate_name} 후보와 2위 후보가 동률입니다.`
+        : `${leader.candidate_name} 후보가 ${number.format(margin)}표 앞서 선두를 달리고 있습니다.`;
+    const simulated = snapshot.record_type === "simulated" ? "시연용 재구성 집계에서 " : "";
+    const count = snapshot.counted_rate === 100
+      ? `${simulated}최종 개표율은 ${Number(snapshot.counted_rate).toFixed(2)}%입니다.`
+      : `${simulated}개표율은 ${Number(snapshot.counted_rate).toFixed(2)}%입니다.`;
+    const incident = event.includes("역전")
+      ? ` ${leader.candidate_name} 후보가 역전에 성공했습니다.`
+      : event.includes("최종 개표 완료") ? " 최종 개표가 완료됐습니다." : "";
+    return `[서울시장 개표상황] ${timePhrase} ${count} ${lead}${incident}`;
+  }
+
   function show(key, label, title, articleId, isPledge) {
     slot.dataset.articleId = articleId || "";
     slot.disabled = !articleId;
@@ -1013,7 +1094,7 @@ document.addEventListener("count-history-select", (event) => {
       return;
     }
     const item = pledges[pledgeIndex % pledges.length];
-    show(item.article_id, "공약", item.title, item.article_id, true);
+    show(item.article_id, "공약", liveArticleTitle(item), item.article_id, true);
   }
 
   function setPledgeRotation(on) {
@@ -1043,7 +1124,7 @@ document.addEventListener("count-history-select", (event) => {
       if (item.article_type === "pledge" || !step || step > currentStep) continue;
       if (!pick || step > pick.snapshot.step_id || (step === pick.snapshot.step_id && better(item, pick))) pick = item;
     }
-    if (pick) show(pick.article_id, "속보", pick.title, pick.article_id, false);
+    if (pick) show(pick.article_id, "속보", liveArticleTitle(pick), pick.article_id, false);
     else show(`none-${currentStep}`, "속보", `${currentStep}단계 속보 기사를 뉴스룸에서 작성해 주세요.`, null, false);
   }
 

@@ -4,6 +4,56 @@ from app.models import Article, ArticleCreate
 from app.services.time_service import now_seoul
 
 
+def election_headline(snapshot) -> str:
+    """Build a timestamped, fact-led headline from the selected count snapshot."""
+    collected_at = snapshot.collected_at
+    stamp = f"{collected_at.month}월 {collected_at.day}일 {collected_at:%H}시 {collected_at:%M}분"
+    if snapshot.time_basis == "approximate":
+        time_phrase = f"{stamp}쯤"
+    elif snapshot.time_basis == "publication_time":
+        time_phrase = f"{stamp} 보도 기준"
+    else:
+        time_phrase = f"{stamp} 현재"
+
+    event = (snapshot.timeline_event or "").strip()
+    if snapshot.counted_rate is None or not snapshot.candidates:
+        if "투표용지 부족" in event:
+            detail = "잠실7동 제2투표소에서 투표용지 부족으로 투표가 연장됐습니다."
+        elif "투표함 2개" in event:
+            detail = "잠실7동 제2투표소 투표함 2개 이송이 지연됐습니다."
+        elif "개표 시작" in event:
+            detail = "서울시장 선거 개표가 시작됐습니다."
+        elif event:
+            detail = f"{event} 상황이 전해졌습니다."
+        else:
+            detail = "집계 상황을 확인 중입니다."
+        return f"[서울시장 개표상황] {time_phrase} {detail}"
+
+    ordered = sorted(snapshot.candidates, key=lambda candidate: candidate.votes, reverse=True)
+    leader = ordered[0]
+    incident = ""
+    if "역전" in event:
+        incident = f" {leader.candidate_name} 후보가 역전에 성공했습니다."
+    elif "최종 개표 완료" in event:
+        incident = " 최종 개표가 완료됐습니다."
+
+    if len(ordered) > 1:
+        gap = leader.votes - ordered[1].votes
+        if gap:
+            lead_text = f"{leader.candidate_name} 후보가 {gap:,}표 앞서 선두를 달리고 있습니다."
+        else:
+            lead_text = f"{leader.candidate_name} 후보와 2위 후보가 동률입니다."
+    else:
+        lead_text = f"{leader.candidate_name} 후보가 선두입니다."
+
+    simulation_label = "시연용 재구성 집계에서 " if snapshot.record_type == "simulated" else ""
+    if snapshot.counted_rate == 100:
+        count_text = f"{simulation_label}최종 개표율은 {snapshot.counted_rate:.2f}%입니다."
+    else:
+        count_text = f"{simulation_label}개표율은 {snapshot.counted_rate:.2f}%입니다."
+    return f"[서울시장 개표상황] {time_phrase} {count_text} {lead_text}{incident}"
+
+
 def generate_article(request: ArticleCreate) -> Article:
     snapshot = request.snapshot
     evidence_text = ""
@@ -29,7 +79,6 @@ def generate_article(request: ArticleCreate) -> Article:
     )
     if snapshot.counted_rate is None:
         summary = f" 소식은 ‘{snapshot.timeline_event}’이다."
-        title = f"{snapshot.region} 개표 {snapshot.step_id}단계 · {snapshot.timeline_event}"
     else:
         ordered = sorted(snapshot.candidates, key=lambda candidate: candidate.votes, reverse=True)
         rows = ", ".join(
@@ -43,7 +92,7 @@ def generate_article(request: ArticleCreate) -> Article:
         )
         if snapshot.record_type == "mixed":
             summary += " 오세훈·정원오 후보는 보도 수치이며 권영국·유지혜·김정철 후보는 시연 추정 수치다."
-        title = f"{snapshot.region} 개표 {snapshot.step_id}단계 속보"
+    title = election_headline(snapshot)
     note = f" {snapshot.timeline_note}" if snapshot.timeline_note else ""
     body = (
         f"{intro}{summary}{note}{evidence_text} 초안은 팩트체크와 편집 검토를 거쳐야 한다. "
@@ -57,7 +106,7 @@ def generate_article(request: ArticleCreate) -> Article:
 
 
 async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) -> Article:
-    """AI writes title and lead; deterministic snapshot facts remain intact."""
+    """AI writes the lead while the timestamped title stays tied to snapshot facts."""
     import json
     from openai import AsyncOpenAI
 
@@ -79,6 +128,7 @@ async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) 
         "region": snapshot.region,
         "snapshot": snapshot.model_dump(mode="json"),
         "verified_input_for_drafting": factual.body,
+        "standard_headline": factual.title,
         "evidence": evidence,
     }
     client = AsyncOpenAI(api_key=api_key, timeout=35, max_retries=0)
@@ -88,8 +138,9 @@ async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) 
         messages=[
             {"role": "system", "content": (
                 "당신은 한국 선거 뉴스룸의 기사 작성 보조자다. "
-                "입력된 개표 집계와 근거 문서만 사용해 한국어 스트레이트 기사 제목과 "
-                "짧은 리드 1~2문장을 작성하라. 입력에 없는 발언, 정책, 원인, 전망, 숫자를 만들지 마라. "
+                "입력된 개표 집계와 근거 문서만 사용해 짧은 한국어 리드 1~2문장을 작성하라. "
+                "title은 입력의 standard_headline을 글자 그대로 반환하라. "
+                "입력에 없는 발언, 정책, 원인, 전망, 숫자를 만들지 마라. "
                 "중간 집계를 확정 결과처럼 표현하지 마라. "
                 "record_type=simulated는 반드시 시연용 재구성임을 밝히고 "
                 "record_type=reported는 당시 보도 기록임을 구분하라. "
@@ -117,6 +168,6 @@ async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) 
 
     # The authoritative facts and evidence IDs come from the validated snapshot,
     # so fact-checking still has the exact candidate/value/source strings it expects.
-    factual.title = title
+    factual.title = election_headline(snapshot)
     factual.body = lead + "\n\n" + factual.body
     return factual
