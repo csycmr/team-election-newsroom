@@ -42,9 +42,16 @@ async def check_article(article: Article, settings: Settings) -> FactCheckResult
     checks = []
     snapshot = article.snapshot
     text = article.title + "\n" + article.body
-    total_rate = sum(candidate.vote_rate for candidate in snapshot.candidates)
-    checks.append({"field": "득표율 합계", "expected": "약 100%", "actual": total_rate,
-                   "passed": math.isclose(total_rate, 100, abs_tol=0.2)})
+    if snapshot.counted_rate is None:
+        checks.append({
+            "field": "타임라인 사건",
+            "expected": snapshot.timeline_event,
+            "passed": snapshot.timeline_event in text,
+        })
+    else:
+        total_rate = sum(candidate.vote_rate for candidate in snapshot.candidates)
+        checks.append({"field": "득표율 합계", "expected": "약 100%", "actual": total_rate,
+                       "passed": math.isclose(total_rate, 100, abs_tol=0.2)})
 
     for candidate in snapshot.candidates:
         name = candidate.candidate_name

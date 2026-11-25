@@ -61,3 +61,30 @@ def test_replay_article_uses_verified_evidence_and_rejects_tampering():
 
     frame["candidates"][0]["votes"] += 1
     assert client.post("/api/articles", json={"snapshot": frame}).status_code == 409
+
+
+def test_each_timeline_step_creates_a_draft_with_its_own_timestamp_and_source():
+    frames = client.get("/api/count-timeline").json()
+    assert [frame["step_id"] for frame in frames] == list(range(1, 16))
+    assert [frame["step_id"] for frame in frames if frame["counted_rate"] is None] == [1, 4, 14]
+    assert [frames[index]["counted_rate"] for index in (4, 6, 10, 14)] == [15.42, 46.72, 97.17, 100]
+
+    for frame in frames:
+        snapshot = frame["article_snapshot"]
+        response = client.post("/api/articles", json={"snapshot": snapshot})
+        assert response.status_code == 200
+        article = response.json()
+        assert article["snapshot"] == snapshot
+        assert snapshot["step_id"] == frame["step_id"]
+        assert snapshot["collected_at"] == frame["timestamp_kst"]
+        assert f'{frame["step_id"]}단계' in article["body"]
+        assert article["evidence"][0]["source_url"] == snapshot["source_url"]
+        if frame["counted_rate"] is None:
+            assert frame["event"] in article["body"]
+            assert "개표 진행률" not in article["body"]
+        if snapshot["record_type"] == "mixed":
+            assert "시연 추정 수치" in article["body"]
+
+    snapshot = frames[10]["article_snapshot"]
+    snapshot["candidates"][0]["votes"] += 1
+    assert client.post("/api/articles", json={"snapshot": snapshot}).status_code == 409

@@ -2,7 +2,7 @@ import csv
 import json
 
 from app.config import ROOT
-from app.models import ElectionSnapshot
+from app.models import ElectionSnapshot, Evidence
 
 
 REPLAY_DIR = ROOT / "data/replay"
@@ -18,11 +18,6 @@ def replay_snapshot(step: int) -> ElectionSnapshot:
 
 def _count_timeline() -> list[dict]:
     """Build the displayed replay from the checked-in reporting timeline."""
-    full_counts = {
-        frame.counted_rate: frame.model_dump(mode="json")
-        for frame in FRAMES
-        if frame.record_type == "reported"
-    }
     roster = [candidate.model_dump(exclude={"votes", "vote_rate"}) for candidate in FRAMES[-1].candidates]
     prefixes = {
         "seoul-1": "oh_se_hoon",
@@ -37,7 +32,6 @@ def _count_timeline() -> list[dict]:
     timeline = []
     for step, row in enumerate(rows, start=1):
         rate = float(row["counted_rate_pct"]) if row["counted_rate_pct"] else None
-        full_count = full_counts.get(rate)
         candidates = []
         if rate is not None:
             for candidate in roster:
@@ -54,15 +48,55 @@ def _count_timeline() -> list[dict]:
                             else {}
                         ),
                     })
+        record_type = "reported"
+        if row["time_basis"] == "simulated":
+            record_type = "simulated"
+        elif any(candidate.get("is_simulated") for candidate in candidates):
+            record_type = "mixed"
+
+        election = FRAMES[-1]
+        snapshot = ElectionSnapshot(
+            election_id=election.election_id,
+            election_name=election.election_name,
+            region=election.region,
+            step_id=step,
+            counted_rate=rate,
+            collected_at=row["timestamp_kst"],
+            source="연합뉴스 보도 집계" if row["additional_source_url"] else row["source_name"],
+            source_url=row["additional_source_url"] or row["source_url"],
+            mode="replay",
+            record_type=record_type,
+            evidence_id=f"COUNT-TIMELINE-{step:02d}",
+            candidates=candidates,
+            timeline_event=row["event"],
+            timeline_note=row["note"],
+            time_basis=row["time_basis"],
+        )
         timeline.append({
             **row,
             "step_id": step,
             "counted_rate": rate,
             "candidates": candidates,
-            "article_snapshot": full_count,
+            "article_snapshot": snapshot.model_dump(mode="json"),
             "counted_valid_votes": int(row["counted_valid_votes"]) if row["counted_valid_votes"] else None,
         })
     return timeline
 
 
 COUNT_TIMELINE = _count_timeline()
+
+
+TIMELINE_SNAPSHOTS = [
+    ElectionSnapshot.model_validate(frame["article_snapshot"]) for frame in COUNT_TIMELINE
+]
+
+
+def timeline_evidence(snapshot: ElectionSnapshot) -> Evidence:
+    return Evidence(
+        evidence_id=snapshot.evidence_id,
+        title=f"서울시장 개표 {snapshot.step_id}단계 · {snapshot.timeline_event}",
+        content=snapshot.timeline_note or snapshot.timeline_event,
+        source=snapshot.source,
+        source_url=snapshot.source_url,
+        published_at=snapshot.collected_at.date().isoformat(),
+    )

@@ -6,29 +6,51 @@ from app.services.time_service import now_seoul
 
 def generate_article(request: ArticleCreate) -> Article:
     snapshot = request.snapshot
-    ordered = sorted(snapshot.candidates, key=lambda candidate: candidate.votes, reverse=True)
-    leader = ordered[0]
-    rows = ", ".join(f"{c.candidate_name} {c.votes:,}표({c.vote_rate:.2f}%)" for c in ordered)
     evidence_text = ""
     if request.evidence:
         refs = ", ".join(f"{e.title}({e.source})" for e in request.evidence[:3])
         ids = ", ".join(e.evidence_id for e in request.evidence[:3])
         evidence_text = f" 근거 [{ids}] {refs}."
-    if snapshot.mode == "replay":
-        label = "시연용 재구성" if snapshot.record_type == "simulated" else "과거 보도 기록"
-        stage = "최종 개표 결과입니다." if snapshot.counted_rate == 100 else "개표 중간 단계입니다."
-    else:
+    if snapshot.mode != "replay":
         label = "교육용 모의 보도"
-        stage = "개표 중간 단계입니다."
+    else:
+        label = {
+            "simulated": "시연용 재구성",
+            "mixed": "보도 집계 · 일부 시연 추정",
+        }.get(snapshot.record_type, "과거 보도 기록")
+
+    time_label = {
+        "approximate": "무렵",
+        "publication_time": "보도 시각",
+    }.get(snapshot.time_basis, "기준")
+    intro = (
+        f"[{label}] {snapshot.collected_at.isoformat()} {time_label} "
+        f"{snapshot.election_name} {snapshot.region} {snapshot.step_id}단계"
+    )
+    if snapshot.counted_rate is None:
+        summary = f" 소식은 ‘{snapshot.timeline_event}’이다."
+        title = f"{snapshot.region} 개표 {snapshot.step_id}단계 · {snapshot.timeline_event}"
+    else:
+        ordered = sorted(snapshot.candidates, key=lambda candidate: candidate.votes, reverse=True)
+        rows = ", ".join(
+            f"{candidate.candidate_name} {candidate.votes:,}표({candidate.vote_rate:.2f}%)"
+            for candidate in ordered
+        )
+        stage = "최종 개표 결과입니다." if snapshot.counted_rate == 100 else "개표 중간 단계입니다."
+        summary = (
+            f" 집계에서 {rows}로 집계됐다. 개표 진행률은 {snapshot.counted_rate:.2f}%이며 "
+            f"{ordered[0].candidate_name} 후보가 가장 많은 표를 얻었다. {stage}"
+        )
+        if snapshot.record_type == "mixed":
+            summary += " 오세훈·정원오 후보는 보도 수치이며 권영국·유지혜·김정철 후보는 시연 추정 수치다."
+        title = f"{snapshot.region} 개표 {snapshot.step_id}단계 속보"
+    note = f" {snapshot.timeline_note}" if snapshot.timeline_note else ""
     body = (
-        f"[{label}] {snapshot.collected_at.isoformat()} 기준 {snapshot.election_name} "
-        f"{snapshot.region} {snapshot.step_id}단계 집계에서 {rows}로 집계됐다. "
-        f"현재 개표 진행률은 {snapshot.counted_rate:.2f}%이며 {leader.candidate_name} 후보가 가장 많은 표를 얻고 있다."
-        f"{evidence_text} {stage} 초안은 팩트체크와 편집 검토를 거쳐야 한다. "
+        f"{intro}{summary}{note}{evidence_text} 초안은 팩트체크와 편집 검토를 거쳐야 한다. "
         f"출처: {snapshot.source} ({snapshot.source_url})"
     )
     now = now_seoul()
-    return Article(article_id=uuid4().hex, title=f"{snapshot.region} 개표 {snapshot.step_id}단계 속보",
+    return Article(article_id=uuid4().hex, title=title,
                    body=body, status="draft", snapshot=snapshot, evidence=request.evidence,
                    created_at=now, updated_at=now)
 
@@ -70,7 +92,9 @@ async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) 
                 "짧은 리드 1~2문장을 작성하라. 입력에 없는 발언, 정책, 원인, 전망, 숫자를 만들지 마라. "
                 "중간 집계를 확정 결과처럼 표현하지 마라. "
                 "record_type=simulated는 반드시 시연용 재구성임을 밝히고 "
-                "record_type=reported는 당시 보도 집계임을 구분하라. "
+                "record_type=reported는 당시 보도 기록임을 구분하라. "
+                "record_type=mixed에서는 오세훈·정원오와 나머지 후보 수치의 출처가 다름을 밝히라. "
+                "counted_rate가 null이면 사건만 작성하고 개표율과 득표 수치는 언급하지 마라. "
                 "외부 출처의 확인 수준을 과장하지 마라. "
                 "JSON 객체 {title: 문자열, lead: 문자열}만 반환하라."
             )},

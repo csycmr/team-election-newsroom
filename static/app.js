@@ -120,6 +120,7 @@ function render(frame) {
   tickerMeta.hidden = false;
 
   renderCandidateBars(rows, !lastCount);
+  byId("draft-step").textContent = `${frame.step_id}/${replayFrames.length}단계 · ${timestamp} KST · ${eventTitle}`;
   updateActions();
 }
 
@@ -154,6 +155,7 @@ function renderCandidateBars(candidates, waiting = false) {
 
 function updateActions() {
   byId("draft").disabled = busy || !snapshot;
+  byId("replay-draft").disabled = busy || !snapshot;
   byId("save").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-title-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-body-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
@@ -262,7 +264,16 @@ byId("pledge-draft").onclick = () => {
   if (query.length < 2) { byId("status").textContent = "후보자와 지역을 입력해 주세요."; return; }
   editorialAction(() => api("/api/articles/from-pledges", {query}, "POST"));
 };
-byId("draft").onclick = () => createDraft(snapshot, byId("generation-mode").value);
+function draftCurrentStep() {
+  const selectedSnapshot = snapshot;
+  if (!selectedSnapshot || busy) return;
+  openWorkspaceView("draft");
+  byId("status").textContent = `${selectedSnapshot.step_id}단계 초안 작성 중…`;
+  createDraft(selectedSnapshot, byId("generation-mode").value);
+}
+
+byId("draft").onclick = draftCurrentStep;
+byId("replay-draft").onclick = draftCurrentStep;
 byId("save").onclick = () => editorialAction(() =>
   api(`/api/articles/${article.article_id}`, {
     title: byId("article-title-input").value,

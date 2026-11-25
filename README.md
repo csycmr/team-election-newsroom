@@ -187,8 +187,8 @@ erDiagram
 서울시장 개표 보도 집계와 서울 25개 구 최종 개표 자료를 별도 파일로 관리합니다.
 
 - `data/replay/reported_results.csv`: 연합뉴스가 보도한 99.54%, 100% 시점의 서울시장 후보별 집계
-- `data/replay/snapshots.json`: 12단계 재생 프레임. **1~10단계는 시연용 재구성**, **11~12단계는 당시 보도 집계**
-- `data/replay/count_timeline.csv`: 보도 시각을 기반으로 구성한 별도 개표 타임라인
+- `data/replay/count_timeline.csv`: 상황판 재생과 기사 초안에 공통으로 사용하는 15단계 개표 타임라인. 집계가 없는 단계에서는 해당 사건 초안을 작성합니다.
+- `data/replay/snapshots.json`: 기존 재생 API 호환용 12단계 스냅샷
 - `data/replay/rag_documents.json`: 개표 보도 근거 및 재생 자료 설명
 
 출처: [중앙선관위 개표결과 CSV 안내](https://www.data.go.kr/data/15162288/fileData.do), [연합뉴스 99.54% 집계](https://www.yna.co.kr/amp/view/AKR20260604181600004), [연합뉴스 최종 집계](https://www.yna.co.kr/amp/view/AKR20260605106300004).

@@ -17,14 +17,17 @@ class ElectionSnapshot(BaseModel):
     election_name: str
     region: str
     step_id: int = Field(ge=0)
-    counted_rate: float = Field(ge=0, le=100)
+    counted_rate: float | None = Field(ge=0, le=100)
     collected_at: datetime
     source: str
     source_url: str
     mode: Literal["demo", "replay", "live"]
-    record_type: Literal["reported", "simulated"] | None = None
+    record_type: Literal["reported", "simulated", "mixed"] | None = None
     evidence_id: str | None = None
     candidates: list[CandidateResult]
+    timeline_event: str | None = None
+    timeline_note: str = ""
+    time_basis: str | None = None
 
 
 class Evidence(BaseModel):

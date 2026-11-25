@@ -15,7 +15,9 @@ from app.services.factcheck_service import check_article
 from app.services.pledge_article_service import generate_pledge_article, select_pledge_documents
 from app.services.pledge_factcheck_service import check_pledge_article
 from app.services.rag_service import LocalRAG, answer_question
-from app.services.replay_service import COUNT_TIMELINE, FRAMES, REPLAY_DIR, replay_snapshot
+from app.services.replay_service import (
+    COUNT_TIMELINE, FRAMES, REPLAY_DIR, TIMELINE_SNAPSHOTS, replay_snapshot, timeline_evidence,
+)
 from app.services.storage_service import Storage
 from app.services.time_service import now_seoul
 
@@ -163,12 +165,17 @@ def create_pledge_article(request: PledgeArticleCreate):
 async def create_article(request: ArticleCreate):
     if request.snapshot.mode == "replay":
         step = request.snapshot.step_id
-        if not 1 <= step <= len(FRAMES) or request.snapshot != replay_snapshot(step):
+        if 1 <= step <= len(TIMELINE_SNAPSHOTS) and request.snapshot == TIMELINE_SNAPSHOTS[step - 1]:
+            request.evidence = [timeline_evidence(request.snapshot)]
+        elif 1 <= step <= len(FRAMES) and request.snapshot == replay_snapshot(step):
+            request.evidence = [
+                item for item in replay_rag.search("서울시장", 10)
+                if item.evidence_id == request.snapshot.evidence_id
+            ]
+        else:
             raise HTTPException(409, "재생 원본과 일치하는 집계만 기사화할 수 있습니다.")
-        request.evidence = [
-            item for item in replay_rag.search("서울시장", 10)
-            if item.evidence_id == request.snapshot.evidence_id
-        ]
+    elif request.snapshot.counted_rate is None or not request.snapshot.candidates:
+        raise HTTPException(422, "개표율과 후보별 득표가 필요합니다.")
     if request.generation_mode == "ai":
         if not settings.openai_api_key:
             raise HTTPException(503, "AI 초안 생성에는 OPENAI_API_KEY가 필요합니다. generation_mode=template을 사용하세요.")
