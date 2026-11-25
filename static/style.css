@@ -1791,9 +1791,10 @@ input::placeholder, textarea::placeholder {
 }
 
 #pledge-results h4 {
-  margin: 0 0 12px;
+  margin: 0 0 15px;
   font-size: 21px;
   line-height: 1.2;
+  letter-spacing: -.04em;
 }
 
 .pledge-column.method-card {
