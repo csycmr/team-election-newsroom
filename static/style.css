@@ -1109,3 +1109,22 @@ input::placeholder, textarea::placeholder {
 .editor-feedback:empty {
   margin: 0;
 }
+
+
+.editor-article-browser {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.editor-article-browser .form-field {
+  margin-block: 10px;
+}
+
+#library-article-title {
+  overflow-wrap: anywhere;
+}
+
+.library-preview {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

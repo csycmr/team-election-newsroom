@@ -57,6 +57,19 @@ class Storage:
             rows = db.execute(query, params).fetchall()
         return [Article.model_validate_json(row["payload"]) for row in rows]
 
+    def published_article_ids(self, article_ids: list[str]) -> set[str]:
+        if not article_ids:
+            return set()
+        placeholders = ", ".join("?" for _ in article_ids)
+        with self.connect() as db:
+            rows = db.execute(
+                f"""SELECT DISTINCT article_id FROM audit_logs
+                WHERE article_id IN ({placeholders}) AND action = 'publish_requested'
+                AND CASE WHEN json_valid(detail) THEN json_type(detail, '$.published') END = 'true'""",
+                article_ids,
+            ).fetchall()
+        return {row["article_id"] for row in rows}
+
     def log(self, article_id: str, action: str, actor: str, detail: dict | str):
         detail_text = detail if isinstance(detail, str) else json.dumps(detail, ensure_ascii=False)
         with self.connect() as db:

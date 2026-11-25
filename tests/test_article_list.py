@@ -25,6 +25,12 @@ def test_article_list_filters_and_returns_latest(tmp_path, monkeypatch):
     assert approved["count"] == 1
     assert approved["articles"][0]["article_id"] == second["article_id"]
     assert approved["articles"][0]["status"] == "approved"
+    assert approved["articles"][0]["published"] is False
+
+    main.storage.log(second["article_id"], "publish_requested", "system", {"published": False})
+    assert client.get("/api/articles?status=approved").json()["articles"][0]["published"] is False
+    main.storage.log(second["article_id"], "publish_requested", "system", {"published": True})
+    assert client.get("/api/articles?status=approved").json()["articles"][0]["published"] is True
     assert approved["articles"][0]["snapshot"]["evidence_id"] == "NEC-SEOUL-2"
     assert client.get(f"/api/articles/{first['article_id']}").status_code == 200
 

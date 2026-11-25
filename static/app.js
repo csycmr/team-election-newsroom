@@ -170,6 +170,7 @@ function updateActions() {
   byId("draft").disabled = busy || !snapshot;
   byId("replay-draft").disabled = busy || !snapshot;
   byId("pledge-draft").disabled = busy;
+  byId("editor-article-select").disabled = busy || byId("editor-article-select").options.length < 2;
   byId("save").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-title-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
   byId("article-body-input").disabled = busy || !article || !["draft", "fact_checked"].includes(article.status);
@@ -261,7 +262,7 @@ async function editorialAction(operation, feedbackId = "status") {
     if (result.result && result.result.status !== "pass") {
       feedback.textContent += ` (${result.result.status})`;
     }
-    await Promise.all([refreshArticleList(), refreshAudit()]);
+    await Promise.all([refreshEditorArticles(), refreshArchive(), refreshAudit()]);
   } catch (error) {
     feedback.textContent = error.message;
   } finally {
@@ -324,35 +325,82 @@ function showArticle(next) {
   updateActions();
 }
 
-async function refreshArticleList() {
-  const target = byId("article-list");
+let editorListRequest = 0;
+let archiveRequest = 0;
+let archiveArticleId = null;
+
+async function refreshEditorArticles() {
+  const request = ++editorListRequest;
+  const target = byId("editor-article-select");
   const status = byId("article-filter").value;
+  const query = new URLSearchParams({ limit: "100" });
+  if (status) query.set("status", status);
+  target.replaceChildren(new Option("저장된 기사 불러오는 중", ""));
+  updateActions();
+
   try {
-    const query = new URLSearchParams({limit: "50"});
-    if (status) query.set("status", status);
-    const data = await api(`/api/articles?${query}`);
-    target.replaceChildren();
-    if (!data.articles.length) { target.textContent = "저장된 기사가 없습니다."; return; }
-    for (const item of data.articles) {
+    const { articles } = await api(`/api/articles?${query}`);
+    if (request !== editorListRequest) return;
+    target.replaceChildren(new Option(articles.length ? "기사 선택" : "저장된 기사가 없습니다.", ""));
+    for (const item of articles) {
+      target.add(new Option(item.title, item.article_id));
+    }
+    target.value = articles.some(item => item.article_id === article?.article_id) ? article.article_id : "";
+  } catch (error) {
+    if (request === editorListRequest) target.replaceChildren(new Option(error.message, ""));
+  } finally {
+    updateActions();
+  }
+}
+
+async function refreshArchive() {
+  const request = ++archiveRequest;
+  const list = byId("article-list");
+  const title = byId("library-article-title");
+  const preview = byId("library-preview");
+  try {
+    const { articles } = await api("/api/articles?status=approved&limit=100");
+    if (request !== archiveRequest) return;
+    list.replaceChildren();
+    if (!articles.length) {
+      list.textContent = "승인된 기사가 없습니다.";
+      title.textContent = "기사 본문";
+      preview.textContent = "편집장 승인 후 기사 목록에 표시됩니다.";
+      archiveArticleId = null;
+      return;
+    }
+
+    const selected = articles.find(item => item.article_id === archiveArticleId) || articles[0];
+    function showArchivedArticle(item) {
+      archiveArticleId = item.article_id;
+      title.textContent = item.title;
+      preview.textContent = item.body;
+      for (const button of list.querySelectorAll("button")) {
+        const current = button.dataset.articleId === item.article_id;
+        button.classList.toggle("is-current", current);
+        button.setAttribute("aria-pressed", String(current));
+      }
+    }
+
+    for (const item of articles) {
       const button = document.createElement("button");
       button.type = "button";
-      button.classList.toggle("is-current", article?.article_id === item.article_id);
-      const title = document.createElement("strong");
-      title.textContent = item.title;
-      const details = document.createElement("small");
-      details.textContent = `${states[item.status] || item.status} · ${item.article_type === "pledge" ? "공약 기사" : `${item.snapshot?.step_id ?? "—"}단계`} · ${new Date(item.updated_at).toLocaleString("ko-KR")}`;
-      button.append(title, details);
-      button.onclick = async () => {
-        if (busy) return;
-        try {
-          showArticle(await api(`/api/articles/${item.article_id}`));
-          byId("status").textContent = states[article.status] || article.status;
-          await Promise.all([refreshAudit(), refreshArticleList()]);
-        } catch (error) { byId("status").textContent = error.message; }
-      };
-      target.append(button);
+      button.dataset.articleId = item.article_id;
+      const headline = document.createElement("strong");
+      headline.textContent = item.title;
+      const status = document.createElement("small");
+      status.textContent = item.published ? "게시 완료" : "편집장 승인 완료";
+      button.append(headline, status);
+      button.onclick = () => showArchivedArticle(item);
+      list.append(button);
     }
-  } catch (error) { target.textContent = error.message; }
+    showArchivedArticle(selected);
+  } catch (error) {
+    if (request !== archiveRequest) return;
+    list.textContent = error.message;
+    title.textContent = "기사 본문";
+    preview.textContent = "";
+  }
 }
 
 async function refreshAudit() {
@@ -370,10 +418,24 @@ async function refreshAudit() {
   } catch (error) { target.textContent = error.message; }
 }
 
-byId("refresh-articles").onclick = refreshArticleList;
-byId("article-filter").onchange = refreshArticleList;
-refreshArticleList();
-
+byId("refresh-articles").onclick = refreshArchive;
+byId("article-filter").onchange = refreshEditorArticles;
+byId("editor-article-select").onchange = async (event) => {
+  const articleId = event.target.value;
+  if (!articleId || busy) return;
+  busy = true;
+  updateActions();
+  try {
+    showArticle(await api(`/api/articles/${articleId}`));
+    byId("status").textContent = states[article.status] || article.status;
+    await refreshAudit();
+  } catch (error) {
+    byId("status").textContent = error.message;
+  } finally {
+    busy = false;
+    updateActions();
+  }
+};
 
 // traffic-reference-ui-v1: same tabbed newsroom structure as the traffic reference.
 const workspaceViews = new Set(["election", "draft", "library"]);
@@ -399,6 +461,8 @@ function openWorkspaceView(name) {
     panel.hidden = !active;
     panel.classList.toggle("is-active", active);
   });
+  if (name === "library") refreshArchive();
+  if (name === "draft") refreshEditorArticles();
 }
 byId("site-brand-link")?.addEventListener("click", (event) => {
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -412,17 +476,10 @@ document.querySelectorAll("[data-view], [data-go]").forEach((button) => {
 const syncWorkspaceCurrent = () => {
   const name = article ? `${article.title}\n\n상태: ${states[article.status] || article.status}\n${article.article_type === "pledge" ? "공약 기사" : `${article.snapshot?.step_id ?? "—"}단계`}` : "선택된 기사가 없습니다.";
   byId("review-current-status").textContent = name;
-  byId("library-preview").textContent = name;
 };
 // The existing workflow owns article state; read it when panels are opened.
 document.querySelectorAll("[data-view], [data-go]").forEach((button) => {
   button.addEventListener("click", syncWorkspaceCurrent);
-});
-const articleListNode = byId("article-list");
-articleListNode.addEventListener("click", (e) => {
-  if (e.target.closest("button")) {
-    queueMicrotask(() => {syncWorkspaceCurrent();openWorkspaceView("draft");});
-  }
 });
 const originalShowArticle = showArticle;
 showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent(); };

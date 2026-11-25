@@ -208,7 +208,16 @@ def list_articles(
     limit: int = Query(default=100, ge=1, le=100),
 ):
     articles = storage.list_articles(status=status, limit=limit)
-    return {"articles": articles, "count": len(articles)}
+    published_ids = storage.published_article_ids(
+        [article.article_id for article in articles if article.status == "approved"]
+    )
+    return {
+        "articles": [
+            {**article.model_dump(mode="json"), "published": article.article_id in published_ids}
+            for article in articles
+        ],
+        "count": len(articles),
+    }
 
 
 @app.get("/api/articles/{article_id}")
