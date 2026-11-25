@@ -404,6 +404,12 @@ function openWorkspaceView(name) {
     panel.classList.toggle("is-active", active);
   });
 }
+byId("site-brand-link")?.addEventListener("click", (event) => {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  openWorkspaceView("election");
+  window.scrollTo(0, 0);
+});
 document.querySelectorAll("[data-view], [data-go]").forEach((button) => {
   button.addEventListener("click", () => openWorkspaceView(button.dataset.view || button.dataset.go));
 });
