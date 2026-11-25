@@ -180,8 +180,9 @@ function updateActions() {
   byId("check").disabled = busy || article?.status !== "draft" || needsSave.has(article?.article_id);
   byId("revise-article").disabled = busy || !article || article.status === "draft";
   byId("review").disabled = busy || article?.status !== "fact_checked";
-  byId("approve").disabled = busy || article?.status !== "human_reviewed";
-  byId("reject").disabled = busy || article?.status !== "human_reviewed";
+  const decisionDisabled = busy || article?.status !== "human_reviewed";
+  byId("approve").disabled = decisionDisabled;
+  byId("reject").disabled = decisionDisabled;
   const status = article?.status;
   byId("check").closest("section").classList.toggle("is-stamped", ["fact_checked", "human_reviewed", "approved"].includes(status));
   byId("review").closest("section").classList.toggle("is-stamped", ["human_reviewed", "approved"].includes(status));
@@ -362,7 +363,7 @@ byId("check").onclick = () => editorialAction(async () => {
 
 for (const [button, endpoint] of [["review", "human-review"], ["approve", "approve"], ["reject", "reject"]]) {
   byId(button).onclick = () => {
-    const feedbackId = button === "review" ? "human-review-status" : "status";
+    const feedbackId = button === "review" ? "human-review-status" : "editor-decision-status";
     const reviewer = byId("reviewer").value.trim();
     if (!reviewer) {
       byId(feedbackId).textContent = "검토자 이름을 입력해 주세요.";
@@ -428,6 +429,7 @@ function renderFactIssues(issues) {
 function showArticle(next) {
   if (article?.article_id !== next.article_id || next.status === "draft") {
     byId("factcheck-issues").replaceChildren();
+    byId("editor-decision-status").textContent = "";
     byId("factcheck-status").textContent = "";
     byId("human-review-status").textContent = "";
   }
@@ -575,9 +577,9 @@ function renderNewsArticle(item) {
   const title = element("h4", "news-title", item.title);
   const byline = element("div", "news-byline");
   byline.append(
-    element("span", "news-author", `${item.author} 기자`),
-    element("span", "", `입력 ${dotted(articleDate, item.dated_at)}`),
-    element("span", "", `No. ${item.board_number}`),
+    element("span", "news-author", `${item.author || "AI 뉴스룸"} 기자`),
+    element("span", "", `입력 ${dotted(articleDate, item.dated_at || item.created_at)}`),
+    element("span", "", item.board_number ? `No. ${item.board_number}` : "보도실 게시 대기"),
   );
   const body = element("div", "news-body");
   for (const paragraph of articleParagraphs(item.body)) body.append(element("p", "", paragraph));
@@ -600,9 +602,11 @@ function renderNewsArticle(item) {
     sources.append(list);
     target.append(sources);
   }
-  target.append(element("p", "news-note",
-    "이 기사는 AI 도구로 초안을 작성한 뒤 팩트체크, 사람 검토, 편집장 승인을 거쳐 게시했습니다."));
+  target.append(element("p", "news-note", item.posted_at
+    ? "이 기사는 AI 도구로 초안을 작성한 뒤 팩트체크, 사람 검토, 편집장 승인을 거쳐 게시했습니다."
+    : "상황판 실시간 기사에서 선택한 원고입니다. 보도실 게시 전 상태예요."));
 
+  if (!item.posted_at) return;
   const actions = element("div", "news-actions");
   const feedback = element("p", "news-feedback");
   feedback.setAttribute("role", "status");
@@ -945,7 +949,7 @@ document.addEventListener("count-history-select", (event) => {
 
 // Live headline on the election board: one row that follows the replay.
 // While the count has no figures yet (start → first ~3% count) it alternates two
-// pledge articles; once figures arrive it shows the editing room's article for the
+// pledge articles; once figures arrive it shows the newsroom article for the
 // current stage. Titles slide up from below when they change.
 (() => {
   const slot = byId("live-headline");
@@ -1005,7 +1009,7 @@ document.addEventListener("count-history-select", (event) => {
   function showPledge() {
     const pledges = topPledges();
     if (!pledges.length) {
-      show("no-pledge", "공약", "편집실에서 작성한 공약 기사가 아직 없습니다.", null, true);
+      show("no-pledge", "공약", "뉴스룸에서 작성한 공약 기사가 아직 없습니다.", null, true);
       return;
     }
     const item = pledges[pledgeIndex % pledges.length];
@@ -1024,7 +1028,7 @@ document.addEventListener("count-history-select", (event) => {
   function renderLiveHeadline() {
     if (!currentStep) {
       setPledgeRotation(false);
-      show("idle", "대기", "개표 재생을 시작하면 편집실 기사가 표시됩니다.", null, false);
+      show("idle", "대기", "개표 재생을 시작하면 보도실 기사가 표시됩니다.", null, false);
       return;
     }
     if (inCountGap()) {
@@ -1040,7 +1044,7 @@ document.addEventListener("count-history-select", (event) => {
       if (!pick || step > pick.snapshot.step_id || (step === pick.snapshot.step_id && better(item, pick))) pick = item;
     }
     if (pick) show(pick.article_id, "속보", pick.title, pick.article_id, false);
-    else show(`none-${currentStep}`, "속보", `${currentStep}단계 속보 기사를 편집실에서 작성해 주세요.`, null, false);
+    else show(`none-${currentStep}`, "속보", `${currentStep}단계 속보 기사를 뉴스룸에서 작성해 주세요.`, null, false);
   }
 
   async function refreshLiveHeadlines() {
@@ -1064,7 +1068,7 @@ document.addEventListener("count-history-select", (event) => {
     refreshLiveHeadlines();
   };
 
-  // Articles written or approved in the editing room show up without waiting for the next stage.
+  // Articles written in the newsroom show up without waiting for the next stage.
   const previousRefreshEditor = refreshEditorArticles;
   refreshEditorArticles = async function (...args) {
     refreshLiveHeadlines();
@@ -1074,15 +1078,23 @@ document.addEventListener("count-history-select", (event) => {
   slot.addEventListener("click", async () => {
     const articleId = slot.dataset.articleId;
     if (!articleId || busy) return;
-    openWorkspaceView("draft");
+    archiveArticleId = articleId;
+    openWorkspaceView("library");
     window.scrollTo({ top: 0, behavior: "smooth" });
     try {
-      showArticle(await api(`/api/articles/${articleId}`));
-      byId("status").textContent = statusLine(article);
-      byId("editor-article-select").value = articleId;
-      await refreshAudit();
+      await refreshArchive();
+      const selected = await api(`/api/articles/${articleId}`);
+      const row = [...byId("article-list").querySelectorAll("tr[data-article-id]")]
+        .find(candidate => candidate.dataset.articleId === articleId);
+      if (row) row.click();
+      else {
+        archiveArticleId = articleId;
+        renderNewsArticle(selected);
+      }
     } catch (error) {
-      showStatusError(error.message);
+      byId("library-article").replaceChildren(Object.assign(document.createElement("p"), {
+        className: "news-empty", textContent: error.message,
+      }));
     }
   });
 

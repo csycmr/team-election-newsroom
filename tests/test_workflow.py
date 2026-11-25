@@ -39,6 +39,23 @@ def test_complete_approval_flow_and_audit_log():
     assert {row["action"] for row in logs} >= {"draft_created", "fact_checked", "human_reviewed", "approved"}
 
 
+def test_rejection_requires_human_review_and_is_recorded():
+    article = create_article()
+    path = f"/api/articles/{article['article_id']}"
+    decision = {"reviewer": "편집장", "note": "제목 재검토"}
+    assert client.post(path + "/reject", json=decision).status_code == 409
+    assert client.post(path + "/fact-check").json()["result"]["status"] == "pass"
+    assert client.post(path + "/human-review", json={"reviewer": "기자"}).status_code == 200
+    rejected = client.post(path + "/reject", json=decision)
+    assert rejected.status_code == 200
+    assert rejected.json()["status"] == "rejected"
+    assert client.get(path).json()["status"] == "rejected"
+    assert client.post(path + "/approve", json=decision).status_code == 409
+    assert client.post(path + "/publish").status_code == 409
+    audit = client.get(path + "/audit").json()[0]
+    assert (audit["action"], audit["actor"], audit["detail"]) == ("rejected", "편집장", "제목 재검토")
+
+
 def test_cms_local_fallback_only_accepts_approved():
     article = create_article()
     blocked = client.post(f"/api/articles/{article['article_id']}/publish")

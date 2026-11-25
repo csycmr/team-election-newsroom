@@ -18,8 +18,8 @@
   <div class="workspace-wrap">
     <nav class="workspace-nav" aria-label="작업 화면">
       <button type="button" class="active" data-view="election" aria-selected="true">개표 상황판</button>
-      <button type="button" data-view="draft" aria-selected="false">편집실</button>
       <button type="button" data-view="library" aria-selected="false">보도실</button>
+      <button type="button" data-view="draft" aria-selected="false">편집실</button>
     </nav>
     <main>
       <section class="workspace-card view is-active" id="view-election" aria-labelledby="election-heading">
@@ -44,9 +44,9 @@
             <h3 id="live-headlines-title">실시간 기사</h3>
             <button type="button" class="live-headline is-empty" id="live-headline" disabled>
               <span class="live-headline-kind" id="live-headline-kind">대기</span>
-              <span class="live-headline-window" aria-live="polite"><strong class="live-headline-title">개표 재생을 시작하면 편집실 기사가 표시됩니다.</strong></span>
+              <span class="live-headline-window" aria-live="polite"><strong class="live-headline-title">개표 재생을 시작하면 보도실 기사가 표시됩니다.</strong></span>
             </button>
-            <span class="small-chip">편집실 연동</span>
+            <span class="small-chip">보도실 연동</span>
           </div>
         </section>
         <section class="dark-panel count-history" aria-labelledby="count-history-title">
@@ -218,6 +218,7 @@
             <h3 class="editor-stage-heading"><span class="step-indicator">04 / 편집장 승인</span></h3>
             <p class="pane-description">사람 검토를 마친 기사를 승인하거나 반려하면 편집 이력에 기록됩니다.</p>
             <div class="actions approval-actions"><button type="button" class="primary" id="approve" disabled>승인</button><button type="button" class="reject-button" id="reject" disabled>반려</button></div>
+            <p id="editor-decision-status" class="pane-description editor-feedback" role="status"></p>
             <div id="review-current-status" class="status-box">선택된 기사 없음</div>
             <div class="editor-audit">
               <h4>편집 이력</h4>
@@ -260,8 +261,8 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js?v=20261125-polish12"></script>
-  <script type="module" src="/static/count-history.js?v=20261125-polish12"></script>
+  <script src="/static/app.js?v=20261125-editorial-archive-link"></script>
+  <script type="module" src="/static/count-history.js?v=20261125-timeline-standard-dot"></script>
   <script type="module" src="/static/final-results.js?v=20261125-polish12"></script>
   <script type="module" src="/static/live-districts.js?v=20261125-polish12"></script>
 </body>
