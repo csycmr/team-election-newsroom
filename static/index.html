@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=board-logo-hover">
+  <link rel="stylesheet" href="/static/style.css?v=editor-workflow-tabs">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -18,10 +18,8 @@
   <div class="workspace-wrap">
     <nav class="workspace-nav" aria-label="작업 화면">
       <button type="button" class="active" data-view="election" aria-selected="true">개표 상황판</button>
-      <button type="button" data-view="draft" aria-selected="false">기사 작성</button>
-      <button type="button" data-view="review" aria-selected="false">팩트체크·승인</button>
-      <button type="button" data-view="rag" aria-selected="false">근거 검색·답변</button>
-      <button type="button" data-view="library" aria-selected="false">저장된 기사</button>
+      <button type="button" data-view="draft" aria-selected="false">기사 생성</button>
+      <button type="button" data-view="library" aria-selected="false">기사 목록</button>
     </nav>
     <main>
       <section class="workspace-card view is-active" id="view-election" aria-labelledby="election-heading">
@@ -96,25 +94,20 @@
             </p>
           </div>
         </section>
-        <div class="bottom-action"><span>현재 개표 집계로 기사 작성하기</span><button type="button" class="primary" data-go="draft">기사 작성 화면으로 이동</button></div>
+        <div class="bottom-action"><span>현재 개표 집계로 기사 작성하기</span><button type="button" class="primary" data-go="draft">기사 생성 화면으로 이동</button></div>
       </section>
 
       <section class="workspace-card view" id="view-draft" aria-labelledby="draft-heading" hidden>
-        <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 작성·편집</h2><p class="description">개표 집계에서 초안을 만들고 제목과 본문을 직접 수정할 수 있습니다.</p></div><span class="step-indicator">01 / 초안</span></div>
+        <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 생성</h2><p class="description">개표 집계에서 초안을 만들고 제목과 본문을 직접 수정할 수 있습니다.</p></div><span class="step-indicator">01 / 초안</span></div>
         <div class="editor-grid"><section class="light-pane editor-controls"><h3>초안 생성</h3><p class="pane-description">후보 5명의 득표가 모두 확인된 집계 시점에 초안을 작성할 수 있습니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field">작성 방식<select id="generation-mode"><option value="template">템플릿 (API 비용 없음)</option><option value="ai">AI 생성 (OpenAI API 사용)</option></select></label><div class="actions"><button type="button" class="primary" id="draft" disabled>현재 집계로 초안</button><button type="button" id="save" disabled>기사 수정 저장</button></div><label class="form-field">공약 기사 작성 (후보자·지역 입력)<input id="pledge-article-query" placeholder="예: 서울시장 정원오 공약"></label><div class="actions"><button type="button" id="pledge-draft" class="primary">공약으로 초안 생성</button></div><div class="status-box" id="status" role="status">개표 재생 대기</div><div class="workflow-hint"><strong>편집 순서</strong><p>초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div></section>
         <section class="light-pane"><h3>기사 원고</h3><div class="article-fields"><label for="article-title-input">기사 제목</label><input id="article-title-input" placeholder="기사 제목" disabled><label for="article-body-input">기사 본문</label><textarea id="article-body-input" rows="17" placeholder="개표 상황판에서 재생을 시작한 뒤 초안을 생성하세요." disabled></textarea></div><p id="article-evidence" class="evidence-note"></p></section></div>
-        <div class="bottom-action light"><span>원고를 저장한 뒤 팩트체크로 진행합니다.</span><button type="button" class="primary" data-go="review">검토·승인 화면으로 이동</button></div>
+        <section class="editor-review" aria-labelledby="review-heading">
+          <div class="page-title"><div><p class="eyebrow mint">NEWSROOM / VERIFICATION</p><h3 id="review-heading">팩트체크·편집장 승인</h3><p class="description">원본 수치·후보·지역·기준시각을 확인하고, 사람 검토 후 최종 승인합니다.</p></div><span class="step-indicator">02 / 검토</span></div>
+          <div class="editor-grid"><section class="light-pane"><h3>검증·승인 단계</h3><div class="actions review-actions"><button type="button" id="check" disabled>① 팩트체크</button><button type="button" id="review" disabled>② 사람 검토</button><button type="button" id="approve" disabled>③ 편집장 승인</button></div><label class="form-field">검토자 이름<input id="reviewer" placeholder="검토자 이름 입력"></label><p class="pane-description">팩트체크에 통과한 기사만 사람 검토 단계로 진행할 수 있습니다. 최종 승인 기록은 편집 이력에 저장됩니다.</p><div id="review-current-status" class="status-box">선택된 기사 없음</div></section><section class="light-pane"><h3>편집 이력</h3><div id="article-audit" class="audit-list">기사를 선택해 주세요.</div></section></div>
+        </section>
       </section>
 
-      <section class="workspace-card view" id="view-review" aria-labelledby="review-heading" hidden>
-        <div class="page-title"><div><p class="eyebrow mint">NEWSROOM / VERIFICATION</p><h2 id="review-heading">팩트체크·편집장 승인</h2><p class="description">원본 수치·후보·지역·기준시각을 확인하고, 사람 검토 후 최종 승인합니다.</p></div><span class="step-indicator">02 / 검토</span></div>
-        <div class="editor-grid"><section class="light-pane"><h3>검증·승인 단계</h3><div class="actions review-actions"><button type="button" id="check" disabled>① 팩트체크</button><button type="button" id="review" disabled>② 사람 검토</button><button type="button" id="approve" disabled>③ 편집장 승인</button></div><label class="form-field">검토자 이름<input id="reviewer" placeholder="검토자 이름 입력"></label><p class="pane-description">팩트체크에 통과한 기사만 사람 검토 단계로 진행할 수 있습니다. 최종 승인 기록은 편집 이력에 저장됩니다.</p><div id="review-current-status" class="status-box">선택된 기사 없음</div></section><section class="light-pane"><h3>편집 이력</h3><div id="article-audit" class="audit-list">기사를 선택해 주세요.</div></section></div>
-        <div class="bottom-action light"><span>기사를 변경하려면 작성 또는 저장된 기사 화면에서 선택하세요.</span><button type="button" data-go="library">저장된 기사 보기</button></div>
-      </section>
-
-      <section class="workspace-card view" id="view-rag" aria-labelledby="rag-heading" hidden><div class="page-title"><div><p class="eyebrow mint">RAG / EVIDENCE</p><h2 id="rag-heading">근거 검색·질문 답변</h2><p class="description">개표 보도 자료와 시연 데이터의 출처를 검색하고 근거 기반 답변을 확인합니다.</p></div><span class="step-indicator">근거 확인</span></div><div class="editor-grid"><section class="light-pane"><h3>근거 검색</h3><form id="search-form" class="search-form"><input id="query" aria-label="검색어" value="서울시장 개표" required><button type="submit" class="primary">검색</button></form><div id="evidence" class="evidence-list"></div></section><section class="light-pane"><div class="panel-heading"><h3>근거 기반 답변</h3><button id="rag-answer" type="button" class="primary">질문에 답하기</button></div><p class="pane-description">왼쪽 검색창에 질문을 입력하세요. 답변 아래 근거 자료 링크를 표시합니다.</p><div id="answer" class="rag-answer" aria-live="polite">질문을 입력하면 근거와 함께 답변합니다.</div></section></div></section>
-
-      <section class="workspace-card view" id="view-library" aria-labelledby="library-heading" hidden><div class="page-title"><div><p class="eyebrow mint">NEWSROOM / ARCHIVE</p><h2 id="library-heading">저장된 기사</h2><p class="description">초안부터 승인까지 저장된 기사를 불러와 이어서 작업할 수 있습니다.</p></div><button id="refresh-articles" type="button" class="primary">목록 새로고침</button></div><div class="editor-grid archive-grid"><section class="light-pane"><label class="form-field">상태 필터<select id="article-filter"><option value="">전체</option><option value="draft">초안</option><option value="fact_checked">팩트체크 통과</option><option value="human_reviewed">사람 검토 완료</option><option value="approved">편집장 승인</option><option value="rejected">반려</option></select></label><div id="article-list" class="article-list">저장된 기사를 불러오는 중입니다.</div></section><section class="light-pane"><h3>기사 상세</h3><div id="library-preview" class="library-preview">목록에서 기사를 선택하면 작성 화면에서 원고를 확인할 수 있습니다.</div><div class="actions"><button type="button" data-go="draft" class="primary">기사 작성 화면</button><button type="button" data-go="review">검토·승인 화면</button></div></section></div></section>
+      <section class="workspace-card view" id="view-library" aria-labelledby="library-heading" hidden><div class="page-title"><div><p class="eyebrow mint">NEWSROOM / ARCHIVE</p><h2 id="library-heading">기사 목록</h2><p class="description">초안부터 승인까지 저장된 기사를 불러와 이어서 작업할 수 있습니다.</p></div><button id="refresh-articles" type="button" class="primary">목록 새로고침</button></div><div class="editor-grid archive-grid"><section class="light-pane"><label class="form-field">상태 필터<select id="article-filter"><option value="">전체</option><option value="draft">초안</option><option value="fact_checked">팩트체크 통과</option><option value="human_reviewed">사람 검토 완료</option><option value="approved">편집장 승인</option><option value="rejected">반려</option></select></label><div id="article-list" class="article-list">저장된 기사를 불러오는 중입니다.</div></section><section class="light-pane"><h3>기사 상세</h3><div id="library-preview" class="library-preview">목록에서 기사를 선택하면 기사 생성 화면에서 원고를 확인할 수 있습니다.</div><div class="actions"><button type="button" data-go="draft" class="primary">기사 생성 화면</button></div></section></div></section>
     </main>
   </div>
   <!-- election-floating-v2: same right-edge entry pattern as team_traffic_live -->
@@ -122,8 +115,8 @@
     <button type="button" id="float-chat" class="floating-button floating-chat" aria-label="AI 근거 검색 열기" aria-controls="floating-rag-panel" aria-expanded="false">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 20l1-4.5a8.5 8.5 0 1 1 16-4z"/></svg><span class="floating-label">AI 근거 검색</span>
     </button>
-    <button type="button" id="float-newsroom" class="floating-button" aria-label="기사 작성 워크스페이스로 이동">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7"/><path d="M4 20l4.5-1.2L20 7.3a2.2 2.2 0 0 0-3.3-3.3L5.2 15.5 4 20z"/></svg><span class="floating-label">기사 작성</span>
+    <button type="button" id="float-newsroom" class="floating-button" aria-label="기사 생성 화면으로 이동">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7"/><path d="M4 20l4.5-1.2L20 7.3a2.2 2.2 0 0 0-3.3-3.3L5.2 15.5 4 20z"/></svg><span class="floating-label">기사 생성</span>
     </button>
   </div>
   <section id="floating-rag-panel" hidden aria-label="AI 근거 검색 채팅창" role="region">
@@ -131,7 +124,7 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js?v=board-logo-link"></script>
+  <script src="/static/app.js?v=editor-workflow-tabs"></script>
   <script type="module" src="/static/count-history.js?v=hide-june4-0900"></script>
   <script type="module" src="/static/final-results.js?v=district-outline"></script>
 </body>

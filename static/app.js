@@ -283,29 +283,6 @@ for (const [button, endpoint] of [["review", "human-review"], ["approve", "appro
   };
 }
 
-byId("search-form").onsubmit = async (event) => {
-  event.preventDefault();
-  const target = byId("evidence");
-  try {
-    const { results } = await api("/api/rag/search?replay=true&q=" + encodeURIComponent(byId("query").value));
-    target.replaceChildren();
-    if (!results.length) target.textContent = "검색 결과가 없어요.";
-    for (const result of results) {
-      const card = document.createElement("article");
-      const link = document.createElement("a");
-      link.href = result.source_url;
-      link.textContent = `[${result.evidence_id}] ${result.title}`;
-      const summary = document.createElement("p");
-      summary.textContent = result.content;
-      card.append(link, summary);
-      target.append(card);
-    }
-  } catch (error) {
-    target.textContent = error.message;
-  }
-};
-
-
 function showArticle(next) {
   article = next;
   byId("article-title-input").value = next.title;
@@ -363,34 +340,11 @@ async function refreshAudit() {
 
 byId("refresh-articles").onclick = refreshArticleList;
 byId("article-filter").onchange = refreshArticleList;
-byId("rag-answer").onclick = async () => {
-  const target = byId("answer");
-  const question = byId("query").value.trim();
-  if (question.length < 2) { target.textContent = "두 글자 이상 질문해 주세요."; return; }
-  target.textContent = "근거 자료를 확인하는 중입니다…";
-  try {
-    const data = await api(`/api/rag/answer?replay=false&q=${encodeURIComponent(question)}`);
-    target.replaceChildren();
-    const answer = document.createElement("div");
-    answer.textContent = data.answer || "답변이 없습니다.";
-    target.append(answer);
-    for (const evidence of data.evidence || []) {
-      if (!evidence.source_url) continue;
-      const link = document.createElement("a");
-      link.href = evidence.source_url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = `[${evidence.evidence_id}] ${evidence.title || evidence.source || "근거 자료"}`;
-      target.append(link);
-    }
-  } catch (error) { target.textContent = error.message; }
-};
-
 refreshArticleList();
 
 
 // traffic-reference-ui-v1: same tabbed newsroom structure as the traffic reference.
-const workspaceViews = new Set(["election", "draft", "review", "rag", "library"]);
+const workspaceViews = new Set(["election", "draft", "library"]);
 function openWorkspaceView(name) {
   if (!workspaceViews.has(name)) return;
   document.querySelectorAll(".workspace-nav [data-view]").forEach((button) => {

@@ -919,3 +919,13 @@ input::placeholder, textarea::placeholder {
   font-weight: 400;
   white-space: nowrap;
 }
+
+.editor-review {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.editor-review .page-title h3 {
+  margin: 0;
+}
