@@ -369,6 +369,11 @@ refreshArticleList();
 const workspaceViews = new Set(["election", "draft", "library"]);
 function openWorkspaceView(name) {
   if (!workspaceViews.has(name)) return;
+  const tickerSlot = byId(`${name}-ticker-slot`);
+  const countTicker = byId("count-ticker");
+  if (tickerSlot && countTicker.parentElement !== tickerSlot) {
+    tickerSlot.append(countTicker);
+  }
   document.querySelectorAll(".workspace-nav [data-view]").forEach((button) => {
     const active = button.dataset.view === name;
     button.classList.toggle("active", active);

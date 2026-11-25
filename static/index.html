@@ -30,7 +30,9 @@
           </div>
           <button type="button" class="floating-button replay-article-button" id="replay-draft" aria-label="현재 집계로 기사 작성" disabled><span>현재 집계로<br>기사 작성</span></button>
         </div></div>
-        <div class="ticker"><b>개표 속보</b><span id="ticker-alert-light" class="ticker-alert-light" aria-hidden="true" hidden></span><div class="ticker-window" role="status"><div class="ticker-track"><span id="ticker">개표 재생을 누르면 5초마다 개표 상황이 표시됩니다.</span></div></div><span id="ticker-meta" class="ticker-meta" hidden></span></div>
+        <div id="election-ticker-slot">
+          <div class="ticker" id="count-ticker"><b>개표 속보</b><span id="ticker-alert-light" class="ticker-alert-light" aria-hidden="true" hidden></span><div class="ticker-window" role="status"><div class="ticker-track"><span id="ticker">개표 재생을 누르면 5초마다 개표 상황이 표시됩니다.</span></div></div><span id="ticker-meta" class="ticker-meta" hidden></span></div>
+        </div>
         <div class="dashboard">
           <section class="dark-panel"><div class="panel-heading"><h3>개표 전광판</h3><span class="small-chip">서울 전체</span></div><div id="metrics" class="metrics"><div><span>개표 진행률</span><strong id="progress">—</strong></div><div><span>집계 유효표</span><strong id="total">—</strong><span id="total-meta" class="metric-source" hidden></span></div><div><span>현재 1위</span><strong id="leader">—</strong></div><div><span>1·2위 득표 차</span><strong id="gap">—</strong></div></div><p id="meta" class="dark-muted">서울특별시 전체 · 보도 기록 재생</p><a id="source" href="https://www.data.go.kr/data/15162288/fileData.do" target="_blank" rel="noopener noreferrer">선거 데이터 출처 확인 ↗</a></section>
           <section class="dark-panel"><div class="panel-heading"><h3>후보별 득표 현황</h3><span class="small-chip">득표순</span></div><div id="bars"></div></section>
@@ -104,6 +106,7 @@
 
       <section class="workspace-card view" id="view-draft" aria-labelledby="draft-heading" hidden>
         <div class="page-title"><div><p class="eyebrow mint">AI NEWSROOM / DRAFT</p><h2 id="draft-heading">기사 생성</h2><p class="description"><strong>편집 순서</strong> &nbsp;초안 작성 → 기사 수정 → 팩트체크 → 사람 검토 → 편집장 승인</p></div></div>
+        <div id="draft-ticker-slot"></div>
         <div class="editor-grid draft-layout">
           <section class="light-pane editor-controls">
             <h3 class="editor-stage-heading"><span class="step-indicator">01/초안 작성</span></h3><p class="pane-description">재생 중이거나 선택한 단계의 집계 또는 사건으로 초안을 작성합니다. 출처와 근거 ID는 기사에 연결됩니다.</p><label class="form-field draft-mode">작성 방식<select id="generation-mode"><option value="template">데이터 문구 조합</option><option value="ai">AI로 문안 생성</option></select></label><div class="actions draft-current-actions">
@@ -160,7 +163,7 @@
     <div id="floating-rag-messages" role="log" aria-live="polite"><p class="rag-empty">서울시장 개표 자료에 관해 질문하세요. 근거와 출처를 함께 보여줍니다.</p></div>
     <form id="floating-rag-form"><input id="floating-rag-input" type="text" aria-label="질문 입력" placeholder="예: 최종 집계에서 누가 앞섰나요?" minlength="2" maxlength="1000" required><button type="submit">전송</button></form>
   </section>
-  <script src="/static/app.js?v=editor-workflow-tabs"></script>
+  <script src="/static/app.js?v=shared-count-ticker"></script>
   <script type="module" src="/static/count-history.js?v=timeline-15"></script>
   <script type="module" src="/static/final-results.js?v=candidate-comparison"></script>
 </body>
