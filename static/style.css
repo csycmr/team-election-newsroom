@@ -903,10 +903,6 @@ input::placeholder, textarea::placeholder {
   border-color: transparent;
 }
 
-.ticker-track > [aria-hidden="true"] {
-  display: none;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .ticker-window {
     container-type: inline-size;
@@ -914,26 +910,18 @@ input::placeholder, textarea::placeholder {
   }
 
   .ticker-track {
-    display: flex;
     width: max-content;
-    animation: ticker-scroll-left 4s linear infinite;
-  }
-
-  .ticker-track > [aria-hidden="true"] {
-    display: block;
+    animation: ticker-scroll-left 5s linear infinite;
   }
 
   .ticker-track > span {
-    flex: none;
-    min-width: 50cqw;
-    padding-inline-end: 2.5em;
     white-space: nowrap;
   }
 }
 
 @keyframes ticker-scroll-left {
-  from { transform: translateX(0); }
-  to { transform: translateX(-33.333333%); }
+  from { transform: translateX(100cqw); }
+  to { transform: translateX(-100%); }
 }
 
 .ticker-meta {

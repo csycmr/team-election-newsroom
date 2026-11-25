@@ -29,30 +29,32 @@ const breakingEvents = new Set([
 ]);
 
 const ticker = byId("ticker");
-const tickerCopies = Array.from({ length: 2 }, () => {
-  const copy = document.createElement("span");
-  copy.setAttribute("aria-hidden", "true");
-  ticker.parentElement.append(copy);
-  return copy;
-});
+const tickerTrack = ticker.parentElement;
+const tickerHeadline = document.createElement("span");
+tickerHeadline.className = "ticker-headline";
+tickerHeadline.textContent = ticker.textContent;
+const tickerStage = document.createElement("small");
+tickerStage.className = "ticker-stage";
+tickerStage.textContent = "개표 재생 대기";
+ticker.replaceChildren(tickerHeadline, tickerStage);
 
-const initialTickerHeadline = ticker.textContent;
-const tickerRows = [ticker, ...tickerCopies].map((row) => {
-  const headline = document.createElement("span");
-  headline.className = "ticker-headline";
-  headline.textContent = initialTickerHeadline;
-  const stage = document.createElement("small");
-  stage.className = "ticker-stage";
-  stage.textContent = "개표 재생 대기";
-  row.replaceChildren(headline, stage);
-  return { headline, stage };
-});
+let pendingTickerHeadline;
+
+function applyPendingTickerHeadline() {
+  if (pendingTickerHeadline === undefined) return;
+  tickerHeadline.textContent = pendingTickerHeadline;
+  pendingTickerHeadline = undefined;
+}
+
+// Replace the headline only when the previous line is outside the window.
+tickerTrack.addEventListener("animationiteration", applyPendingTickerHeadline);
+tickerTrack.addEventListener("animationstart", applyPendingTickerHeadline);
+tickerTrack.addEventListener("animationcancel", applyPendingTickerHeadline);
 
 function setTickerText(message, stageText) {
-  for (const { headline, stage } of tickerRows) {
-    headline.textContent = message;
-    if (stageText !== undefined) stage.textContent = stageText;
-  }
+  if (stageText !== undefined) tickerStage.textContent = stageText;
+  pendingTickerHeadline = message;
+  if (tickerTrack.getAnimations().length === 0) applyPendingTickerHeadline();
 }
 
 function compactCountHeadline(frame, latestCount) {
