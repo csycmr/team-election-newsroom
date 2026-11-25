@@ -1651,3 +1651,34 @@ input::placeholder, textarea::placeholder {
 @media (prefers-reduced-motion: reduce) {
   .live-headline-title { transition: none; }
 }
+
+/* 실시간 기사: heading, rolling title and chip on one line */
+.live-headline-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.live-headline-row h3 {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.live-headline-row .small-chip {
+  white-space: nowrap;
+}
+
+.live-headlines {
+  padding-block: 16px;
+}
+
+@media (max-width: 640px) {
+  .live-headline-row {
+    grid-template-columns: 1fr auto;
+  }
+  .live-headline-row .live-headline {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
