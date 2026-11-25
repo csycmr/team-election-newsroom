@@ -1600,3 +1600,54 @@ input::placeholder, textarea::placeholder {
 @media (prefers-reduced-motion: reduce) {
   .is-stamped::after { animation: none; }
 }
+
+/* 실시간 기사: one row, titles roll up from below */
+.live-headlines .live-headline {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.live-headline-window {
+  position: relative;
+  display: block;
+  height: 1.5em;
+  overflow: hidden;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.live-headline-title {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 17px;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform .45s ease, opacity .45s ease;
+}
+
+.live-headline-title.is-entering {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: none;
+}
+
+.live-headline-title.is-leaving {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.live-headline.is-empty .live-headline-title {
+  color: #8696a8;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.live-headline.is-empty:not(.is-pledge) .live-headline-kind {
+  background: #2a394b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-headline-title { transition: none; }
+}

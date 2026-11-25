@@ -368,6 +368,16 @@ byId("post-article").onclick = async () => {
 let archiveRequest = 0;
 let archiveArticleId = null;
 
+function updateStatusCounts(articles) {
+  const counts = {};
+  for (const item of articles) counts[item.status] = (counts[item.status] || 0) + 1;
+  for (const option of byId("article-filter").options) {
+    option.dataset.label ??= option.textContent;
+    const count = option.value ? counts[option.value] || 0 : articles.length;
+    option.textContent = `${option.dataset.label} (${count})`;
+  }
+}
+
 async function refreshEditorArticles() {
   const request = ++editorListRequest;
   const target = byId("editor-article-select");
@@ -378,9 +388,13 @@ async function refreshEditorArticles() {
   updateActions();
 
   try {
-    const { articles } = await api(`/api/articles?${query}`);
+    const [{ articles }, { articles: everything }] = await Promise.all([
+      api(`/api/articles?${query}`),
+      status ? api("/api/articles?limit=100") : Promise.resolve({ articles: null }),
+    ]);
     if (request !== editorListRequest) return;
     rememberPosted(articles);
+    updateStatusCounts(everything || articles);
     target.replaceChildren(new Option(articles.length ? "기사 선택" : "저장된 기사가 없습니다.", ""));
     for (const item of articles) {
       target.add(new Option(item.title, item.article_id));
@@ -793,62 +807,104 @@ document.addEventListener("count-history-select", (event) => {
   });
 })();
 
-// Live headlines on the election board: show the editing room's articles for the
-// replay stage being played (breaking) and rotate through pledge articles.
+// Live headline on the election board: one row that follows the replay.
+// While the count has no figures yet (start → first ~3% count) it alternates two
+// pledge articles; once figures arrive it shows the editing room's article for the
+// current stage. Titles slide up from below when they change.
 (() => {
-  const breakingSlot = byId("live-headline-breaking");
-  const pledgeSlot = byId("live-headline-pledge");
+  const slot = byId("live-headline");
+  const kind = byId("live-headline-kind");
+  const viewport = slot.querySelector(".live-headline-window");
   const statusRank = { approved: 4, human_reviewed: 3, fact_checked: 2, draft: 1 };
+  const PLEDGE_SWAP_MS = 2500;
   let liveArticles = [];
   let currentStep = 0;
   let liveRequest = 0;
+  let pledgeIndex = 0;
+  let pledgeTimer = null;
+  let shownKey = null;
 
   const better = (a, b) => (statusRank[a.status] || 0) > (statusRank[b.status] || 0);
 
-  function fill(slot, item, emptyText, meta) {
-    const strong = slot.querySelector("strong");
-    const small = slot.querySelector("small");
-    const changed = slot.dataset.articleId !== (item?.article_id || "");
-    slot.dataset.articleId = item?.article_id || "";
-    slot.disabled = !item;
-    slot.classList.toggle("is-empty", !item);
-    strong.textContent = item ? item.title : emptyText;
-    small.textContent = meta;
-    if (item && changed) {
-      slot.classList.remove("is-updated");
-      void slot.offsetWidth;
-      slot.classList.add("is-updated");
+  function show(key, label, title, articleId, isPledge) {
+    slot.dataset.articleId = articleId || "";
+    slot.disabled = !articleId;
+    slot.classList.toggle("is-empty", !articleId);
+    slot.classList.toggle("is-pledge", Boolean(isPledge));
+    kind.textContent = label;
+    if (key === shownKey) return;
+    shownKey = key;
+    const next = document.createElement("strong");
+    next.className = "live-headline-title is-entering";
+    next.textContent = title;
+    const previous = [...viewport.children];
+    viewport.append(next);
+    void next.offsetWidth;
+    next.classList.remove("is-entering");
+    for (const old of previous) {
+      old.classList.add("is-leaving");
+      setTimeout(() => old.remove(), 450);
     }
   }
 
-  function renderLiveHeadlines() {
-    const total = replayFrames.length || 15;
-    if (!currentStep) {
-      fill(breakingSlot, null, "개표 재생을 시작하면 편집실 속보 기사가 표시됩니다.", `1~${total}단계 개표 기사`);
-    } else {
-      let pick = null;
-      for (const item of liveArticles) {
-        const step = item.snapshot?.step_id;
-        if (item.article_type === "pledge" || !step || step > currentStep) continue;
-        if (!pick || step > pick.snapshot.step_id || (step === pick.snapshot.step_id && better(item, pick))) pick = item;
-      }
-      if (pick) {
-        const step = pick.snapshot.step_id;
-        const lag = step === currentStep ? "" : ` · 현재 ${currentStep}단계 기사 대기 중`;
-        fill(breakingSlot, pick, "", `${step}/${total}단계 · ${states[pick.status] || pick.status}${lag}`);
-      } else {
-        fill(breakingSlot, null, `${currentStep}단계까지 작성된 속보 기사가 없습니다. 편집실에서 초안을 작성해 주세요.`, `${currentStep}/${total}단계`);
-      }
+  function topPledges() {
+    const seen = new Set();
+    const ranked = liveArticles
+      .filter(item => item.article_type === "pledge")
+      .sort((a, b) => (statusRank[b.status] || 0) - (statusRank[a.status] || 0));
+    const picks = [];
+    for (const item of ranked) {
+      if (seen.has(item.title)) continue;
+      seen.add(item.title);
+      picks.push(item);
+      if (picks.length === 2) break;
     }
+    return picks;
+  }
 
-    const pledges = liveArticles.filter(item => item.article_type === "pledge");
+  function inCountGap() {
+    return !replayFrames.slice(0, currentStep).some(frame => frame.counted_rate !== null);
+  }
+
+  function showPledge() {
+    const pledges = topPledges();
     if (!pledges.length) {
-      fill(pledgeSlot, null, "편집실에서 작성한 공약 기사가 아직 없습니다.", "후보 공약 기사");
-    } else {
-      const index = Math.max(0, currentStep - 1) % pledges.length;
-      const item = pledges[index];
-      fill(pledgeSlot, item, "", `공약 기사 ${index + 1}/${pledges.length} · ${states[item.status] || item.status}`);
+      show("no-pledge", "공약", "편집실에서 작성한 공약 기사가 아직 없습니다.", null, true);
+      return;
     }
+    const item = pledges[pledgeIndex % pledges.length];
+    show(item.article_id, "공약", item.title, item.article_id, true);
+  }
+
+  function setPledgeRotation(on) {
+    if (on && !pledgeTimer) {
+      pledgeTimer = setInterval(() => { pledgeIndex += 1; showPledge(); }, PLEDGE_SWAP_MS);
+    } else if (!on && pledgeTimer) {
+      clearInterval(pledgeTimer);
+      pledgeTimer = null;
+    }
+  }
+
+  function renderLiveHeadline() {
+    if (!currentStep) {
+      setPledgeRotation(false);
+      show("idle", "대기", "개표 재생을 시작하면 편집실 기사가 표시됩니다.", null, false);
+      return;
+    }
+    if (inCountGap()) {
+      setPledgeRotation(true);
+      showPledge();
+      return;
+    }
+    setPledgeRotation(false);
+    let pick = null;
+    for (const item of liveArticles) {
+      const step = item.snapshot?.step_id;
+      if (item.article_type === "pledge" || !step || step > currentStep) continue;
+      if (!pick || step > pick.snapshot.step_id || (step === pick.snapshot.step_id && better(item, pick))) pick = item;
+    }
+    if (pick) show(pick.article_id, "속보", pick.title, pick.article_id, false);
+    else show(`none-${currentStep}`, "속보", `${currentStep}단계 속보 기사를 편집실에서 작성해 주세요.`, null, false);
   }
 
   async function refreshLiveHeadlines() {
@@ -860,18 +916,16 @@ document.addEventListener("count-history-select", (event) => {
     } catch {
       // Keep the last known headlines if the list cannot be refreshed.
     }
-    renderLiveHeadlines();
+    renderLiveHeadline();
   }
-
-  const showStep = (frame) => {
-    currentStep = frame?.step_id || 0;
-    refreshLiveHeadlines();
-  };
 
   const previousRender = render;
   render = function (frame) {
     previousRender(frame);
-    showStep(frame);
+    const step = frame?.step_id || 0;
+    if (step < currentStep || step <= 1) pledgeIndex = 0;
+    currentStep = step;
+    refreshLiveHeadlines();
   };
 
   // Articles written or approved in the editing room show up without waiting for the next stage.
@@ -881,22 +935,20 @@ document.addEventListener("count-history-select", (event) => {
     return previousRefreshEditor.apply(this, args);
   };
 
-  for (const slot of [breakingSlot, pledgeSlot]) {
-    slot.addEventListener("click", async () => {
-      const articleId = slot.dataset.articleId;
-      if (!articleId || busy) return;
-      openWorkspaceView("draft");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      try {
-        showArticle(await api(`/api/articles/${articleId}`));
-        byId("status").textContent = states[article.status] || article.status;
-        byId("editor-article-select").value = articleId;
-        await refreshAudit();
-      } catch (error) {
-        byId("status").textContent = error.message;
-      }
-    });
-  }
+  slot.addEventListener("click", async () => {
+    const articleId = slot.dataset.articleId;
+    if (!articleId || busy) return;
+    openWorkspaceView("draft");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      showArticle(await api(`/api/articles/${articleId}`));
+      byId("status").textContent = states[article.status] || article.status;
+      byId("editor-article-select").value = articleId;
+      await refreshAudit();
+    } catch (error) {
+      byId("status").textContent = error.message;
+    }
+  });
 
   refreshLiveHeadlines();
 })();
