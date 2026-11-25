@@ -41,65 +41,80 @@ ticker.replaceChildren(tickerHeadline, tickerStage);
 const tickerWindow = tickerTrack.parentElement;
 const tickerMotion = window.matchMedia("(prefers-reduced-motion: no-preference)");
 const tickerPixelsPerSecond = 180;
-let pendingTicker;
-let tickerAnimation;
-let tickerWindowWidth = 0;
-let tickerTrackWidth = 0;
+const tickerPasses = new Map();
+let latestTickerRow = ticker;
+let latestTickerStage = tickerStage.textContent;
 
-function applyPendingTicker() {
-  if (!pendingTicker) return;
-  tickerHeadline.textContent = pendingTicker.message;
-  if (pendingTicker.stageText !== undefined) tickerStage.textContent = pendingTicker.stageText;
-  pendingTicker = undefined;
+function removeTickerPass(row) {
+  tickerPasses.get(row)?.animation.cancel();
+  tickerPasses.delete(row);
+  tickerResize.unobserve(row);
+  row.remove();
 }
 
-function animateTicker() {
+function animateTickerRow(row) {
+  const previous = tickerPasses.get(row);
   const windowWidth = tickerWindow.clientWidth;
-  const trackWidth = tickerTrack.offsetWidth;
-  if (!tickerMotion.matches || !windowWidth || !trackWidth) {
-    tickerAnimation?.cancel();
-    tickerAnimation = undefined;
-    applyPendingTicker();
+  const rowWidth = row.offsetWidth;
+
+  if (!tickerMotion.matches || !windowWidth || !rowWidth) {
+    if (row !== latestTickerRow) removeTickerPass(row);
+    else {
+      previous?.animation.cancel();
+      tickerPasses.delete(row);
+    }
     return;
   }
 
-  if (tickerAnimation && windowWidth === tickerWindowWidth && trackWidth === tickerTrackWidth) return;
+  if (previous?.windowWidth === windowWidth && previous.rowWidth === rowWidth) return;
 
-  // Preserve the text position if the window is resized during a pass.
-  const elapsed = tickerAnimation ? Number(tickerAnimation.currentTime) : 0;
-  const position = tickerAnimation
-    ? Math.min(windowWidth, Math.max(-trackWidth, tickerWindowWidth - elapsed * tickerPixelsPerSecond / 1000))
+  const elapsed = previous ? Number(previous.animation.currentTime) : 0;
+  const position = previous
+    ? Math.min(windowWidth, Math.max(-rowWidth, previous.windowWidth - elapsed * tickerPixelsPerSecond / 1000))
     : windowWidth;
-  tickerAnimation?.cancel();
-  tickerWindowWidth = windowWidth;
-  tickerTrackWidth = trackWidth;
-  const animation = tickerTrack.animate([
+  previous?.animation.cancel();
+
+  const animation = row.animate([
     { transform: `translateX(${windowWidth}px)` },
-    { transform: `translateX(${-trackWidth}px)` },
-  ], { duration: (windowWidth + trackWidth) * 1000 / tickerPixelsPerSecond, fill: "forwards" });
-  tickerAnimation = animation;
+    { transform: `translateX(${-rowWidth}px)` },
+  ], { duration: (windowWidth + rowWidth) * 1000 / tickerPixelsPerSecond, fill: "forwards" });
+  tickerPasses.set(row, { animation, windowWidth, rowWidth });
   animation.currentTime = (windowWidth - position) * 1000 / tickerPixelsPerSecond;
   animation.onfinish = () => {
-    if (tickerAnimation !== animation) return;
-    tickerAnimation = undefined;
-    animation.cancel();
-    applyPendingTicker();
-    animateTicker();
+    if (tickerPasses.get(row)?.animation !== animation) return;
+    if (row === latestTickerRow) {
+      animation.currentTime = 0;
+      animation.play();
+    } else {
+      removeTickerPass(row);
+    }
   };
 }
 
 function setTickerText(message, stageText) {
-  pendingTicker = { message, stageText: stageText ?? pendingTicker?.stageText };
-  if (!tickerAnimation) {
-    applyPendingTicker();
-    animateTicker();
-  }
+  if (stageText !== undefined) latestTickerStage = stageText;
+  const previous = latestTickerRow;
+  const row = ticker.cloneNode(true);
+  row.removeAttribute("id");
+  row.querySelector(".ticker-headline").textContent = message;
+  row.querySelector(".ticker-stage").textContent = latestTickerStage;
+
+  latestTickerRow = row;
+  if (tickerPasses.has(previous)) previous.setAttribute("aria-hidden", "true");
+  else removeTickerPass(previous);
+  tickerTrack.append(row);
+  animateTickerRow(row);
+  tickerResize.observe(row);
 }
 
-const tickerResize = new ResizeObserver(animateTicker);
+function refreshTickerAnimations() {
+  for (const row of Array.from(tickerTrack.children)) animateTickerRow(row);
+}
+
+const tickerResize = new ResizeObserver(refreshTickerAnimations);
 tickerResize.observe(tickerWindow);
-tickerResize.observe(tickerTrack);
-tickerMotion.addEventListener("change", animateTicker);
+tickerResize.observe(ticker);
+tickerMotion.addEventListener("change", refreshTickerAnimations);
 
 function compactCountHeadline(frame, latestCount) {
   const approximate = frame.time_basis === "approximate" ? "경" : "";
