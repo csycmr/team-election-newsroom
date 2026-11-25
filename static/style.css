@@ -1830,8 +1830,8 @@ input::placeholder, textarea::placeholder {
 }
 
 .live-district-track {
-  height: 3px;
-  border-radius: 2px;
+  height: 6px;
+  border-radius: 3px;
 }
 
 .live-district-oh,
