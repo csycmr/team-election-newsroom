@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=smaller-editor-stage-titles">
+  <link rel="stylesheet" href="/static/style.css?v=archive-bulk-delete">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -237,6 +237,10 @@
           <section class="light-pane board-pane">
             <h3>게시판</h3>
             <div id="article-list" class="news-board">저장된 기사를 불러오는 중입니다.</div>
+            <div class="board-delete-actions">
+              <p id="board-delete-status" role="status"></p>
+              <button id="board-delete-selected" type="button" class="reject-button" disabled>여러 게시물 삭제</button>
+            </div>
           </section>
           <section class="light-pane news-pane">
             <article id="library-article" class="news-article" aria-live="polite">
@@ -264,6 +268,7 @@
   <dialog id="editor-password-dialog" class="editor-password-dialog" aria-labelledby="editor-password-title">
     <form id="editor-password-form">
       <h3 id="editor-password-title">편집실 비밀번호</h3>
+      <p id="editor-password-message" hidden></p>
       <label for="editor-password">비밀번호</label>
       <input id="editor-password" type="password" inputmode="numeric" required maxlength="128" autofocus>
       <p id="editor-password-error" role="alert" hidden></p>
@@ -273,7 +278,7 @@
       </div>
     </form>
   </dialog>
-  <script src="/static/app.js?v=editor-entry-password"></script>
+  <script src="/static/app.js?v=archive-bulk-delete"></script>
   <script type="module" src="/static/count-history.js?v=approximate-time-label"></script>
   <script type="module" src="/static/final-results.js?v=center-district-ranking"></script>
   <script type="module" src="/static/live-districts.js?v=district-labels"></script>

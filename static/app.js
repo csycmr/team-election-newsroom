@@ -586,7 +586,7 @@ let archiveArticleId = null;
 byId("delete-article").onclick = async () => {
   if (busy || !article) return;
   const target = article;
-  if (!window.confirm(`「${target.title}」 기사를 삭제할까요?\n저장 목록에서 사라지고 되돌릴 수 없어요.`)) return;
+  if (!await confirmEditorEntry(`「${target.title}」 기사를 삭제합니다. 삭제하면 되돌릴 수 없어요.`) || busy) return;
   const feedback = byId("post-status");
   busy = true;
   updateActions();
@@ -757,22 +757,62 @@ function renderNewsArticle(item) {
     });
   };
 
-  remove.onclick = () => {
-    if (!window.confirm(`「${item.title}」 기사를 삭제할까요?\n삭제하면 보도실과 편집실에서 모두 사라지고 되돌릴 수 없어요.`)) return;
-    run(async () => {
-      await api(`/api/articles/${item.article_id}`, undefined, "DELETE");
-      postedArticleIds.delete(item.article_id);
-      if (article?.article_id === item.article_id) {
-        article = undefined;
-        byId("article-title-input").value = "";
-        byId("article-body-input").value = "";
-        byId("article-evidence").textContent = "";
-      }
-      archiveArticleId = null;
-      await refreshArchive();
-    });
-  };
+  remove.onclick = () => deleteArchivedArticles([item.article_id], item.title);
 }
+
+const boardSelection = new Set();
+const boardDeleteButton = byId("board-delete-selected");
+
+function updateBoardSelection() {
+  boardDeleteButton.disabled = !boardSelection.size || busy;
+  boardDeleteButton.textContent = boardSelection.size
+    ? `여러 게시물 삭제 (${boardSelection.size})`
+    : "여러 게시물 삭제";
+}
+
+function clearDeletedArchiveArticle(id) {
+  boardSelection.delete(id);
+  postedArticleIds.delete(id);
+  needsSave.delete(id);
+  if (archiveArticleId === id) archiveArticleId = null;
+  if (article?.article_id !== id) return;
+  article = undefined;
+  for (const field of ["article-title-input", "article-body-input"]) byId(field).value = "";
+  for (const label of ["article-evidence", "factcheck-status", "human-review-status"]) byId(label).textContent = "";
+}
+
+async function deleteArchivedArticles(ids, title) {
+  if (busy || !ids.length) return;
+  const target = title ? `「${title}」 기사` : `선택한 게시물 ${ids.length}개`;
+  if (!await confirmEditorEntry(`${target}를 삭제합니다. 삭제하면 되돌릴 수 없어요.`) || busy) return;
+
+  const feedback = byId("board-delete-status");
+  busy = true;
+  updateActions();
+  updateBoardSelection();
+  feedback.textContent = "삭제하는 중입니다.";
+  let deleted = 0;
+  try {
+    for (const id of ids) {
+      await api(`/api/articles/${encodeURIComponent(id)}`, undefined, "DELETE");
+      clearDeletedArchiveArticle(id);
+      deleted += 1;
+    }
+    feedback.textContent = `${deleted}개 게시물을 삭제했습니다.`;
+  } catch (error) {
+    feedback.textContent = `${ids.length}개 중 ${deleted}개를 삭제했습니다. ${error.message}`;
+  } finally {
+    try {
+      await Promise.all([refreshArchive(), refreshEditorArticles(), refreshAudit()]);
+    } finally {
+      busy = false;
+      updateActions();
+      updateBoardSelection();
+    }
+  }
+}
+
+boardDeleteButton.onclick = () => deleteArchivedArticles([...boardSelection]);
 
 async function refreshArchive() {
   const request = ++archiveRequest;
@@ -791,6 +831,9 @@ async function refreshArchive() {
       .sort((a, b) => Date.parse(a.dated_at) - Date.parse(b.dated_at) || Date.parse(a.posted_at) - Date.parse(b.posted_at))
       .map((item, index) => ({ ...item, board_number: index + 1 }))
       .reverse();
+    const visibleIds = new Set(articles.map(({ article_id }) => article_id));
+    for (const id of boardSelection) if (!visibleIds.has(id)) boardSelection.delete(id);
+    updateBoardSelection();
     list.replaceChildren();
     if (!articles.length) {
       list.textContent = "보도실에 게시된 기사가 없습니다.";
@@ -800,7 +843,7 @@ async function refreshArchive() {
     }
 
     const table = document.createElement("table");
-    table.innerHTML = '<thead><tr><th scope="col">번호</th><th scope="col">제목</th><th scope="col">게시일</th><th scope="col">작성자</th></tr></thead>';
+    table.innerHTML = '<thead><tr><th scope="col">번호</th><th scope="col">제목</th><th scope="col">게시일</th><th scope="col">작성자</th><th scope="col" class="board-select-cell">선택</th></tr></thead>';
     const rows = document.createElement("tbody");
     table.append(rows);
 
@@ -829,12 +872,27 @@ async function refreshArchive() {
       titleCell.append(kind, button);
       row.insertCell().textContent = dotted(boardDate, item.dated_at);
       row.insertCell().textContent = item.author;
+      const selectionCell = row.insertCell();
+      selectionCell.className = "board-select-cell";
+      selectionCell.addEventListener("click", (event) => event.stopPropagation());
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = boardSelection.has(item.article_id);
+      checkbox.setAttribute("aria-label", `${item.title} 삭제 선택`);
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) boardSelection.add(item.article_id);
+        else boardSelection.delete(item.article_id);
+        updateBoardSelection();
+      });
+      selectionCell.append(checkbox);
       row.onclick = () => showArchivedArticle(item);
     }
     list.append(table);
     showArchivedArticle(articles.find(item => item.article_id === archiveArticleId) || articles[0]);
   } catch (error) {
     if (request !== archiveRequest) return;
+    boardSelection.clear();
+    updateBoardSelection();
     list.textContent = error.message;
     showEmpty("");
   }
@@ -907,8 +965,11 @@ const editorPasswordInput = byId("editor-password");
 const editorPasswordError = byId("editor-password-error");
 const editorPasswordSubmit = editorPasswordForm.querySelector('[type="submit"]');
 
-function confirmEditorEntry() {
+function confirmEditorEntry(message = "") {
   if (editorPasswordDialog.open) return Promise.resolve(false);
+  const description = byId("editor-password-message");
+  description.textContent = message;
+  description.hidden = !message;
   editorPasswordDialog.returnValue = "";
   editorPasswordForm.reset();
   editorPasswordError.hidden = true;
