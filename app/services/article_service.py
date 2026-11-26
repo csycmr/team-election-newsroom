@@ -101,12 +101,12 @@ def _article_body(snapshot) -> str:
         event = (snapshot.timeline_event or "").strip()
         if "투표용지 부족" in event:
             return (
-                "서울 송파구 잠실7동 제2투표소에서 투표용지가 부족해 투표시간이 연장됐다.\\n\\n"
+                "서울 송파구 잠실7동 제2투표소에서 투표용지가 부족해 투표시간이 연장됐다.\n\n"
                 "대기표를 받은 유권자에 한해 이날 오후 10시까지 투표가 진행됐다."
             )
         if "투표함 2개" in event:
             return (
-                "서울 송파구 잠실7동 제2투표소의 투표함 2개가 개표소로 옮겨졌다.\\n\\n"
+                "서울 송파구 잠실7동 제2투표소의 투표함 2개가 개표소로 옮겨졌다.\n\n"
                 "투표함 반출은 현장 대치로 지연됐다."
             )
         return f"서울시장 선거 {event}." if event else "서울시장 선거 개표 상황이 전해졌다."
@@ -185,7 +185,7 @@ def _article_body(snapshot) -> str:
                 )
     if phase == "early" and snapshot.counted_rate < 10:
         paragraphs.append("아직 개표 초반으로, 이후 집계에 따라 득표 격차는 달라질 수 있다.")
-    return "\\n\\n".join(paragraphs)
+    return "\n\n".join(paragraphs)
 
 
 def generate_article(request: ArticleCreate) -> Article:
@@ -222,6 +222,9 @@ async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) 
         "snapshot": snapshot.model_dump(mode="json"),
         "suggested_headline": factual.title,
         "verified_draft": factual.body,
+        "editorial_focus": (
+            _phase(snapshot, _prior_count(snapshot)) if snapshot.counted_rate is not None else "incident"
+        ),
         "evidence": [item.model_dump(mode="json") for item in request.evidence],
     }
     client = AsyncOpenAI(api_key=api_key, timeout=35, max_retries=0)
@@ -232,7 +235,7 @@ async def generate_ai_article(request: ArticleCreate, api_key: str, model: str) 
             {"role": "system", "content": (
                 "당신은 한국 언론사 선거 속보 담당 기자의 작성 보조자다. "
                 "제공된 스냅샷과 근거에서 확인 가능한 사실만 사용해 실제 기사처럼 제목과 본문 전체를 작성하라. "
-                "기사 제목은 핵심 사실 중심으로 짧게 작성하고, 본문은 리드와 후속 문단 2~4개로 구성하라. "
+                "기사 제목은 핵심 사실 중심으로 짧게 작성하고, 본문은 리드와 후속 문단 2~4개로 구성하라. 개표 초반에는 선두와 잠정성을, 중반에는 이전 보도 집계와의 격차 변화를, 역전 때는 선두 교체를, 막바지에는 표차를, 최종 개표에서는 결과를 우선하라. "
                 "모든 후보 수치를 나열할 필요는 없지만, 언급하는 후보별 득표수와 득표율은 원본 그대로 사용하라. "
                 "특히 1·2위 후보의 득표수·득표율은 숫자와 쉼표 형식으로 정확히 인용하라. "
                 "출처명, 근거 ID, URL, ISO 시각, 내부 개표 단계, 작성 지침이나 검증 안내는 본문에 쓰지 마라. "
