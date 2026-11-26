@@ -50,7 +50,9 @@ def test_replay_article_uses_verified_evidence_and_rejects_tampering():
     assert response.status_code == 200
     article = response.json()
     assert [row["evidence_id"] for row in article["evidence"]] == ["NEC-SEOUL-2"]
-    assert "최종 개표 결과" in article["body"]
+    assert "서울시장 선거 개표가 완료됐다" in article["body"]
+    assert "NEC-SEOUL-2" not in article["body"]
+    assert "출처:" not in article["body"]
 
     path = f"/api/articles/{article['article_id']}"
     assert client.post(path + "/approve", json={"reviewer": "편집장"}).status_code == 409
@@ -77,13 +79,15 @@ def test_each_timeline_step_creates_a_draft_with_its_own_timestamp_and_source():
         assert article["snapshot"] == snapshot
         assert snapshot["step_id"] == frame["step_id"]
         assert snapshot["collected_at"] == frame["timestamp_kst"]
-        assert f'{frame["step_id"]}단계' in article["body"]
+        assert f'{frame["step_id"]}단계' not in article["body"]
+        assert snapshot["collected_at"] not in article["body"]
+        assert "근거 [" not in article["body"]
         assert article["evidence"][0]["source_url"] == snapshot["source_url"]
         if frame["counted_rate"] is None:
             assert frame["event"] in article["body"]
             assert "개표 진행률" not in article["body"]
         if snapshot["record_type"] == "mixed":
-            assert "시연 추정 수치" in article["body"]
+            assert "권영국 후보" not in article["body"]
 
     snapshot = frames[10]["article_snapshot"]
     snapshot["candidates"][0]["votes"] += 1
