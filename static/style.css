@@ -330,6 +330,22 @@ button.primary:hover:not(:disabled) {
   color: #73adff !important;
 }
 
+#rate-trend {
+  --oh-trend-color: #ed737e;
+}
+
+#rate-trend svg [stroke="#176b5c"] {
+  stroke: var(--oh-trend-color);
+}
+
+#rate-trend svg [fill="#176b5c"] {
+  fill: var(--oh-trend-color);
+}
+
+#rate-trend .trend-legend span:first-child {
+  color: var(--oh-trend-color) !important;
+}
+
 .analytics-caveat, .chart-note, .timeline-heading span, .bottom-action,
 .pane-description, .audit-list, .evidence-list p,
 .article-list small, .library-preview {
