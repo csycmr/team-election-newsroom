@@ -1117,23 +1117,30 @@ document.addEventListener("count-history-select", (event) => {
 });
 
 // Plot only checkpoints that contain reported candidate results.
+// A marker on each line travels from the line's left end to its right end in
+// step with the replay clock: between two replay frames it glides along the
+// line for the 5 seconds the socket waits, so it never jumps or vanishes.
 (() => {
   const ns = "http://www.w3.org/2000/svg";
+  const STEP_MS = 5000;
+  const COLORS = ["#176b5c", "#3988b7"];
   let frames = [];
-  let activeStep = 0;
+  let charts = [];
+  let animation = 0;
+  const timeOf = (frame) => Date.parse(frame.timestamp_kst);
   const svgNode = (name, attrs, text) => {
     const node=document.createElementNS(ns,name);
     for(const [k,v] of Object.entries(attrs)) node.setAttribute(k,String(v));
     if(text !== undefined) node.textContent=String(text);
     return node;
   };
-  const plot = (target, series, min, max, labels, format, selected) => {
+  const plot = (target, series, min, max, labels, format) => {
     const container=document.getElementById(target);container.replaceChildren();
     const width=520,height=205,L=54,R=13,T=18,B=31;
-    const start = Date.parse(replayFrames[0].timestamp_kst);
-    const duration = Date.parse(replayFrames.at(-1).timestamp_kst) - start;
-    const x = (index) => L + (width - L - R) *
-      ((Date.parse(frames[index].timestamp_kst) - start) / duration);
+    const start = timeOf(replayFrames[0]);
+    const duration = timeOf(replayFrames.at(-1)) - start;
+    const times = frames.map(timeOf);
+    const xAt = (time) => L + (width - L - R) * ((time - start) / duration);
     const y=v=>T+(height-T-B)*(1-(v-min)/Math.max(1,max-min));
     const svg=svgNode("svg",{viewBox:`0 0 ${width} ${height}`,role:"img","aria-label":labels.join(", ")+" 보도 집계 추이"});
     for(let k=0;k<=4;k++){
@@ -1142,8 +1149,16 @@ document.addEventListener("count-history-select", (event) => {
       svg.appendChild(svgNode("text",{x:L-6,y:yy+4,"text-anchor":"end",fill:"#71828e","font-size":10},format(v)));
     }
     series.forEach((points,idx)=>{
-      svg.appendChild(svgNode("polyline",{points:points.map((v,i)=>`${x(i)},${y(v)}`).join(" "),stroke:["#176b5c","#3988b7"][idx],"stroke-width":2.7,fill:"none","stroke-linejoin":"round","stroke-linecap":"round"}));
-      if(selected>=1 && selected<=points.length) svg.appendChild(svgNode("circle",{cx:x(selected-1),cy:y(points[selected-1]),r:4,fill:["#176b5c","#3988b7"][idx],stroke:"#fff","stroke-width":1.5}));
+      svg.appendChild(svgNode("polyline",{points:points.map((v,i)=>`${xAt(times[i])},${y(v)}`).join(" "),stroke:COLORS[idx],"stroke-width":2.7,fill:"none","stroke-linejoin":"round","stroke-linecap":"round"}));
+    });
+    // Markers go on top of every line so a crossing line never hides one.
+    const markers = series.map((points, idx) => {
+      const circle = svgNode("circle", {
+        class: "trend-marker", cx: xAt(times[0]), cy: y(points[0]), r: 4.5,
+        fill: COLORS[idx], stroke: "#fff", "stroke-width": 1.5,
+      });
+      svg.appendChild(circle);
+      return circle;
     });
     [0, 0.5, 1].forEach(fraction => {
       const label = clock.format(new Date(start + duration * fraction));
@@ -1155,36 +1170,80 @@ document.addEventListener("count-history-select", (event) => {
     container.append(svg);
     const legend=document.createElement("div");legend.className="trend-legend";
     legend.style.cssText="font-size:11px;color:#526b6b;display:flex;gap:16px;justify-content:center;margin-top:5px";
-    labels.forEach((label,idx)=>{const span=document.createElement("span");span.textContent=`● ${label}`;span.style.color=["#176b5c","#3988b7"][idx];legend.append(span);});
+    labels.forEach((label,idx)=>{const span=document.createElement("span");span.textContent=`● ${label}`;span.style.color=COLORS[idx];legend.append(span);});
     container.append(legend);
+    return { times, series, markers, xAt, y };
   };
-  const update=() => {
+  // Value on the drawn line at a moment, clamped to the line's two ends.
+  const valueAt = (times, points, time) => {
+    if (time <= times[0]) return points[0];
+    if (time >= times.at(-1)) return points.at(-1);
+    const i = times.findIndex(t => t > time);
+    const share = (time - times[i - 1]) / (times[i] - times[i - 1]);
+    return points[i - 1] + (points[i] - points[i - 1]) * share;
+  };
+  // The replay clock: the shown frame's time, plus how far the replay has
+  // moved toward the next frame (running, or frozen where it was paused).
+  const replayTime = () => {
+    if (!displayedFrame) return timeOf(replayFrames[0]);
+    const index = replayFrames.findIndex(frame => frame.step_id === displayedFrame.step_id);
+    const next = replayFrames[index + 1];
+    const now = timeOf(displayedFrame);
+    if (index < 0 || !next) return now;
+    let progress = 0;
+    if (socket) progress = 1 - (replayDeadline - performance.now()) / STEP_MS;
+    else if (resumeDelay !== null) progress = 1 - resumeDelay / STEP_MS;
+    progress = Math.min(1, Math.max(0, progress));
+    return now + (timeOf(next) - now) * progress;
+  };
+  const placeMarkers = () => {
+    const time = replayTime();
+    charts.forEach(({ times, series, markers, xAt, y }) => {
+      const clamped = Math.min(times.at(-1), Math.max(times[0], time));
+      markers.forEach((marker, idx) => {
+        marker.setAttribute("cx", xAt(clamped));
+        marker.setAttribute("cy", y(valueAt(times, series[idx], clamped)));
+      });
+    });
+  };
+  const tick = () => {
+    placeMarkers();
+    animation = socket ? requestAnimationFrame(tick) : 0;
+  };
+  const follow = () => {
+    if (!charts.length) return;
+    if (animation) return;  // the running loop picks up the new state itself
+    tick();
+  };
+  const draw = () => {
     if(!frames.length)return;
     const two = frames.map(frame =>
       ["seoul-1", "seoul-2"].map(id => frame.candidates.find(candidate => candidate.candidate_id === id)));
     const first=two.map(pair=>pair[0].vote_rate),second=two.map(pair=>pair[1].vote_rate);
     const low=Math.floor((Math.min(...first,...second)-1)/2)*2;
     const high=Math.ceil((Math.max(...first,...second)+1)/2)*2;
-    plot("rate-trend",[first,second],low,high,[two[0][0].candidate_name,two[0][1].candidate_name],v=>v.toFixed(0)+"%",activeStep);
     const gap=two.map(pair=>pair[0].votes-pair[1].votes);
     const abs=Math.ceil(Math.max(...gap.map(Math.abs),1000)/10000)*10000;
-    plot("gap-trend",[gap],-abs,abs,[`${two[0][0].candidate_name} − ${two[0][1].candidate_name}`],v=>Math.round(v/10000)+"만",activeStep);
+    charts = [
+      plot("rate-trend",[first,second],low,high,[two[0][0].candidate_name,two[0][1].candidate_name],v=>v.toFixed(0)+"%"),
+      plot("gap-trend",[gap],-abs,abs,[`${two[0][0].candidate_name} − ${two[0][1].candidate_name}`],v=>Math.round(v/10000)+"만"),
+    ];
+    follow();
   };
   const originalRender = render;
   render = function (frame) {
     originalRender(frame);
-    activeStep = frames.findIndex(entry => entry.step_id === frame.step_id) + 1;
-    update();
+    follow();
   };
+  document.addEventListener("count-replay", follow);
   countTimelineData.then(data => {
     frames = data.filter(entry => entry.counted_rate !== null && entry.time_basis !== "simulated");
-    update();
+    draw();
   }).catch(error => {
     byId("rate-trend").textContent = "개표 추이 로드 실패: " + error.message;
     byId("gap-trend").textContent = "데이터를 불러올 수 없습니다.";
   });
 })();
-
 // Live headline on the election board: one row that follows the replay.
 // While the count has no figures yet (start → first ~3% count) it alternates two
 // pledge articles; once figures arrive it shows the newsroom article for the
