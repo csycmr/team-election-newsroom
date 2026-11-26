@@ -1976,3 +1976,40 @@ input::placeholder, textarea::placeholder {
   font-size: 12px;
   line-height: 1.5;
 }
+
+.editor-password-dialog {
+  width: min(24rem, calc(100% - 2rem));
+  padding: 1.5rem;
+  border: 1px solid #2a394b;
+  border-radius: 12px;
+  background: #142231;
+  color: #ebf3fa;
+}
+
+.editor-password-dialog::backdrop {
+  background: #080f18b3;
+}
+
+.editor-password-dialog form {
+  display: grid;
+  gap: .75rem;
+}
+
+.editor-password-dialog input {
+  width: 100%;
+  padding: .65rem;
+  border: 1px solid #53667b;
+  border-radius: 6px;
+  background: #0d1723;
+  color: inherit;
+}
+
+.editor-password-dialog [role="alert"] {
+  color: #ffadb5;
+}
+
+.editor-password-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+}

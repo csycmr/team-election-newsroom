@@ -4,7 +4,7 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
+from fastapi import Body, FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -52,6 +52,13 @@ async def guard_article_writes(request, call_next):
 @app.get("/", include_in_schema=False)
 def index():
     return FileResponse(ROOT / "static/index.html")
+
+
+@app.post("/api/editor/unlock")
+def unlock_editor(password: str = Body(embed=True, max_length=128)):
+    if not secrets.compare_digest(password.encode("utf-8"), b"1234"):
+        raise HTTPException(status_code=401, detail="비밀번호가 일치하지 않습니다.")
+    return {"ok": True}
 
 
 @app.get("/health")

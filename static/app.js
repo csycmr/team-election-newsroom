@@ -427,10 +427,10 @@ byId("pledge-draft").onclick = () => {
   editorialAction(() => api("/api/articles/from-pledges", { query }, "POST"));
 };
 
-function draftCurrentStep() {
+async function draftCurrentStep() {
   const selectedSnapshot = snapshot;
   if (!selectedSnapshot || busy) return;
-  openWorkspaceView("draft");
+  if (!await openWorkspaceView("draft") || busy) return;
   byId("status").textContent = `${selectedSnapshot.step_id}단계 초안 작성 중…`;
   createDraft(selectedSnapshot, byId("generation-mode").value);
 }
@@ -742,13 +742,14 @@ function renderNewsArticle(item) {
     }
   };
 
-  edit.onclick = () => {
+  edit.onclick = async () => {
     if (!window.confirm("보도실 게시를 내리고 초안으로 되돌려 편집실에서 수정합니다.\n수정 후 다시 팩트체크·사람 검토·편집장 승인을 거쳐야 게시할 수 있어요. 계속할까요?")) return;
+    if (busy || !await confirmEditorEntry()) return;
     run(async () => {
       const revised = await api(`/api/articles/${item.article_id}/revise`, undefined, "POST");
       postedArticleIds.delete(item.article_id);
       needsSave.add(item.article_id);
-      openWorkspaceView("draft");
+      showWorkspaceView("draft");
       window.scrollTo({ top: 0, behavior: "smooth" });
       showArticle(revised);
       byId("status").textContent = "보도실 게시를 내리고 초안으로 되돌렸습니다. 수정 후 '초안 저장'부터 다시 진행해 주세요.";
@@ -875,7 +876,7 @@ byId("editor-article-select").onchange = async (event) => {
 
 // traffic-reference-ui-v1: same tabbed newsroom structure as the traffic reference.
 const workspaceViews = new Set(["election", "draft", "library"]);
-function openWorkspaceView(name) {
+function showWorkspaceView(name) {
   if (!workspaceViews.has(name)) return;
   for (const [elementId, slotName] of [
     ["count-ticker", "ticker"],
@@ -900,6 +901,67 @@ function openWorkspaceView(name) {
   if (name === "library") refreshArchive();
   if (name === "draft") refreshEditorArticles();
 }
+const editorPasswordDialog = byId("editor-password-dialog");
+const editorPasswordForm = byId("editor-password-form");
+const editorPasswordInput = byId("editor-password");
+const editorPasswordError = byId("editor-password-error");
+const editorPasswordSubmit = editorPasswordForm.querySelector('[type="submit"]');
+
+function confirmEditorEntry() {
+  if (editorPasswordDialog.open) return Promise.resolve(false);
+  editorPasswordDialog.returnValue = "";
+  editorPasswordForm.reset();
+  editorPasswordError.hidden = true;
+  editorPasswordSubmit.disabled = false;
+  editorPasswordDialog.showModal();
+  return new Promise((resolve) => {
+    editorPasswordDialog.addEventListener("close", () => {
+      editorPasswordForm.reset();
+      resolve(editorPasswordDialog.returnValue === "unlocked");
+    }, { once: true });
+  });
+}
+
+byId("editor-password-cancel").onclick = () => editorPasswordDialog.close();
+editorPasswordForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (editorPasswordSubmit.disabled) return;
+  editorPasswordSubmit.disabled = true;
+  editorPasswordError.hidden = true;
+  const request = new AbortController();
+  editorPasswordDialog.addEventListener("close", () => request.abort(), { once: true });
+  try {
+    const response = await fetch("/api/editor/unlock", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: editorPasswordInput.value }),
+      signal: request.signal,
+    });
+    if (request.signal.aborted || !editorPasswordDialog.open) return;
+    if (response.ok) {
+      editorPasswordDialog.close("unlocked");
+      return;
+    }
+    editorPasswordError.textContent = response.status === 401
+      ? "비밀번호가 일치하지 않습니다."
+      : "비밀번호를 확인할 수 없습니다. 다시 시도해 주세요.";
+  } catch {
+    if (request.signal.aborted) return;
+    editorPasswordError.textContent = "연결을 확인하고 다시 시도해 주세요.";
+  } finally {
+    if (!request.signal.aborted) editorPasswordSubmit.disabled = false;
+  }
+  if (!editorPasswordDialog.open) return;
+  editorPasswordError.hidden = false;
+  editorPasswordInput.select();
+});
+
+async function openWorkspaceView(name) {
+  if (name === "draft" && byId("view-draft").hidden && !await confirmEditorEntry()) return false;
+  showWorkspaceView(name);
+  return true;
+}
+
 byId("site-brand-link")?.addEventListener("click", (event) => {
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
@@ -936,7 +998,11 @@ showArticle = function(next) { originalShowArticle(next); syncWorkspaceCurrent()
   };
   launcher.addEventListener("click", () => setOpen(panel.hidden));
   document.getElementById("floating-rag-close").addEventListener("click", () => {setOpen(false);launcher.focus();});
-  document.getElementById("float-newsroom").addEventListener("click", () => {openWorkspaceView("draft");setOpen(false);window.scrollTo({top:0,behavior:"smooth"});});
+  document.getElementById("float-newsroom").addEventListener("click", async () => {
+    if (!await openWorkspaceView("draft")) return;
+    setOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
   document.addEventListener("keydown", (event) => {if (event.key === "Escape" && !panel.hidden) setOpen(false);});
 
   const addBubble = (value, role) => {
