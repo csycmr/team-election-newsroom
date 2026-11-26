@@ -21,6 +21,52 @@ def _reported_candidates(snapshot):
     return list(snapshot.candidates)
 
 
+def _prior_count(snapshot):
+    """Compare only snapshots from the same replay, in chronological order.
+
+    Both sides must be real reported observations or both marked simulated;
+    never treat a simulated step as evidence of a real change.
+    """
+    if snapshot.mode != "replay" or not snapshot.evidence_id:
+        return None
+    from app.services.replay_service import TIMELINE_SNAPSHOTS
+    previous = None
+    for frame in TIMELINE_SNAPSHOTS:
+        if frame.evidence_id == snapshot.evidence_id:
+            break
+        if frame.counted_rate is None or len(frame.candidates) < 2:
+            continue
+        same_basis = (
+            (snapshot.record_type == "simulated" and frame.record_type == "simulated")
+            or (snapshot.record_type in {"reported", "mixed"}
+                and frame.record_type in {"reported", "mixed"})
+        )
+        if same_basis:
+            previous = frame
+    return previous
+
+
+def _top_two(snapshot):
+    return sorted(_reported_candidates(snapshot), key=lambda c: c.votes, reverse=True)[:2]
+
+
+def _phase(snapshot, previous):
+    if snapshot.counted_rate == 100:
+        return "final"
+    if "역전" in (snapshot.timeline_event or ""):
+        return "reversal"
+    if previous is not None:
+        before = _top_two(previous)
+        after = _top_two(snapshot)
+        if before and after and before[0].candidate_name != after[0].candidate_name:
+            return "reversal"
+    if snapshot.counted_rate >= 90:
+        return "late"
+    if snapshot.counted_rate < 15:
+        return "early"
+    return "middle"
+
+
 def election_headline(snapshot) -> str:
     event = (snapshot.timeline_event or "").strip()
     if snapshot.counted_rate is None or not snapshot.candidates:
@@ -32,17 +78,22 @@ def election_headline(snapshot) -> str:
             return "서울시장 선거 개표 시작"
         return f"서울시장 선거…{event}" if event else "서울시장 선거 개표 상황"
 
-    ordered = sorted(_reported_candidates(snapshot), key=lambda item: item.votes, reverse=True)
+    ordered = _top_two(snapshot)
     leader = ordered[0]
-    if len(ordered) == 1:
+    if len(ordered) < 2:
         return f"서울시장 개표…{leader.candidate_name} 선두"
-    runner_up = ordered[1]
-    gap = _compact_vote_margin(leader.votes - runner_up.votes)
-    if snapshot.counted_rate == 100:
-        return f"서울시장 개표 완료…{leader.candidate_name}, {runner_up.candidate_name}에 {gap} 앞서"
-    if "역전" in event:
-        return f"서울시장 개표 역전…{leader.candidate_name}, {runner_up.candidate_name}에 {gap} 앞서"
-    return f"서울시장 개표 {snapshot.counted_rate:g}%…{leader.candidate_name}, {runner_up.candidate_name}에 {gap} 앞서"
+    second = ordered[1]
+    gap = _compact_vote_margin(leader.votes - second.votes)
+    phase = _phase(snapshot, _prior_count(snapshot))
+    if phase == "final":
+        return f"서울시장 개표 완료…{leader.candidate_name}, {second.candidate_name}에 {gap} 앞서"
+    if phase == "reversal":
+        return f"서울시장 개표 역전…{leader.candidate_name}, {second.candidate_name}에 {gap} 앞서"
+    if phase == "early":
+        return f"서울시장 개표 초반 {leader.candidate_name} 선두…{second.candidate_name}에 {gap} 앞서"
+    if phase == "late":
+        return f"서울시장 개표 막바지…{leader.candidate_name}, {second.candidate_name}에 {gap} 앞서"
+    return f"서울시장 개표 {snapshot.counted_rate:g}%…{leader.candidate_name}, {second.candidate_name}에 {gap} 앞서"
 
 
 def _article_body(snapshot) -> str:
@@ -50,25 +101,32 @@ def _article_body(snapshot) -> str:
         event = (snapshot.timeline_event or "").strip()
         if "투표용지 부족" in event:
             return (
-                "서울 송파구 잠실7동 제2투표소에서 투표용지가 부족해 투표시간이 연장됐다.\n\n"
+                "서울 송파구 잠실7동 제2투표소에서 투표용지가 부족해 투표시간이 연장됐다.\\n\\n"
                 "대기표를 받은 유권자에 한해 이날 오후 10시까지 투표가 진행됐다."
             )
         if "투표함 2개" in event:
             return (
-                "서울 송파구 잠실7동 제2투표소의 투표함 2개가 개표소로 옮겨졌다.\n\n"
+                "서울 송파구 잠실7동 제2투표소의 투표함 2개가 개표소로 옮겨졌다.\\n\\n"
                 "투표함 반출은 현장 대치로 지연됐다."
             )
         return f"서울시장 선거 {event}." if event else "서울시장 선거 개표 상황이 전해졌다."
 
-    ordered = sorted(_reported_candidates(snapshot), key=lambda item: item.votes, reverse=True)
+    ordered = _top_two(snapshot)
     first = ordered[0]
-    if len(ordered) == 1:
+    if len(ordered) < 2:
         return f"서울시장 선거에서 {first.candidate_name} 후보가 {first.votes:,}표({first.vote_rate:.2f}%)를 얻었다."
 
     second = ordered[1]
     margin = first.votes - second.votes
     margin_rate = first.vote_rate - second.vote_rate
-    if snapshot.counted_rate == 100:
+    previous = _prior_count(snapshot)
+    phase = _phase(snapshot, previous)
+    numbers = (
+        f"{first.candidate_name} 후보 {first.votes:,}표({first.vote_rate:.2f}%), "
+        f"{second.candidate_name} 후보 {second.votes:,}표({second.vote_rate:.2f}%)"
+    )
+
+    if phase == "final":
         lead = (
             f"서울시장 선거 개표가 완료됐다. {first.candidate_name} 후보가 "
             f"{first.votes:,}표({first.vote_rate:.2f}%)를 얻어 "
@@ -76,31 +134,58 @@ def _article_body(snapshot) -> str:
             f"{_compact_vote_margin(margin)} 차이로 앞섰다."
         )
         detail = f"두 후보의 득표율 격차는 {margin_rate:.2f}%포인트다."
-    elif "역전" in (snapshot.timeline_event or ""):
+    elif phase == "reversal":
         lead = (
             f"서울시장 선거 개표 과정에서 선두가 바뀌었다. "
-            f"{first.candidate_name} 후보가 {first.votes:,}표({first.vote_rate:.2f}%)로 "
-            f"{second.candidate_name} 후보({second.votes:,}표·{second.vote_rate:.2f}%)를 "
+            f"개표율 {snapshot.counted_rate:g}% 시점 {first.candidate_name} 후보가 "
+            f"{second.candidate_name} 후보를 {_compact_vote_margin(margin)} 차이로 앞섰다."
+        )
+        detail = f"이 시점 득표수는 {numbers}로 집계됐다."
+    elif phase == "early":
+        lead = (
+            f"서울시장 선거 개표 초반 {first.candidate_name} 후보가 "
+            f"{second.candidate_name} 후보를 앞서고 있다."
+        )
+        detail = (
+            f"개표율 {snapshot.counted_rate:g}% 시점 {numbers}로 집계됐다. "
+            f"두 후보의 표차는 {_compact_vote_margin(margin)}다."
+        )
+    elif phase == "late":
+        lead = (
+            f"서울시장 선거 개표가 막바지에 접어든 가운데 "
+            f"{first.candidate_name} 후보가 {second.candidate_name} 후보를 "
             f"{_compact_vote_margin(margin)} 차이로 앞섰다."
         )
-        detail = f"당시 개표율은 {snapshot.counted_rate:g}%였다."
+        detail = f"개표율 {snapshot.counted_rate:g}% 시점 득표수는 {numbers}다."
     else:
         lead = (
-            f"서울시장 선거 개표율이 {snapshot.counted_rate:g}%를 기록한 가운데 "
-            f"{first.candidate_name} 후보가 {first.votes:,}표({first.vote_rate:.2f}%)로 "
-            f"{second.candidate_name} 후보({second.votes:,}표·{second.vote_rate:.2f}%)를 "
+            f"서울시장 선거 개표율이 {snapshot.counted_rate:g}%에 이른 가운데 "
+            f"{first.candidate_name} 후보가 {second.candidate_name} 후보를 "
             f"{_compact_vote_margin(margin)} 차이로 앞섰다."
         )
-        detail = f"두 후보의 득표율 격차는 {margin_rate:.2f}%포인트다."
+        detail = f"이 시점 득표수는 {numbers}로 집계됐다."
 
     paragraphs = [lead, detail]
-    if snapshot.record_type != "mixed" and len(ordered) > 2:
-        others = ", ".join(
-            f"{c.candidate_name} 후보 {c.votes:,}표({c.vote_rate:.2f}%)"
-            for c in ordered[2:]
-        )
-        paragraphs.append(f"이 밖에 {others}를 기록했다.")
-    return "\n\n".join(paragraphs)
+    if previous is not None and phase in {"middle", "late", "reversal"}:
+        prior_two = _top_two(previous)
+        if len(prior_two) > 1:
+            old_gap = prior_two[0].votes - prior_two[1].votes
+            if phase == "reversal":
+                paragraphs.append(
+                    f"앞서 개표율 {previous.counted_rate:g}% 때는 "
+                    f"{prior_two[0].candidate_name} 후보가 {_compact_vote_margin(old_gap)} 앞섰지만, "
+                    "이번 집계에서는 선두가 바뀌었다."
+                )
+            elif old_gap != margin:
+                movement = "줄었다" if margin < old_gap else "벌어졌다"
+                paragraphs.append(
+                    f"두 후보의 표차는 앞선 개표율 {previous.counted_rate:g}% 시점 "
+                    f"{_compact_vote_margin(old_gap)}에서 "
+                    f"{_compact_vote_margin(margin)}로 {movement}."
+                )
+    if phase == "early" and snapshot.counted_rate < 10:
+        paragraphs.append("아직 개표 초반으로, 이후 집계에 따라 득표 격차는 달라질 수 있다.")
+    return "\\n\\n".join(paragraphs)
 
 
 def generate_article(request: ArticleCreate) -> Article:
