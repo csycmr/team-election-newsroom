@@ -1840,9 +1840,9 @@ input::placeholder, textarea::placeholder {
   text-shadow: 0 0 6px #ff667d, 0 0 14px #ff395c;
 }
 
-/* 편집실: 01~04 banners one point smaller, never wrapping */
+/* 편집실: 01~04 제목 태그 */
 .editor-stage-heading .step-indicator {
-  font-size: 15.75pt;
+  font-size: 12.6pt;
   white-space: nowrap;
 }
 
@@ -1850,7 +1850,7 @@ input::placeholder, textarea::placeholder {
   .editor-stage-heading .step-indicator,
   .editor-review-pair .step-indicator {
     padding-inline: 10px;
-    font-size: clamp(11px, 3.3vw, 15.75pt);
+    font-size: clamp(8.8px, 2.64vw, 12.6pt);
     white-space: nowrap;
   }
 }
@@ -1862,7 +1862,7 @@ input::placeholder, textarea::placeholder {
 
   .editor-stage-heading .step-indicator {
     padding-inline: 8px;
-    font-size: 11px;
+    font-size: 8.8px;
   }
 }
 
