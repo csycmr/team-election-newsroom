@@ -63,6 +63,17 @@ def _number_claims(text: str, candidate_name: str):
     return list(re.finditer(pattern, text))
 
 
+def _individual_claims(text: str, candidate_name: str):
+    """Verify candidate-specific figures even when no vote/rate pair is written."""
+    prefix = (
+        rf"(?<![가-힣A-Za-z]){re.escape(candidate_name)}\s*"
+        rf"(?:후보(?:는|가|의)?)?\s*\(?\s*"
+    )
+    votes = list(re.finditer(prefix + r"(\d[\d,]*)\s*표", text))
+    rates = list(re.finditer(prefix + r"(?:득표율\s*)?(\d+(?:\.\d+)?)\s*%", text))
+    return votes, rates
+
+
 def _votes_from_notation(value: str) -> int:
     if "만" not in value:
         return int(value.replace(",", ""))
@@ -106,13 +117,18 @@ async def check_article(article: Article, settings: Settings) -> FactCheckResult
         matched_count = 0
         for candidate in _reported_candidates(snapshot):
             claims = _number_claims(text, candidate.candidate_name)
-            if not claims:
+            vote_mentions, rate_mentions = _individual_claims(text, candidate.candidate_name)
+            if not claims and not vote_mentions and not rate_mentions:
                 continue
-            matched_count += len(claims)
-            valid = all(
-                int(m.group(1).replace(",", "")) == candidate.votes
-                and math.isclose(float(m.group(2)), candidate.vote_rate, abs_tol=0.005)
-                for m in claims
+            matched_count += len(claims) + len(vote_mentions) + len(rate_mentions)
+            valid = (
+                all(
+                    int(m.group(1).replace(",", "")) == candidate.votes
+                    and math.isclose(float(m.group(2)), candidate.vote_rate, abs_tol=0.005)
+                    for m in claims
+                )
+                and all(int(m.group(1).replace(",", "")) == candidate.votes for m in vote_mentions)
+                and all(math.isclose(float(m.group(1)), candidate.vote_rate, abs_tol=0.005) for m in rate_mentions)
             )
             checks.append({
                 "field": f"득표:{candidate.candidate_name}",
