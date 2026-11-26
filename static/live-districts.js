@@ -107,9 +107,9 @@ function setup({ finals, timeline }) {
   labels.setAttribute("pointer-events", "none");
   labels.setAttribute("fill", "#fff");
   labels.setAttribute("stroke", "#0e1723");
-  labels.setAttribute("stroke-width", "2");
+  labels.setAttribute("stroke-width", "1.7");
   labels.setAttribute("paint-order", "stroke");
-  labels.setAttribute("font-size", "10");
+  labels.setAttribute("font-size", "8.5");
   labels.setAttribute("font-weight", "700");
   labels.setAttribute("text-anchor", "middle");
   labels.setAttribute("dominant-baseline", "central");
