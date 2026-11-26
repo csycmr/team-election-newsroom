@@ -84,7 +84,7 @@ def test_each_timeline_step_creates_a_draft_with_its_own_timestamp_and_source():
         assert "근거 [" not in article["body"]
         assert article["evidence"][0]["source_url"] == snapshot["source_url"]
         if frame["counted_rate"] is None:
-            assert frame["event"] in article["body"]
+            assert any(word in article["body"] for word in ("개표 시작", "투표용지 부족", "투표함 2개"))
             assert "개표 진행률" not in article["body"]
         if snapshot["record_type"] == "mixed":
             assert "권영국 후보" not in article["body"]
@@ -92,3 +92,32 @@ def test_each_timeline_step_creates_a_draft_with_its_own_timestamp_and_source():
     snapshot = frames[10]["article_snapshot"]
     snapshot["candidates"][0]["votes"] += 1
     assert client.post("/api/articles", json={"snapshot": snapshot}).status_code == 409
+
+
+def test_news_focus_changes_by_counting_phase():
+    frames = client.get("/api/count-timeline").json()
+
+    def draft(index):
+        response = client.post("/api/articles", json={"snapshot": frames[index - 1]["article_snapshot"]})
+        assert response.status_code == 200
+        return response.json()
+
+    early = draft(2)
+    assert "개표 초반" in early["title"]
+    assert "권영국 후보" not in early["body"]
+    assert "[시연용 재구성]" in early["title"]
+
+    middle = draft(8)
+    assert "표차는 앞선 개표율" in middle["body"]
+    reversal = draft(9)
+    assert "역전" in reversal["title"]
+    assert "선두가 바뀌었다" in reversal["body"]
+
+    late = draft(13)
+    assert "개표 막바지" in late["title"]
+
+    final = draft(15)
+    assert "개표 완료" in final["title"]
+    assert "서울시장 선거 개표가 완료됐다" in final["body"]
+    assert "단계" not in final["body"]
+    assert "COUNT-TIMELINE" not in final["body"]
