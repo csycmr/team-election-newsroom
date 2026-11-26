@@ -1303,6 +1303,14 @@ input::placeholder, textarea::placeholder {
   align-items: start;
 }
 
+#view-library > .page-title {
+  margin-bottom: 12px;
+}
+
+.board-pane {
+  min-width: 0;
+}
+
 .news-board table {
   width: 100%;
   border-collapse: collapse;
