@@ -2184,3 +2184,18 @@ body:not(.is-on-air) .broadcast-back,
 body:not(.is-on-air) #replay-progress-line:not([hidden]) {
   display: block;
 }
+
+
+#replay-progress-line.is-incident {
+  background: #ff7765;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #replay-progress-line.is-incident {
+    animation: replay-incident-flash 450ms step-end 3;
+  }
+}
+
+@keyframes replay-incident-flash {
+  50% { background: var(--mint); }
+}

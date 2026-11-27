@@ -41,7 +41,7 @@ function renderTimeline(entries) {
     const point = document.createElement("button");
     point.type = "button";
     point.className = "count-history-point";
-    point.classList.toggle("is-incident", entry.counted_rate_pct === "" && entry.event.includes("잠실7동"));
+    point.classList.toggle("is-incident", isCountTimelineIncident(entry));
     const smallPoint = entry.timestamp_kst === "2026-06-04T04:55:00+09:00";
     const regularPoint = entry.timestamp_kst === "2026-06-04T07:16:00+09:00";
     const position = positions[index];

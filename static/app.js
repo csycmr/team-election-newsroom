@@ -174,13 +174,51 @@ function publishReplayState(kind, frame) {
   }));
 }
 
+function isCountTimelineIncident(entry) {
+  return entry.counted_rate_pct === "" && entry.event.includes("잠실7동");
+}
+
 const replayProgressLine = byId("replay-progress-line");
 let progressLineAnimation = 0;
+let progressFlashTimer = 0;
+let lastFlashedStep;
+let hideLineAfterFlash = false;
+
+function clearProgressFlash() {
+  clearTimeout(progressFlashTimer);
+  progressFlashTimer = 0;
+  hideLineAfterFlash = false;
+  replayProgressLine.classList.remove("is-incident");
+}
 
 document.addEventListener("count-replay", ({ detail: { kind, frame, next, deadline } }) => {
   cancelAnimationFrame(progressLineAnimation);
-  replayProgressLine.hidden = kind === "pause" || kind === "stop";
-  if (replayProgressLine.hidden) return;
+  if (kind === "start") {
+    clearProgressFlash();
+    lastFlashedStep = undefined;
+  }
+
+  if (kind === "pause" || kind === "stop") {
+    // The socket closes immediately after sending the final frame.
+    if (kind === "stop" && progressFlashTimer && displayedFrame?.step_id === replayFrames.at(-1)?.step_id) {
+      hideLineAfterFlash = true;
+      return;
+    }
+    clearProgressFlash();
+    replayProgressLine.hidden = true;
+    return;
+  }
+
+  replayProgressLine.hidden = false;
+  if (frame && isCountTimelineIncident(frame) && frame.step_id !== lastFlashedStep) {
+    lastFlashedStep = frame.step_id;
+    clearProgressFlash();
+    replayProgressLine.classList.add("is-incident");
+    progressFlashTimer = setTimeout(() => {
+      if (hideLineAfterFlash) replayProgressLine.hidden = true;
+      clearProgressFlash();
+    }, 1350);
+  }
 
   const timelineStart = Date.parse(replayFrames[0].timestamp_kst);
   const timelineEnd = Date.parse(replayFrames.at(-1).timestamp_kst);
