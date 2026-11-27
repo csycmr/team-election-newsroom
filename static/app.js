@@ -165,6 +165,7 @@ let resumeDelay = null;
 let busy = false;
 let replayFrames = [];
 let replayDeadline = 0;
+const REPLAY_STEP_MS = 5000;
 
 function publishReplayState(kind, frame) {
   const next = frame && replayFrames[frame.step_id];
@@ -172,6 +173,30 @@ function publishReplayState(kind, frame) {
     detail: { kind, frame, next, deadline: replayDeadline },
   }));
 }
+
+const replayProgressLine = byId("replay-progress-line");
+let progressLineAnimation = 0;
+
+document.addEventListener("count-replay", ({ detail: { kind, frame, next, deadline } }) => {
+  cancelAnimationFrame(progressLineAnimation);
+  replayProgressLine.hidden = kind === "pause" || kind === "stop";
+  if (replayProgressLine.hidden) return;
+
+  const timelineStart = Date.parse(replayFrames[0].timestamp_kst);
+  const timelineEnd = Date.parse(replayFrames.at(-1).timestamp_kst);
+  const from = frame ? Date.parse(frame.timestamp_kst) : timelineStart;
+  const to = next ? Date.parse(next.timestamp_kst) : from;
+
+  function paint(now) {
+    const fraction = Math.max(0, Math.min(1, 1 - (deadline - now) / REPLAY_STEP_MS));
+    const time = from + (to - from) * fraction;
+    const progress = timelineEnd > timelineStart ? (time - timelineStart) / (timelineEnd - timelineStart) : 0;
+    replayProgressLine.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
+    if (to > from && fraction < 1) progressLineAnimation = requestAnimationFrame(paint);
+  }
+
+  paint(performance.now());
+});
 
 async function api(path, body, method = "GET") {
   const mutate = ["POST", "PUT", "PATCH", "DELETE"].includes(method);
@@ -326,7 +351,7 @@ function connectReplay(startStep, delayMs) {
   connection.onmessage = (event) => {
     if (socket !== connection) return;
     const frame = JSON.parse(event.data);
-    replayDeadline = performance.now() + 5000;
+    replayDeadline = performance.now() + REPLAY_STEP_MS;
     render(frame);
     publishReplayState("frame", frame);
   };
@@ -354,7 +379,7 @@ function restartReplay() {
 
 byId("start").onclick = () => {
   if (socket) {
-    resumeDelay = Math.max(0, Math.min(5000, Math.ceil(replayDeadline - performance.now())));
+    resumeDelay = Math.max(0, Math.min(REPLAY_STEP_MS, Math.ceil(replayDeadline - performance.now())));
     disconnectReplay();
     byId("start").textContent = "개표 재생";
     publishReplayState("pause");
@@ -936,6 +961,7 @@ byId("editor-article-select").onchange = async (event) => {
 const workspaceViews = new Set(["election", "draft", "library"]);
 function showWorkspaceView(name) {
   if (!workspaceViews.has(name)) return;
+  document.body.classList.toggle("has-editorial-replay-line", name === "library" || name === "draft");
   for (const [elementId, slotName] of [
     ["count-ticker", "ticker"],
     ["count-replay-controls", "replay"],

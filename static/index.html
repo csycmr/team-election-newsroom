@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=on-air-header-back">
+  <link rel="stylesheet" href="/static/style.css?v=replay-progress-line">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
@@ -292,7 +292,8 @@
       </div>
     </form>
   </dialog>
-  <script src="/static/app.js?v=on-air"></script>
+  <div id="replay-progress-line" hidden aria-hidden="true"></div>
+  <script src="/static/app.js?v=replay-progress-line"></script>
   <script type="module" src="/static/count-history.js?v=approximate-time-label"></script>
   <script type="module" src="/static/final-results.js?v=center-district-ranking"></script>
   <script type="module" src="/static/live-districts.js?v=smaller-district-labels"></script>

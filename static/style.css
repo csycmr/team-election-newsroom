@@ -2167,3 +2167,20 @@ body:not(.is-on-air) .broadcast-back,
   .site-brand-group { gap: 9px; }
   .on-air-toggle { padding-inline: 7px; }
 }
+
+
+#replay-progress-line {
+  display: none;
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 9998;
+  height: 3px;
+  background: var(--mint);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+.has-editorial-replay-line:not(.is-on-air) #replay-progress-line:not([hidden]) {
+  display: block;
+}
