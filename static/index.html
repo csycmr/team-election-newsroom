@@ -5,16 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0e1723">
   <title>서울 선거 라이브 | AI 뉴스룸</title>
-  <link rel="stylesheet" href="/static/style.css?v=red-oh-rate-trend">
+  <link rel="stylesheet" href="/static/style.css?v=on-air">
 </head>
 <body class="traffic-reference-ui-v1">
   <header class="site-header">
-    <a class="site-brand" id="site-brand-link" href="/" aria-label="서울 선거 라이브 개표 상황판">
-      <span class="brand-symbol" aria-hidden="true">◈</span>
-      <div><p class="eyebrow">SEOUL ELECTION LIVE</p><h1>서울 선거 라이브</h1></div>
-    </a>
+    <div class="site-brand-group">
+      <a class="site-brand" id="site-brand-link" href="/" aria-label="서울 선거 라이브 개표 상황판">
+        <span class="brand-symbol" aria-hidden="true">◈</span>
+        <div><p class="eyebrow">SEOUL ELECTION LIVE</p><h1>서울 선거 라이브</h1></div>
+      </a>
+      <button type="button" class="on-air-toggle" id="on-air-toggle" aria-controls="broadcast-view" aria-expanded="false">
+        <span class="on-air-dot" aria-hidden="true"></span>
+        <span>ON AIR</span>
+      </button>
+    </div>
     <div class="site-header-right"><span class="demo-badge">과거 선거 재생 시연</span><span class="site-subtitle">2026 서울시장 선거 · 근거 기반 AI 뉴스룸</span></div>
   </header>
+  <section id="broadcast-view" class="broadcast-view" aria-label="개표방송" hidden>
+    <iframe id="broadcast-player" title="서울 선거 라이브 개표방송"
+      data-src="https://www.youtube.com/embed/XlFH2qzgC7A?autoplay=1&amp;playsinline=1"
+      allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <button type="button" id="broadcast-back" class="floating-button broadcast-back" aria-label="이전 화면으로 돌아가기">
+      <span aria-hidden="true">←</span>
+    </button>
+  </section>
   <div class="workspace-wrap">
     <nav class="workspace-nav" aria-label="작업 화면">
       <button type="button" class="active" data-view="election" aria-selected="true">개표 상황판</button>
@@ -277,7 +292,7 @@
       </div>
     </form>
   </dialog>
-  <script src="/static/app.js?v=moving-trend-marker"></script>
+  <script src="/static/app.js?v=on-air"></script>
   <script type="module" src="/static/count-history.js?v=approximate-time-label"></script>
   <script type="module" src="/static/final-results.js?v=center-district-ranking"></script>
   <script type="module" src="/static/live-districts.js?v=smaller-district-labels"></script>

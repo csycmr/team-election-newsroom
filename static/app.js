@@ -1017,8 +1017,45 @@ editorPasswordForm.addEventListener("submit", async (event) => {
   editorPasswordInput.select();
 });
 
+const onAirToggle = byId("on-air-toggle");
+const broadcastView = byId("broadcast-view");
+const broadcastPlayer = byId("broadcast-player");
+const broadcastBack = byId("broadcast-back");
+const workspace = document.querySelector(".workspace-wrap");
+let workspaceScroll = 0;
+
+function closeBroadcast(restoreWorkspace = false) {
+  if (broadcastView.hidden) return;
+  broadcastPlayer.removeAttribute("src");
+  broadcastView.hidden = true;
+  document.body.classList.remove("is-on-air");
+  workspace.hidden = false;
+  onAirToggle.setAttribute("aria-expanded", "false");
+  if (restoreWorkspace) {
+    onAirToggle.focus({ preventScroll: true });
+    window.scrollTo({ top: workspaceScroll, behavior: "instant" });
+  }
+}
+
+onAirToggle.addEventListener("click", () => {
+  if (!broadcastView.hidden) {
+    closeBroadcast(true);
+    return;
+  }
+  workspaceScroll = window.scrollY;
+  workspace.hidden = true;
+  broadcastView.hidden = false;
+  document.body.classList.add("is-on-air");
+  onAirToggle.setAttribute("aria-expanded", "true");
+  broadcastPlayer.src = broadcastPlayer.dataset.src;
+  broadcastBack.focus({ preventScroll: true });
+});
+
+broadcastBack.addEventListener("click", () => closeBroadcast(true));
+
 async function openWorkspaceView(name) {
   if (name === "draft" && byId("view-draft").hidden && !await confirmEditorEntry()) return false;
+  closeBroadcast();
   showWorkspaceView(name);
   return true;
 }
