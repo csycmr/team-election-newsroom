@@ -2071,6 +2071,8 @@ input::placeholder, textarea::placeholder {
 .on-air-toggle {
   display: inline-flex;
   flex: none;
+  align-self: flex-end;
+  margin-bottom: 3px;
   align-items: center;
   gap: 7px;
   padding: 7px 10px;
@@ -2079,7 +2081,8 @@ input::placeholder, textarea::placeholder {
   background: #341e29;
   color: #ffe8e8;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 15px;
+  line-height: 1;
   font-weight: 800;
   letter-spacing: .09em;
   white-space: nowrap;
