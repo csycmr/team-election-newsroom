@@ -2119,6 +2119,9 @@ body.is-on-air {
 }
 
 .is-on-air .workspace-wrap,
+.is-on-air .floating-entry,
+.is-on-air #floating-rag-panel,
+body:not(.is-on-air) .broadcast-back,
 .broadcast-view[hidden] {
   display: none;
 }
@@ -2134,19 +2137,29 @@ body.is-on-air {
   border: 0;
 }
 
+.is-on-air .site-header {
+  position: relative;
+}
+
 .broadcast-back {
-  position: fixed;
-  left: max(24px, env(safe-area-inset-left));
-  bottom: max(24px, env(safe-area-inset-bottom));
-  z-index: 9999;
+  position: absolute;
+  inset: 0;
+  margin: auto;
   border-radius: 50%;
   font-size: 25px;
 }
 
 @media (max-width: 760px) {
+  .is-on-air .site-header {
+    flex-wrap: wrap;
+    column-gap: 12px;
+    row-gap: 8px;
+  }
+
   .broadcast-back {
-    left: max(16px, env(safe-area-inset-left));
-    bottom: max(16px, env(safe-area-inset-bottom));
+    position: relative;
+    order: 1;
+    margin: 0 max(0px, calc(50% - 26px));
   }
 }
 
