@@ -2181,6 +2181,6 @@ body:not(.is-on-air) .broadcast-back,
   pointer-events: none;
 }
 
-.has-editorial-replay-line:not(.is-on-air) #replay-progress-line:not([hidden]) {
+body:not(.is-on-air) #replay-progress-line:not([hidden]) {
   display: block;
 }

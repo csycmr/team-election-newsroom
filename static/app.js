@@ -961,7 +961,6 @@ byId("editor-article-select").onchange = async (event) => {
 const workspaceViews = new Set(["election", "draft", "library"]);
 function showWorkspaceView(name) {
   if (!workspaceViews.has(name)) return;
-  document.body.classList.toggle("has-editorial-replay-line", name === "library" || name === "draft");
   for (const [elementId, slotName] of [
     ["count-ticker", "ticker"],
     ["count-replay-controls", "replay"],
